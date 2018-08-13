@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 
 import {NgForm} from '@angular/forms';
-import {ShiftsService} from '../shifts-service';
+import {ShiftsService} from '../shifts.service';
 
 @Component({
   selector: 'app-shift-create',

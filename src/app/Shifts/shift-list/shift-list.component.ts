@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 
 import { Shift } from '../shift.model';
-import {ShiftsService} from '../shifts-service';
+import {ShiftsService} from '../shifts.service';
 import {Subscription} from 'rxjs';
 
 @Component({

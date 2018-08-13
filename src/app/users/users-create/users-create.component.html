@@ -1,0 +1,50 @@
+<mat-card>
+  <form (submit)="onAddUser(userForm)" #userForm="ngForm">
+    <mat-form-field>
+    <input
+      matInput
+      ngModel
+      name="firstName"
+      type="text"
+      required
+      minlength="2"
+      #firstName="ngModel"
+      placeholder="First name">
+    </mat-form-field>
+    <mat-form-field>
+    <input
+      matInput
+      ngModel
+      name="lastName"
+      type="text"
+      required
+      minlength="2"
+      #lastName="ngModel"
+      placeholder="Last name">
+    </mat-form-field>
+    <mat-form-field>
+    <input
+      matInput
+      ngModel
+      name="email"
+      type="text"
+      required
+      #email="ngModel"
+      placeholder="Email address">
+    </mat-form-field>
+    <mat-form-field>
+      <input
+        matInput
+        ngModel
+        name="telephone"
+        type="number"
+        required
+        #telephone="ngModel"
+        placeholder="Telephone number">
+    </mat-form-field>
+    <button
+      mat-raised-button
+      color="accent"
+      type="submit">Save user</button>
+  </form>
+</mat-card>

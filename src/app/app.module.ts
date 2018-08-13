@@ -8,13 +8,17 @@ import {MatButtonModule, MatCardModule, MatExpansionModule, MatInputModule, MatT
 import {HeaderComponent} from './header/header.component';
 import {FormsModule} from '@angular/forms';
 import {ShiftListComponent} from './Shifts/shift-list/shift-list.component';
+import {UsersCreateComponent} from './users/users-create/users-create.component';
+import {UsersListComponent} from './users/users-list/users-list.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     ShiftCreateComponent,
-    ShiftListComponent
+    ShiftListComponent,
+    UsersCreateComponent,
+    UsersListComponent
   ],
   imports: [
     BrowserModule,
