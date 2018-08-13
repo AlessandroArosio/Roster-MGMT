@@ -1,0 +1,20 @@
+<mat-accordion *ngIf="shifts.length > 0">
+  <div>
+    <table>
+      <tr>
+        <th>Shift name</th>
+        <th>Shift start</th>
+        <th>Shift end</th>
+      </tr>
+      <tr *ngFor="let shift of shifts">
+        <td>{{ shift.name }}</td>
+        <td>{{ shift.start }}</td>
+        <td>{{ shift.end }}</td>
+        <td><button class="buttons" color="primary" mat-button>EDIT</button></td>
+        <td><button class="buttons" mat-button color="warn">DELETE</button></td>
+      </tr>
+    </table>
+
+  </div>
+</mat-accordion>
+<p class="no-shifts" *ngIf="shifts.length <= 0">No shifts added!</p>

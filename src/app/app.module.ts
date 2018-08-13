@@ -4,14 +4,17 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import {ShiftCreateComponent} from './Shifts/shift-create/shift-create.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {MatButtonModule, MatCardModule, MatInputModule, MatToolbarModule} from '@angular/material';
+import {MatButtonModule, MatCardModule, MatExpansionModule, MatInputModule, MatTableModule, MatToolbarModule} from '@angular/material';
 import {HeaderComponent} from './header/header.component';
+import {FormsModule} from '@angular/forms';
+import {ShiftListComponent} from './Shifts/shift-list/shift-list.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
-    ShiftCreateComponent
+    ShiftCreateComponent,
+    ShiftListComponent
   ],
   imports: [
     BrowserModule,
@@ -19,7 +22,10 @@ import {HeaderComponent} from './header/header.component';
     MatInputModule,
     MatCardModule,
     MatButtonModule,
-    MatToolbarModule
+    MatToolbarModule,
+    MatExpansionModule,
+    MatTableModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

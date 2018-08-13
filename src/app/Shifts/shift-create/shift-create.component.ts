@@ -1,4 +1,7 @@
-import { Component} from '@angular/core';
+import {Component} from '@angular/core';
+
+import {NgForm} from '@angular/forms';
+import {ShiftsService} from '../shifts-service';
 
 @Component({
   selector: 'app-shift-create',
@@ -6,8 +9,22 @@ import { Component} from '@angular/core';
   styleUrls: ['./shift-create.component.css']
 })
 export class ShiftCreateComponent {
+  enteredShift = '';
+  enteredStart = '';
+  enteredEnd = '';
 
-  onAddShift() {
-    alert('post added');
+
+  constructor(public shiftsService: ShiftsService) {}
+
+  onAddShift(form: NgForm) {
+    if (form.invalid) {
+      return;
+    }
+    this.shiftsService.addShift(
+      form.value.name,
+      form.value.start,
+      form.value.end
+    );
+    form.resetForm();
   }
 }

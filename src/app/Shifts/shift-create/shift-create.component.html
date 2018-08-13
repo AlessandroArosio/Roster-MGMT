@@ -1,12 +1,42 @@
 <mat-card>
-  <mat-form-field>
-  <input #shiftName placeholder="Shift Title">
-  <input placeholder="Start">
-  <input placeholder="End">
-  <hr>
-  <button
-    mat-raised-button
-    color="accent"
-    (click)="onAddShift()">Save shift</button>
-  </mat-form-field>
+  <form (submit)="onAddShift(shiftForm)" #shiftForm="ngForm">
+    <mat-form-field>
+      <input
+        matInput
+        ngModel
+        name="name"
+        type="text"
+        required
+        #name="ngModel"
+        placeholder="Shift Title">
+      <mat-error *ngIf="name.invalid">Please enter a valid name for the shift</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input
+        matInput
+        ngModel
+        name="start"
+        type="text"
+        placeholder="Start"
+        minlength="2"
+        #start="ngModel"
+        required>
+      <mat-error *ngIf="start.invalid">Please enter when the shift starts</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input
+        matInput
+        type="text"
+        ngModel
+        required
+        name="end"
+        #end="ngModel"
+        placeholder="End">
+      <mat-error *ngIf="end.invalid">Please enter when the shift ends</mat-error>
+    </mat-form-field>
+    <button
+      mat-raised-button
+      color="accent"
+      type="submit">Save shift</button>
+  </form>
 </mat-card>
