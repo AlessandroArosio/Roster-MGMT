@@ -4,12 +4,12 @@
       <input
         matInput
         ngModel
-        name="branch"
+        name="branchName"
         type="text"
         required
-        #branch="ngModel"
+        #branchName="ngModel"
         placeholder="Branch name">
-      <mat-error *ngIf="branch.invalid">Please enter a valid branch name</mat-error>
+      <mat-error *ngIf="branchName.invalid">Please enter a valid branch name</mat-error>
     </mat-form-field>
     <button
       mat-raised-button

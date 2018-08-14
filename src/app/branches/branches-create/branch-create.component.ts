@@ -16,7 +16,7 @@ export class BranchCreateComponent {
       return;
     }
     this.branchesService.addBranch(
-      form.value.name
+      form.value.branchName
     );
     form.resetForm();
   }
