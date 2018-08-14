@@ -11,7 +11,7 @@
         <td>{{ shift.start }}</td>
         <td>{{ shift.end }}</td>
         <td><button class="buttons" color="primary" mat-button>EDIT</button></td>
-        <td><button class="buttons" mat-button color="warn">DELETE</button></td>
+        <td><button class="buttons" mat-button color="warn" (click)="onDelete(shift.id)">DELETE</button></td>
       </tr>
     </table>
 

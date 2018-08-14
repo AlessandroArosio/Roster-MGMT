@@ -49,4 +49,11 @@ export class ShiftsService {
         this.shiftsUpdated.next([...this.shifts]);
       });
   }
+
+  deleteShift(shiftId: string) {
+    this.http.delete('http://localhost:3000/api/shifts/' + shiftId)
+      .subscribe(() => {
+        console.log('Deleted!');
+      });
+  }
 }

@@ -51,4 +51,11 @@ export class UsersService {
         this.usersUpdated.next([...this.users]);
       });
   }
+
+  deleteUser(userId: string) {
+    this.http.delete('http://localhost:3000/api/users/' + userId)
+      .subscribe(() => {
+        console.log('Deleted');
+      });
+  }
 }

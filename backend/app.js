@@ -69,11 +69,18 @@ app.post('/api/branches', (req, res, next) => {
   });
 });
 
+// deleting a SHIFT document from MongoDB
+app.delete('/api/shifts/:id', (req, res, next) => {
+  Shift.deleteOne({_id: req.params.id}).then(result => {
+    console.log(result);
+  });
+  res.status(200).json({message: "Shift deleted!"});
+});
+
 // this one send the shifts TO Angular
 app.use('/api/shifts', (req, res, next) => {
   Shift.find()
     .then(documents => {
-      console.log(documents);
       res.status(200).json({
         message: "Shift fetch successfully",
         shifts: documents
@@ -81,11 +88,18 @@ app.use('/api/shifts', (req, res, next) => {
     });
 });
 
+// deleting a USER document from MongoDB
+app.delete('/api/users/:id', (req, res, next) => {
+  User.deleteOne({_id: req.params.id}).then(result => {
+    console.log(result);
+  });
+  res.status(200).json({message: "User deleted!"});
+});
+
 // this one send the users TO Angular
 app.use('/api/users', (req, res, next) => {
   User.find()
     .then(documents => {
-      console.log(documents);
       res.status(200).json({
         message: "User fetch successfully",
         users: documents
@@ -93,16 +107,24 @@ app.use('/api/users', (req, res, next) => {
     });
 });
 
+// deleting a BRANCH document from MongoDB
+app.delete('/api/branches/:id', (req, res, next) => {
+  Branch.deleteOne({_id: req.params.id}).then(result => {
+    console.log(result);
+  });
+  res.status(200).json({message: "Branch deleted!"});
+});
+
 // this one send the branches TO Angular
 app.use('/api/branches', (req, res, next) => {
   Branch.find()
     .then(documents => {
-      console.log(documents);
       res.status(200).json({
         message: "Branch fetch successfully",
         branches: documents
       });
     });
 });
+
 
 module.exports = app;

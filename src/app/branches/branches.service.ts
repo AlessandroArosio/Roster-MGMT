@@ -45,4 +45,11 @@ export class BranchesService {
       });
   }
 
+  deleteBranch(branchId: string) {
+    this.http.delete('http://localhost:3000/api/branches/' + branchId)
+      .subscribe(() => {
+        console.log('Branch deleted');
+      });
+  }
+
 }

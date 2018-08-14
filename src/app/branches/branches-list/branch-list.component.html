@@ -6,7 +6,7 @@
     <tr *ngFor="let branch of branches">
       <td> {{ branch.branchName }} </td>
       <td><button class="buttons" color="primary" mat-button>EDIT</button></td>
-      <td><button class="buttons" mat-button color="warn">DELETE</button></td>
+      <td><button class="buttons" mat-button color="warn" (click)="onDelete(branch.id)">DELETE</button></td>
     </tr>
   </table>
 </mat-accordion>

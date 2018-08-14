@@ -30,6 +30,10 @@ export class ShiftListComponent implements OnInit, OnDestroy {
       });
   }
 
+  onDelete(shiftId: string) {
+    this.shiftsService.deleteShift(shiftId);
+  }
+
   ngOnDestroy() {
     this.shiftsSub.unsubscribe();
   }

@@ -24,6 +24,10 @@ export class BranchListComponent implements OnInit, OnDestroy {
       });
   }
 
+  onDelete(branchId: string) {
+    this.branchesService.deleteBranch(branchId);
+  }
+
   ngOnDestroy() {
     this.branchesSub.unsubscribe();
   }
