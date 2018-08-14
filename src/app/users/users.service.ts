@@ -3,6 +3,7 @@ import {Subject} from 'rxjs';
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Shift} from '../Shifts/shift.model';
+import {map} from 'rxjs/operators';
 
 @Injectable({providedIn: 'root'})
 export class UsersService {
@@ -12,9 +13,21 @@ export class UsersService {
   constructor(private http: HttpClient) {}
 
   getUsers() {
-    this.http.get<{message: string, users: User[]}>('http://localhost:3000/api/users')
-      .subscribe((shiftData) => {
-        this.users = shiftData.users;
+    this.http
+      .get<{message: string, users: any}>('http://localhost:3000/api/users')
+      .pipe(map((usersData) => {
+        return usersData.users.map(users => {
+          return {
+            firstName: users.firstName,
+            lastName: users.lastName,
+            email: users.email,
+            telephone: users.telephone,
+            id: users._id
+          };
+        });
+      }))
+      .subscribe((transformedUser) => {
+        this.users = transformedUser;
         this.usersUpdated.next([...this.users]);
       });
   }

@@ -2,6 +2,7 @@ import {Branch} from './branch.model';
 import {Subject} from 'rxjs';
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
+import {map} from 'rxjs/operators';
 
 
 @Injectable({providedIn: 'root'})
@@ -12,9 +13,18 @@ export class BranchesService {
   constructor(private http: HttpClient) {}
 
   getBranches() {
-    this.http.get<{message: string, branches: Branch[]}>('http://localhost:3000/api/branches')
-      .subscribe((shiftData) => {
-        this.branches = shiftData.branches;
+    this.http
+      .get<{message: string, branches: any}>('http://localhost:3000/api/branches')
+      .pipe(map((branchData) => {
+        return branchData.branches.map(branches => {
+          return {
+            branchName: branches.branchName,
+            id: branches._id
+          };
+        });
+      }))
+      .subscribe((transformedBranch) => {
+        this.branches = transformedBranch;
         this.branchesUpdated.next([...this.branches]);
       });
   }
@@ -24,7 +34,9 @@ export class BranchesService {
   }
 
   addBranch(name: string) {
-    const branch: Branch = {id: null, branchName: name};
+    const branch: Branch = {
+      id: null,
+      branchName: name};
     this.http.post<{message: string}>('http://localhost:3000/api/branches', branch)
       .subscribe((responseData) => {
         console.log(responseData);

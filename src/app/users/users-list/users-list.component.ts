@@ -12,7 +12,7 @@ export class UsersListComponent implements OnInit, OnDestroy {
   users: User[] = [];
   private usersSub: Subscription;
 
-  constructor(public usersService: UsersService){}
+  constructor(public usersService: UsersService) {}
 
   ngOnInit() {
     this.usersService.getUsers();
