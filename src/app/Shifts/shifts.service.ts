@@ -1,14 +1,22 @@
 import {Shift} from './shift.model';
 import {Injectable} from '@angular/core';
 import { Subject } from 'rxjs';
+import {HttpClient} from '@angular/common/http';
+
 
 @Injectable({providedIn: 'root'})
 export class ShiftsService {
   private shifts: Shift[] = [];
   private shiftsUpdated = new Subject<Shift[]>();
 
+  constructor(private http: HttpClient) {}
+
   getShifts() {
-    return [...this.shifts];
+    this.http.get<{message: string, shifts: Shift[]}>('http://localhost:3000/api/shifts')
+      .subscribe((shiftData) => {
+        this.shifts = shiftData.shifts;
+        this.shiftsUpdated.next([...this.shifts]);
+      });
   }
 
   getShiftUpdateListener() {
@@ -16,8 +24,12 @@ export class ShiftsService {
   }
 
   addShift(name: string, start: string, end: string) {
-    const shift: Shift = {name: name, start: start, end: end};
-    this.shifts.push(shift);
-    this.shiftsUpdated.next([...this.shifts]);
+    const shift: Shift = {id: null, name: name, start: start, end: end};
+    this.http.post<{message: string}>('http://localhost:3000/api/shifts', shift)
+      .subscribe((responseData) => {
+        console.log(responseData);
+        this.shifts.push(shift);
+        this.shiftsUpdated.next([...this.shifts]);
+      });
   }
 }

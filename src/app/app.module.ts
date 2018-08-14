@@ -12,6 +12,7 @@ import {UsersCreateComponent} from './users/users-create/users-create.component'
 import {UsersListComponent} from './users/users-list/users-list.component';
 import {BranchCreateComponent} from './branches/branches-create/branch-create.component';
 import {BranchListComponent} from './branches/branches-list/branch-list.component';
+import {HttpClientModule} from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import {BranchListComponent} from './branches/branches-list/branch-list.componen
     MatToolbarModule,
     MatExpansionModule,
     MatTableModule,
-    FormsModule
+    FormsModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

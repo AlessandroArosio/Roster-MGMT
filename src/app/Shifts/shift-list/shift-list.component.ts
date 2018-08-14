@@ -22,7 +22,7 @@ export class ShiftListComponent implements OnInit, OnDestroy {
   constructor(public shiftsService: ShiftsService) {}
 
   ngOnInit() {
-    this.shifts = this.shiftsService.getShifts();
+    this.shiftsService.getShifts();
     this.shiftsSub = this.shiftsService
       .getShiftUpdateListener()
       .subscribe((shifts: Shift[]) => {

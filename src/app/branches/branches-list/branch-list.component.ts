@@ -16,7 +16,7 @@ export class BranchListComponent implements OnInit, OnDestroy{
   constructor(public branchesService: BranchesService) {}
 
   ngOnInit() {
-    this.branches = this.branchesService.getBranches();
+    this.branchesService.getBranches();
     this.branchesSub = this.branchesService
       .getBranchUpdateListener()
       .subscribe((branches: Branch[]) => {
