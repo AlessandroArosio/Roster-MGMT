@@ -10,6 +10,7 @@
       minlength="2"
       #firstName="ngModel"
       placeholder="First name">
+      <mat-error *ngIf="firstName.invalid">Please enter a valid first name</mat-error>
     </mat-form-field>
     <mat-form-field>
     <input
@@ -21,6 +22,7 @@
       minlength="2"
       #lastName="ngModel"
       placeholder="Last name">
+      <mat-error *ngIf="lastName.invalid">Please enter a valid last name</mat-error>
     </mat-form-field>
     <mat-form-field>
     <input
@@ -31,6 +33,7 @@
       required
       #email="ngModel"
       placeholder="Email address">
+      <mat-error *ngIf="email.invalid">Please enter a valid email address</mat-error>
     </mat-form-field>
     <mat-form-field>
       <input
@@ -41,6 +44,7 @@
         required
         #telephone="ngModel"
         placeholder="Telephone number">
+      <mat-error *ngIf="telephone.invalid">Please enter a valid telephone number</mat-error>
     </mat-form-field>
     <button
       mat-raised-button

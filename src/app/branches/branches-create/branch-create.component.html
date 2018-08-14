@@ -1,0 +1,19 @@
+<mat-card>
+  <form (submit)="onAddBranch(branchForm)" #branchForm="ngForm">
+    <mat-form-field>
+      <input
+        matInput
+        ngModel
+        name="branch"
+        type="text"
+        required
+        #branch="ngModel"
+        placeholder="Branch name">
+      <mat-error *ngIf="branch.invalid">Please enter a valid branch name</mat-error>
+    </mat-form-field>
+    <button
+      mat-raised-button
+      color="accent"
+      type="submit">Save branch</button>
+  </form>
+</mat-card>

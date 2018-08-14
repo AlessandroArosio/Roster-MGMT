@@ -1,0 +1,13 @@
+<mat-accordion *ngIf="branches.length > 0">
+  <table>
+    <tr>
+      <th>Branch name</th>
+    </tr>
+    <tr *ngFor="let branch of branches">
+      <td> {{ branch.name }} </td>
+      <td><button class="buttons" color="primary" mat-button>EDIT</button></td>
+      <td><button class="buttons" mat-button color="warn">DELETE</button></td>
+    </tr>
+  </table>
+</mat-accordion>
+<p class="no-shifts" *ngIf="branches.length <= 0">No branches added!</p>
