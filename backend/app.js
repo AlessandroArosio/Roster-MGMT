@@ -1,11 +1,20 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
 
 const Shift = require('./models/shift');
 const User = require('./models/user');
 const Branch = require('./models/branch');
 
 const app = express();
+
+mongoose.connect("mongodb+srv://alessandro:z6GjeGj4O2f2FRs7@cluster0-yr8nv.mongodb.net/roster-mgmt")
+  .then(() => {
+    console.log("Connected to database!");
+  })
+  .catch(() => {
+    console.log("Connection failed!");
+  });
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
@@ -29,7 +38,7 @@ app.post('/api/shifts', (req, res, next) => {
     start: req.body.start,
     end: req.body.end
   });
-  console.log(shift);
+  shift.save();
   res.status(201).json({
     message: "Shift added successfully"
   });
@@ -43,7 +52,7 @@ app.post('/api/users', (req, res, next) => {
     email: req.body.email,
     telephone: req.body.telephone
   });
-  console.log(user);
+  user.save();
   res.status(201).json({
     message: "User added successfully"
   });
@@ -54,7 +63,7 @@ app.post('/api/branches', (req, res, next) => {
   const branch = new Branch({
     branchName: req.body.branchName,
   });
-  console.log(branch);
+  branch.save();
   res.status(201).json({
     message: "Branch added successfully"
   });
