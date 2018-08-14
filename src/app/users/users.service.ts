@@ -31,7 +31,7 @@ export class UsersService {
       email: email,
       telephone: telephone
     };
-    this.http.post<{message: string}>('http://localhost:3000/api/shifts', user)
+    this.http.post<{message: string}>('http://localhost:3000/api/users', user)
       .subscribe((responseData) => {
         console.log(responseData);
         this.users.push(user);

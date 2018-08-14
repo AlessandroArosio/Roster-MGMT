@@ -8,7 +8,7 @@ import {BranchesService} from '../branches.service';
   templateUrl: './branch-list.component.html',
   styleUrls: ['./branch-list.component.css']
 })
-export class BranchListComponent implements OnInit, OnDestroy{
+export class BranchListComponent implements OnInit, OnDestroy {
 
   branches: Branch[] = [];
   private branchesSub: Subscription;

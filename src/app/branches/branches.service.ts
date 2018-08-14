@@ -25,8 +25,12 @@ export class BranchesService {
 
   addBranch(name: string) {
     const branch: Branch = {id: null, branchName: name};
-    this.branches.push(branch);
-    this.branchesUpdated.next([...this.branches]);
+    this.http.post<{message: string}>('http://localhost:3000/api/branches', branch)
+      .subscribe((responseData) => {
+        console.log(responseData);
+        this.branches.push(branch);
+        this.branchesUpdated.next([...this.branches]);
+      });
   }
 
 }

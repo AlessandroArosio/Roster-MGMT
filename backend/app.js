@@ -1,6 +1,10 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-// add mongoose
+
+const Shift = require('./models/shift');
+const User = require('./models/user');
+const Branch = require('./models/branch');
+
 const app = express();
 
 app.use(bodyParser.json());
@@ -20,10 +24,39 @@ app.use((req, res, next) => {
 
 // this one receives a shift FROM Angular
 app.post('/api/shifts', (req, res, next) => {
-  const shift = req.body;
+  const shift = new Shift({
+    name: req.body.name,
+    start: req.body.start,
+    end: req.body.end
+  });
   console.log(shift);
   res.status(201).json({
     message: "Shift added successfully"
+  });
+});
+
+// this one receives a user FROM Angular
+app.post('/api/users', (req, res, next) => {
+  const user = new User({
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    email: req.body.email,
+    telephone: req.body.telephone
+  });
+  console.log(user);
+  res.status(201).json({
+    message: "User added successfully"
+  });
+});
+
+// this one receives a branch FROM Angular
+app.post('/api/branches', (req, res, next) => {
+  const branch = new Branch({
+    branchName: req.body.branchName,
+  });
+  console.log(branch);
+  res.status(201).json({
+    message: "Branch added successfully"
   });
 });
 
@@ -47,15 +80,6 @@ app.use('/api/shifts', (req, res, next) => {
   });
 });
 
-// this one receives a user FROM Angular
-app.post('/api/users', (req, res, next) => {
-  const shift = req.body;
-  console.log(shift);
-  res.status(201).json({
-    message: "User added successfully"
-  });
-});
-
 // this one send the users TO Angular
 app.use('/api/users', (req, res, next) => {
   const users = [
@@ -75,15 +99,6 @@ app.use('/api/users', (req, res, next) => {
   res.status(200).json({
     message: "User fetch successfully",
     users: users
-  });
-});
-
-// this one receives a branch FROM Angular
-app.post('/api/branches', (req, res, next) => {
-  const shift = req.body;
-  console.log(shift);
-  res.status(201).json({
-    message: "Branch added successfully"
   });
 });
 
