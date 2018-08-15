@@ -42,9 +42,10 @@ export class ShiftsService {
       start: start,
       end: end
     };
-    this.http.post<{message: string}>('http://localhost:3000/api/shifts', shift)
+    this.http.post<{message: string, shiftId: string}>('http://localhost:3000/api/shifts', shift)
       .subscribe((responseData) => {
-        console.log(responseData);
+        const id = responseData.shiftId;
+        shift.id = id;
         this.shifts.push(shift);
         this.shiftsUpdated.next([...this.shifts]);
       });
@@ -53,7 +54,9 @@ export class ShiftsService {
   deleteShift(shiftId: string) {
     this.http.delete('http://localhost:3000/api/shifts/' + shiftId)
       .subscribe(() => {
-        console.log('Deleted!');
+        const updatedShift = this.shifts.filter(shift => shift.id !== shiftId);
+        this.shifts = updatedShift;
+        this.shiftsUpdated.next([...this.shifts]);
       });
   }
 }

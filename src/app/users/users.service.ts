@@ -44,9 +44,10 @@ export class UsersService {
       email: email,
       telephone: telephone
     };
-    this.http.post<{message: string}>('http://localhost:3000/api/users', user)
+    this.http.post<{message: string, userId: string}>('http://localhost:3000/api/users', user)
       .subscribe((responseData) => {
-        console.log(responseData);
+        const id = responseData.userId;
+        user.id = id;
         this.users.push(user);
         this.usersUpdated.next([...this.users]);
       });
@@ -55,7 +56,9 @@ export class UsersService {
   deleteUser(userId: string) {
     this.http.delete('http://localhost:3000/api/users/' + userId)
       .subscribe(() => {
-        console.log('Deleted');
+        const updatedUser = this.users.filter(user => user.id !== userId);
+        this.users = updatedUser;
+        this.usersUpdated.next([...this.users]);
       });
   }
 }

@@ -38,9 +38,11 @@ app.post('/api/shifts', (req, res, next) => {
     start: req.body.start,
     end: req.body.end
   });
-  shift.save();
-  res.status(201).json({
-    message: "Shift added successfully"
+  shift.save().then(createdShift => {
+    res.status(201).json({
+      message: "Shift added successfully",
+      shiftId: createdShift._id
+    });
   });
 });
 
@@ -52,9 +54,11 @@ app.post('/api/users', (req, res, next) => {
     email: req.body.email,
     telephone: req.body.telephone
   });
-  user.save();
-  res.status(201).json({
-    message: "User added successfully"
+  user.save().then(createdUser => {
+    res.status(201).json({
+      message: "User added successfully",
+      userId: createdUser._id
+    });
   });
 });
 
@@ -63,9 +67,11 @@ app.post('/api/branches', (req, res, next) => {
   const branch = new Branch({
     branchName: req.body.branchName,
   });
-  branch.save();
-  res.status(201).json({
-    message: "Branch added successfully"
+  branch.save().then(createdBranch => {
+    res.status(201).json({
+      message: "Branch added successfully",
+      branchId: createdBranch._id
+    });
   });
 });
 

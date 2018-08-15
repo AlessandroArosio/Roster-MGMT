@@ -3,6 +3,7 @@ import {Subject} from 'rxjs';
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {map} from 'rxjs/operators';
+import {hostReportError} from 'rxjs/internal-compatibility';
 
 
 @Injectable({providedIn: 'root'})
@@ -37,9 +38,10 @@ export class BranchesService {
     const branch: Branch = {
       id: null,
       branchName: name};
-    this.http.post<{message: string}>('http://localhost:3000/api/branches', branch)
+    this.http.post<{message: string, branchId: string}>('http://localhost:3000/api/branches', branch)
       .subscribe((responseData) => {
-        console.log(responseData);
+        const id = responseData.branchId;
+        branch.id = id;
         this.branches.push(branch);
         this.branchesUpdated.next([...this.branches]);
       });
@@ -48,7 +50,9 @@ export class BranchesService {
   deleteBranch(branchId: string) {
     this.http.delete('http://localhost:3000/api/branches/' + branchId)
       .subscribe(() => {
-        console.log('Branch deleted');
+        const updatedBranch = this.branches.filter(branch => branch.id !== branchId);
+        this.branches = updatedBranch;
+        this.branchesUpdated.next([...this.branches]);
       });
   }
 
