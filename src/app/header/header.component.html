@@ -1,1 +1,27 @@
-<mat-toolbar color="primary">Roster Management Tool</mat-toolbar>
+<mat-toolbar color="primary">
+  <span><a routerLink="">Roster Management Tool</a></span> <!--This have to point to home page or login screen -->
+  <span class="spacer"></span>
+  <ul>
+    <li>
+      <button mat-button [matMenuTriggerFor]="shifts">Shifts</button>
+      <mat-menu #shifts="matMenu">
+        <button mat-menu-item routerLink="shift-create">Create shift</button>
+        <button mat-menu-item routerLink="shift-list">List shifts</button>
+      </mat-menu>
+    </li>
+    <li>
+      <button mat-button [matMenuTriggerFor]="users">Users</button>
+      <mat-menu #users="matMenu">
+        <button mat-menu-item routerLink="user-create">Create user</button>
+        <button mat-menu-item routerLink="user-list">Users list</button>
+      </mat-menu>
+    </li>
+    <li>
+      <button mat-button [matMenuTriggerFor]="branch">Branch</button>
+      <mat-menu #branch="matMenu">
+        <button mat-menu-item routerLink="branch-create">Add a branch</button>
+        <button mat-menu-item routerLink="branch-list">Branches list</button>
+      </mat-menu>
+    </li>
+  </ul>
+</mat-toolbar>
