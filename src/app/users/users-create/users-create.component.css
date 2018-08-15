@@ -6,3 +6,13 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
   -webkit-appearance: none;
   margin: 0;
 }
+
+mat-spinner {
+  margin: auto;
+}
+
+#confirmation {
+  text-align: center;
+  font-weight: bold;
+  color: darkgreen;
+}

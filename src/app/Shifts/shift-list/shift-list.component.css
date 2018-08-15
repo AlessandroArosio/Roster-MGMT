@@ -34,3 +34,7 @@ tr:hover {
 .buttons {
   margin-right: -3.5rem;
 }
+
+mat-spinner {
+  margin: auto;
+}

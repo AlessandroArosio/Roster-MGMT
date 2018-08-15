@@ -15,6 +15,8 @@ export class ShiftCreateComponent implements OnInit {
   enteredStart = '';
   enteredEnd = '';
   shift: Shift;
+  isLoading = false;
+  message: string;
   private mode = 'create';
   private shiftId: string;
 
@@ -25,7 +27,9 @@ export class ShiftCreateComponent implements OnInit {
       if (paramMap.has('shiftId')) {
         this.mode = 'edit';
         this.shiftId = paramMap.get('shiftId');
+        this.isLoading = true;
         this.shiftsService.getShift(this.shiftId).subscribe(shiftData => {
+          this.isLoading = false;
           this.shift = {id: shiftData._id, name: shiftData.name, start: shiftData.start, end: shiftData.end};
         });
       } else {
@@ -45,14 +49,15 @@ export class ShiftCreateComponent implements OnInit {
         form.value.start,
         form.value.end
       );
+      this.message = 'Shift "' + form.value.name + '" has been added';
     } else {
       this.shiftsService.updateShift(
         this.shiftId,
         form.value.name,
         form.value.start,
         form.value.end);
+      this.message = 'Shift "' + form.value.name + '" has been updated';
     }
-
     form.resetForm();
   }
 }

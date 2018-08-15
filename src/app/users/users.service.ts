@@ -68,6 +68,7 @@ export class UsersService {
     const user: User = { id: id, firstName: firstName, lastName: lastName, email: email, telephone: telephone };
     this.http.put('http://localhost:3000/api/users/' + id, user)
       .subscribe(response => {
+
         const updatedUsers = [...this.users];
         const oldUserIndex = updatedUsers.findIndex(p => p.id === user.id);
         updatedUsers[oldUserIndex] = user;

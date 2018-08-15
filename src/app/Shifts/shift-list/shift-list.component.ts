@@ -10,22 +10,19 @@ import {Subscription} from 'rxjs';
   styleUrls: ['./shift-list.component.css']
 })
 export class ShiftListComponent implements OnInit, OnDestroy {
-  // shifts = [
-  //   {shiftName: 'Early shift', start: '6:00', end: '14:00'},
-  //   {shiftName: 'Late shift', start: '14:00', end: '22:00'},
-  //   {shiftName: 'Early shift', start: '22:00', end: '06:00'}
-  // ];
-  //
   shifts: Shift[] = [];
+  isLoading = false;
   private shiftsSub: Subscription;
 
   constructor(public shiftsService: ShiftsService) {}
 
   ngOnInit() {
+    this.isLoading = true;
     this.shiftsService.getShifts();
     this.shiftsSub = this.shiftsService
       .getShiftUpdateListener()
       .subscribe((shifts: Shift[]) => {
+        this.isLoading = false;
         this.shifts = shifts;
       });
   }

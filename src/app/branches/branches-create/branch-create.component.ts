@@ -11,6 +11,8 @@ import {Branch} from '../branch.model';
 })
 export class BranchCreateComponent implements OnInit {
   branch: Branch;
+  isLoading = false;
+  message: string;
   private mode = 'create';
   private branchId: string;
 
@@ -21,7 +23,9 @@ export class BranchCreateComponent implements OnInit {
       if (paramMap.has('branchId')) {
         this.mode = 'edit';
         this.branchId = paramMap.get('branchId');
+        this.isLoading = true;
         this.branchesService.getBranch(this.branchId).subscribe(branchData => {
+          this.isLoading = false;
           this.branch = {
             id: branchData._id,
             branchName: branchData.branchName
@@ -42,13 +46,14 @@ export class BranchCreateComponent implements OnInit {
       this.branchesService.addBranch(
         form.value.branchName
       );
+      this.message = 'Branch "' + form.value.branchName + '" has been added';
     } else {
       this.branchesService.updateBranch(
         this.branchId,
         form.value.branchName
       );
+      this.message = 'Branch "' + form.value.branchName + '" has been updated';
     }
-
     form.resetForm();
   }
 }

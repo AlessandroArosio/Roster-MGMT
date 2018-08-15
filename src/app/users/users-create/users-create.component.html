@@ -1,5 +1,6 @@
 <mat-card>
-  <form (submit)="onSaveUser(userForm)" #userForm="ngForm">
+  <mat-spinner *ngIf="isLoading"></mat-spinner>
+  <form (submit)="onSaveUser(userForm)" #userForm="ngForm" *ngIf="!isLoading">
     <mat-form-field>
     <input
       matInput
@@ -52,3 +53,4 @@
       type="submit">Save user</button>
   </form>
 </mat-card>
+<p id="confirmation">{{ message }}</p>

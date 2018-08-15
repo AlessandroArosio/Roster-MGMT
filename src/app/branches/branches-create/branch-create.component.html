@@ -1,5 +1,6 @@
 <mat-card>
-  <form (submit)="onSaveBranch(branchForm)" #branchForm="ngForm">
+  <mat-spinner *ngIf="isLoading"></mat-spinner>
+  <form (submit)="onSaveBranch(branchForm)" #branchForm="ngForm" *ngIf="!isLoading">
     <mat-form-field>
       <input
         matInput
@@ -17,3 +18,5 @@
       type="submit">Save branch</button>
   </form>
 </mat-card>
+<p id="confirmation">{{ message }}</p>
+

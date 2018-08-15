@@ -11,6 +11,8 @@ import {User} from '../user.model';
 })
 export class UsersCreateComponent implements OnInit {
   user: User;
+  isLoading = false;
+  message: string;
   private mode = 'create';
   private userId: string;
 
@@ -21,7 +23,9 @@ export class UsersCreateComponent implements OnInit {
       if (paramMap.has('userId')) {
         this.mode = 'edit';
         this.userId = paramMap.get('userId');
+        this.isLoading = true;
         this.usersService.getUser(this.userId).subscribe(userData => {
+          this.isLoading = false;
           this.user = {
             id: userData._id,
             firstName: userData.firstName,
@@ -48,6 +52,7 @@ export class UsersCreateComponent implements OnInit {
         form.value.email,
         form.value.telephone
       );
+      this.message = 'User "' + form.value.firstName + ' ' + form.value.lastName + '" has been added';
     } else {
       this.usersService.updateUser(
         this.userId,
@@ -56,6 +61,7 @@ export class UsersCreateComponent implements OnInit {
         form.value.email,
         form.value.telephone
       );
+      this.message = 'User "' + form.value.firstName + ' ' + form.value.lastName + '" has been updated';
     }
     form.resetForm();
   }

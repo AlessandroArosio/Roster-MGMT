@@ -1,4 +1,5 @@
-<mat-accordion *ngIf="branches.length > 0">
+<mat-spinner *ngIf="isLoading"></mat-spinner>
+<mat-accordion *ngIf="branches.length > 0 && !isLoading">
   <table>
     <tr>
       <th>Branch name</th>
@@ -10,4 +11,4 @@
     </tr>
   </table>
 </mat-accordion>
-<p class="no-shifts" *ngIf="branches.length <= 0">No branches added!</p>
+<p class="no-shifts" *ngIf="branches.length <= 0 && !isLoading">No branches added!</p>

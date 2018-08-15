@@ -1,5 +1,6 @@
 <mat-card>
-  <form (submit)="onSaveShift(shiftForm)" #shiftForm="ngForm">
+  <mat-spinner *ngIf="isLoading"></mat-spinner>
+  <form (submit)="onSaveShift(shiftForm)" #shiftForm="ngForm" *ngIf="!isLoading">
     <mat-form-field>
       <input
         matInput
@@ -40,3 +41,4 @@
       type="submit">Save shift</button>
   </form>
 </mat-card>
+<p id="confirmation">{{ message }}</p>

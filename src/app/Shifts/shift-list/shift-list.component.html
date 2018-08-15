@@ -1,4 +1,5 @@
-<mat-accordion *ngIf="shifts.length > 0">
+<mat-spinner *ngIf="isLoading"></mat-spinner>
+<mat-accordion *ngIf="shifts.length > 0 && !isLoading">
   <div>
     <table>
       <tr>
@@ -17,4 +18,4 @@
 
   </div>
 </mat-accordion>
-<p class="no-shifts" *ngIf="shifts.length <= 0">No shifts added!</p>
+<p class="no-shifts" *ngIf="shifts.length <= 0 && !isLoading">No shifts added!</p>

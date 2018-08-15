@@ -11,15 +11,18 @@ import {BranchesService} from '../branches.service';
 export class BranchListComponent implements OnInit, OnDestroy {
 
   branches: Branch[] = [];
+  isLoading = false;
   private branchesSub: Subscription;
 
   constructor(public branchesService: BranchesService) {}
 
   ngOnInit() {
+    this.isLoading = true;
     this.branchesService.getBranches();
     this.branchesSub = this.branchesService
       .getBranchUpdateListener()
       .subscribe((branches: Branch[]) => {
+        this.isLoading = false;
         this.branches = branches;
       });
   }

@@ -2,3 +2,13 @@ mat-form-field,
 textarea {
   width: 100%;
 }
+
+mat-spinner {
+  margin: auto;
+}
+
+#confirmation {
+  text-align: center;
+  font-weight: bold;
+  color: darkgreen;
+}
