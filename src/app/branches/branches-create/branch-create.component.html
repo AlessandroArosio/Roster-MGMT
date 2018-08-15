@@ -1,9 +1,9 @@
 <mat-card>
-  <form (submit)="onAddBranch(branchForm)" #branchForm="ngForm">
+  <form (submit)="onSaveBranch(branchForm)" #branchForm="ngForm">
     <mat-form-field>
       <input
         matInput
-        ngModel
+        [ngModel]="branch?.branchName"
         name="branchName"
         type="text"
         required

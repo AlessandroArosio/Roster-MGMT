@@ -1,9 +1,9 @@
 <mat-card>
-  <form (submit)="onAddShift(shiftForm)" #shiftForm="ngForm">
+  <form (submit)="onSaveShift(shiftForm)" #shiftForm="ngForm">
     <mat-form-field>
       <input
         matInput
-        ngModel
+        [ngModel]="shift?.name"
         name="name"
         type="text"
         required
@@ -14,7 +14,7 @@
     <mat-form-field>
       <input
         matInput
-        ngModel
+        [ngModel]="shift?.start"
         name="start"
         type="text"
         placeholder="Start"
@@ -27,7 +27,7 @@
       <input
         matInput
         type="text"
-        ngModel
+        [ngModel]="shift?.end"
         required
         name="end"
         #end="ngModel"

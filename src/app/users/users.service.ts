@@ -3,7 +3,7 @@ import {Subject} from 'rxjs';
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Shift} from '../Shifts/shift.model';
-import {map} from 'rxjs/operators';
+import {last, map} from 'rxjs/operators';
 
 @Injectable({providedIn: 'root'})
 export class UsersService {
@@ -32,6 +32,17 @@ export class UsersService {
       });
   }
 
+  getUser(id: string) {
+    return this.http.get<{
+      _id: string,
+      firstName: string,
+      lastName: string,
+      email: string,
+      telephone: number}>
+    (
+      'http://localhost:3000/api/users/' + id);
+  }
+
   getUserUpdateListener() {
     return this.usersUpdated.asObservable();
   }
@@ -49,6 +60,18 @@ export class UsersService {
         const id = responseData.userId;
         user.id = id;
         this.users.push(user);
+        this.usersUpdated.next([...this.users]);
+      });
+  }
+
+  updateUser(id: string, firstName: string, lastName: string, email: string, telephone: number) {
+    const user: User = { id: id, firstName: firstName, lastName: lastName, email: email, telephone: telephone };
+    this.http.put('http://localhost:3000/api/users/' + id, user)
+      .subscribe(response => {
+        const updatedUsers = [...this.users];
+        const oldUserIndex = updatedUsers.findIndex(p => p.id === user.id);
+        updatedUsers[oldUserIndex] = user;
+        this.users = updatedUsers;
         this.usersUpdated.next([...this.users]);
       });
   }

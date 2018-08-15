@@ -12,7 +12,7 @@
         <td>{{ user.lastName }}</td>
         <td>{{ user.email }}</td>
         <td>{{ user.telephone }}</td>
-        <td><button class="buttons" color="primary" mat-button>EDIT</button></td>
+        <td><button class="buttons" color="primary" mat-button [routerLink]="['/user-edit', user.id]">EDIT</button></td>
         <td><button class="buttons" mat-button color="warn" (click)="onDelete(user.id)">DELETE</button></td>
       </tr>
     </table>

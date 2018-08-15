@@ -11,10 +11,13 @@ const routes: Routes = [
   { path: '', component: ShiftListComponent },   // to be changed to shift-list and replace '' for login screen
   { path: 'shift-list', component: ShiftListComponent },
   { path: 'shift-create', component: ShiftCreateComponent },
+  { path: 'shift-edit/:shiftId', component: ShiftCreateComponent },
   { path: 'user-list', component: UsersListComponent },
   { path: 'user-create', component: UsersCreateComponent },
+  { path: 'user-edit/:userId', component: UsersCreateComponent },
   { path: 'branch-list', component: BranchListComponent },
-  { path: 'branch-create', component: BranchCreateComponent }
+  { path: 'branch-create', component: BranchCreateComponent },
+  { path: 'branch-edit/:branchId', component: BranchCreateComponent }
 ];
 
 @NgModule({

@@ -27,7 +27,7 @@ app.use((req, res, next) => {
   );
   res.setHeader(
     "Access-Control-Allow-Methods",
-    "GET, POST, PATCH, DELETE, OPTIONS");
+    "GET, POST, PATCH, PUT, DELETE, OPTIONS");
   next();
 });
 
@@ -82,6 +82,28 @@ app.delete('/api/shifts/:id', (req, res, next) => {
   });
   res.status(200).json({message: "Shift deleted!"});
 });
+// EDIT a shift
+app.put('/api/shifts/:id', (req, res, next) => {
+  const shift = new Shift({
+    _id: req.body.id,
+    name: req.body.name
+  });
+  Shift.updateOne({_id: req.params.id}, shift).then(result => {
+    console.log(result);
+    res.status(200).json({message: "Shift update successful"});
+  });
+});
+
+// GET one single shift from the DB
+app.get('/api/shifts/:id', (req, res, next) => {
+  Shift.findById(req.params.id).then(shift => {
+    if (shift) {
+      res.status(200).json(shift);
+    } else {
+      res.status(400).json({message: 'Shift not found'});
+    }
+  });
+});
 
 // this one send the shifts TO Angular
 app.use('/api/shifts', (req, res, next) => {
@@ -100,6 +122,32 @@ app.delete('/api/users/:id', (req, res, next) => {
     console.log(result);
   });
   res.status(200).json({message: "User deleted!"});
+});
+
+// EDIT an user
+app.put('/api/users/:id', (req, res, next) => {
+  const user = new User({
+    _id: req.body.id,
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    email: req.body.email,
+    telephone: req.body.telephone
+  });
+  User.updateOne({_id: req.params.id}, user).then(result => {
+    console.log("is this happening?");
+    res.status(200).json({message: "User update successful"});
+  });
+});
+
+// GET one single user from the DB
+app.get('/api/users/:id', (req, res, next) => {
+  User.findById(req.params.id).then(user => {
+    if (user) {
+      res.status(200).json(user);
+    } else {
+      res.status(400).json({message: 'User not found'});
+    }
+  });
 });
 
 // this one send the users TO Angular
@@ -121,6 +169,29 @@ app.delete('/api/branches/:id', (req, res, next) => {
   res.status(200).json({message: "Branch deleted!"});
 });
 
+// EDIT a branch
+app.put('/api/branches/:id', (req, res, next) => {
+  const branch = new Branch({
+    _id: req.body.id,
+    branchName: req.body.branchName
+  });
+  Branch.updateOne({_id: req.params.id}, branch).then(result => {
+    console.log(result);
+    res.status(200).json({message: "Branch update successful"});
+  });
+});
+
+// GET one single shift from the DB
+app.get('/api/branches/:id', (req, res, next) => {
+  Branch.findById(req.params.id).then(branch => {
+    if (branch) {
+      res.status(200).json(branch);
+    } else {
+      res.status(400).json({message: 'Branch not found'});
+    }
+  });
+});
+
 // this one send the branches TO Angular
 app.use('/api/branches', (req, res, next) => {
   Branch.find()
@@ -131,6 +202,5 @@ app.use('/api/branches', (req, res, next) => {
       });
     });
 });
-
 
 module.exports = app;

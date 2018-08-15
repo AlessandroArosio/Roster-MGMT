@@ -12,6 +12,7 @@ export class ShiftsService {
 
   constructor(private http: HttpClient) {}
 
+
   getShifts() {
     this.http
       .get<{message: string, shifts: any}>('http://localhost:3000/api/shifts')
@@ -31,6 +32,11 @@ export class ShiftsService {
       });
   }
 
+  getShift(id: string) {
+    return this.http.get<{_id: string, name: string, start: string, end: string}>(
+      'http://localhost:3000/api/shifts/' + id);
+  }
+
   getShiftUpdateListener() {
     return this.shiftsUpdated.asObservable();
   }
@@ -47,6 +53,18 @@ export class ShiftsService {
         const id = responseData.shiftId;
         shift.id = id;
         this.shifts.push(shift);
+        this.shiftsUpdated.next([...this.shifts]);
+      });
+  }
+
+  updateShift(id: string, name: string, start: string, end: string) {
+    const shift: Shift = { id: id, name: name, start: start, end: end };
+    this.http.put('http://localhost:3000/api/shifts/' + id, shift)
+      .subscribe(response => {
+        const updatedShifts = [...this.shifts];
+        const oldShiftIndex = updatedShifts.findIndex(p => p.id === shift.id);
+        updatedShifts[oldShiftIndex] = shift;
+        this.shifts = updatedShifts;
         this.shiftsUpdated.next([...this.shifts]);
       });
   }
