@@ -22,6 +22,8 @@ import {BranchCreateComponent} from './branches/branches-create/branch-create.co
 import {BranchListComponent} from './branches/branches-list/branch-list.component';
 import {HttpClientModule} from '@angular/common/http';
 import {AppRoutingModule} from './app-routing.module';
+import {RotaCreateComponent} from './rota/rota-create/rota-create.component';
+import {RotaListComponent} from './rota/rota-list/rota-list.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +34,9 @@ import {AppRoutingModule} from './app-routing.module';
     UsersCreateComponent,
     UsersListComponent,
     BranchCreateComponent,
-    BranchListComponent
+    BranchListComponent,
+    RotaCreateComponent,
+    RotaListComponent
   ],
   imports: [
     BrowserModule,

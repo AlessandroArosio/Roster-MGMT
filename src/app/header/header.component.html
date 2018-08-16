@@ -1,7 +1,14 @@
 <mat-toolbar color="primary">
-  <span><a routerLink="">Roster Management Tool</a></span> <!--This have to point to home page or login screen -->
+  <span><a routerLink="" id="appTitle">Roster Management Tool</a></span> <!--This have to point to home page or login screen -->
   <span class="spacer"></span>
   <ul>
+    <li>
+      <button mat-button [matMenuTriggerFor]="rota">Rota</button>
+      <mat-menu #rota="matMenu">
+        <button mat-menu-item routerLink="rota-create">Create rosters</button>
+        <button mat-menu-item routerLink="rota-list">View rosters</button>
+      </mat-menu>
+    </li>
     <li>
       <button mat-button [matMenuTriggerFor]="shifts">Shifts</button>
       <mat-menu #shifts="matMenu">
