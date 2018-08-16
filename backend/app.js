@@ -4,7 +4,8 @@ const mongoose = require('mongoose');
 
 const shiftsRoutes = require('./routes/shifts');
 const usersRoutes = require('./routes/users');
-const branchesRoutes = require ('./routes/branches');
+const branchesRoutes = require('./routes/branches');
+const rotasRoutes = require('./routes/rotas');
 
 const app = express();
 
@@ -31,8 +32,9 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use('/api/shifts' ,shiftsRoutes);
-app.use('/api/users' ,usersRoutes);
-app.use('/api/branches' ,branchesRoutes);
+app.use('/api/shifts', shiftsRoutes);
+app.use('/api/users', usersRoutes);
+app.use('/api/branches', branchesRoutes);
+app.use('/api/rota', rotasRoutes);
 
 module.exports = app;

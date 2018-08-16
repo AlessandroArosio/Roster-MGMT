@@ -9,12 +9,12 @@ import {
   MatCardModule,
   MatExpansionModule,
   MatInputModule,
-  MatMenuModule, MatProgressSpinnerModule,
+  MatMenuModule, MatProgressSpinnerModule, MatSelectModule,
   MatTableModule,
   MatToolbarModule
 } from '@angular/material';
 import {HeaderComponent} from './header/header.component';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {ShiftListComponent} from './Shifts/shift-list/shift-list.component';
 import {UsersCreateComponent} from './users/users-create/users-create.component';
 import {UsersListComponent} from './users/users-list/users-list.component';
@@ -50,6 +50,8 @@ import {RotaListComponent} from './rota/rota-list/rota-list.component';
     MatTableModule,
     MatMenuModule,
     MatProgressSpinnerModule,
+    MatSelectModule,
+    ReactiveFormsModule,
     FormsModule,
     HttpClientModule
   ],
