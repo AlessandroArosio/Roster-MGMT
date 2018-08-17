@@ -1,0 +1,103 @@
+<h1>Work in progress</h1>
+<h2>Legend</h2>
+<div *ngFor="let shift of shifts">
+  <p><strong>{{ shift.name }}</strong>: From {{ shift.start }} to {{ shift.end }}</p>
+</div>
+<mat-card>
+  <form [formGroup]="form" (submit)="onSaveRota()">
+    <mat-form-field id="branchSelector" >
+      <mat-select placeholder="Select a branch" formControlName="branchName">
+        <mat-option *ngFor="let branch of branches" [value]="branch" >
+          {{branch.branchName}}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="form.get('branchName')">Please choose a branch</mat-error>
+    </mat-form-field>
+    <table>
+      <tr *ngFor="let user of users; let i = index">
+        <mat-form-field>
+          <mat-select placeholder="Select an employee" [formControlName]="userName + i">
+            <mat-option *ngFor="let user of users" [value]="user.firstName">
+              <td>
+                {{user.firstName + " " + user.lastName }}
+              </td>
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="form.get('userName' + i).invalid">Required field</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-select placeholder="Select a shift" formControlName="monShift">
+            <mat-option *ngFor="let shift of shifts" [value]="shift.name">
+              <td>
+                {{ shift.name }}
+              </td>
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="form.get('monShift').invalid">Required field</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-select placeholder="Select a shift" formControlName="tueShift">
+            <mat-option *ngFor="let shift of shifts" [value]="shift.name">
+              <td>
+                {{ shift.name }}
+              </td>
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="form.get('tueShift').invalid">Required field</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-select placeholder="Select a shift" formControlName="wedShift">
+            <mat-option *ngFor="let shift of shifts" [value]="shift.name">
+              <td>
+                {{ shift.name }}
+              </td>
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="form.get('wedShift').invalid">Required field</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-select placeholder="Select a shift" formControlName="thuShift">
+            <mat-option *ngFor="let shift of shifts" [value]="shift.name">
+              <td>
+                {{ shift.name }}
+              </td>
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="form.get('thuShift').invalid">Required field</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-select placeholder="Select a shift" formControlName="friShift">
+            <mat-option *ngFor="let shift of shifts" [value]="shift.name">
+              <td>
+                {{ shift.name }}
+              </td>
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="form.get('friShift').invalid">Required field</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-select placeholder="Select a shift" formControlName="satShift">
+            <mat-option *ngFor="let shift of shifts" [value]="shift.name">
+              <td>
+                {{ shift.name }}
+              </td>
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="form.get('satShift').invalid">Required field</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-select placeholder="Select a shift" formControlName="sunShift">
+            <mat-option *ngFor="let shift of shifts" [value]="shift.name">
+              <td>
+                {{ shift.name }}
+              </td>
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="form.get('sunShift').invalid">Required field</mat-error>
+        </mat-form-field>
+
+      </tr>
+    </table>
+    <button mat-raised-button color="accent" type="submit">Save rota</button>
+  </form>
+</mat-card>

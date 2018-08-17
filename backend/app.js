@@ -35,6 +35,6 @@ app.use((req, res, next) => {
 app.use('/api/shifts', shiftsRoutes);
 app.use('/api/users', usersRoutes);
 app.use('/api/branches', branchesRoutes);
-app.use('/api/rota', rotasRoutes);
+app.use('/api/rotas', rotasRoutes);
 
 module.exports = app;

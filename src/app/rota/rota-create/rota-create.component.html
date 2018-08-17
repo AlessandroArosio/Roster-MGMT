@@ -4,36 +4,39 @@
   <p><strong>{{ shift.name }}</strong>: From {{ shift.start }} to {{ shift.end }}</p>
 </div>
 <mat-card>
-  <form #rotaForm="ngForm" (submit)="onSaveRota(rotaForm)">
-    <mat-form-field id="branchSelector">
-      <mat-select placeholder="Select a branch" [formControl]="branchControl" required>
-        <mat-option *ngFor="let branch of branches" [value]="branch" [ngModel]="branch?.branchName" #name="ngModel">
+  <form [formGroup]="form" (submit)="onSaveRota()">
+    <mat-form-field id="branchSelector" >
+      <mat-select placeholder="Select a branch" formControlName="branchName">
+        <mat-option *ngFor="let branch of branches" [value]="branch" >
           {{branch.branchName}}
         </mat-option>
       </mat-select>
-      <mat-error *ngIf="branchControl.hasError('required')">Please choose a branch</mat-error>
+      <mat-error *ngIf="form.get('branchName')">Please choose a branch</mat-error>
     </mat-form-field>
     <table>
-      <tr *ngFor="let user of users">
+      <tr *ngFor="let user of users; let i = index">
         <mat-form-field>
-          <mat-select placeholder="Select an employee" [formControl]="formControl" required>
+          <mat-select placeholder="Select an employee" [formControlName]="userName + i">
             <mat-option *ngFor="let user of users" [value]="user.firstName">
               <td>
                 {{user.firstName + " " + user.lastName }}
               </td>
             </mat-option>
           </mat-select>
-          <mat-error *ngIf="formControl.hasError('required')">Required field</mat-error>
+          <mat-error *ngIf="form.get('userName' + i).invalid">Required field</mat-error>
         </mat-form-field>
-        <mat-form-field *ngFor="let i of Arr(day).fill(1)">
-          <mat-select placeholder="Select a shift">
+        <mat-form-field *ngFor="let control of controlShift; let y = index">
+          <mat-select placeholder="Select a shift" [formControlName]="controlShift[y] + i + y">
             <mat-option *ngFor="let shift of shifts" [value]="shift.name">
               <td>
                 {{ shift.name }}
               </td>
             </mat-option>
           </mat-select>
+          <mat-error *ngIf="form.get(controlShift[y] + i + y).invalid">Required field</mat-error>
         </mat-form-field>
+
+
       </tr>
     </table>
     <button mat-raised-button color="accent" type="submit">Save rota</button>

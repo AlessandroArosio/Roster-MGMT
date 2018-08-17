@@ -39,18 +39,26 @@ export class RotaService {
     userFirstName: string,
     userLastName: string,
     shiftName: string,
-    shiftStart: string,
-    shiftEnd: string,
+    monShift: string,
+    tueShift: string,
+    wedShift: string,
+    thuShift: string,
+    friShift: string,
+    satShift: string,
+    sunShift: string,
     rotaStartDate: string,
     rotaEndDate: string) {
     const rota: Rota = {
       id: null,
       branchName: branchName,
-      userFirstName: userFirstName,
-      userLastName: userLastName,
-      shiftName: shiftName,
-      shiftStart: shiftStart,
-      shiftEnd: shiftEnd,
+      employeeName: userFirstName + ' ' + userLastName,
+      monShift: monShift,
+      tueShift: tueShift,
+      wedShift: wedShift,
+      thuShift: thuShift,
+      friShift: friShift,
+      satShift: satShift,
+      sunShift: sunShift,
       rotaStartDate: rotaStartDate,
       rotaEndDate: rotaEndDate
     };
@@ -73,5 +81,9 @@ export class RotaService {
 
   getBranchUpdateListener() {
     return this.branchesUpdated.asObservable();
+  }
+
+  getRota(id: string) {
+    return this.http.get<any>('http://localhost:3000/api/rotas/' + id);
   }
 }
