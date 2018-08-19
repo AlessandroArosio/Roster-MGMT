@@ -5,7 +5,7 @@
 </div>
 <mat-card>
   <form [formGroup]="form" (submit)="onSaveRota()">
-    <mat-form-field id="branchSelector" >
+    <mat-form-field >
       <mat-select placeholder="Select a branch" formControlName="branchName">
         <mat-option *ngFor="let branch of branches" [value]="branch" >
           {{branch.branchName}}
@@ -13,8 +13,17 @@
       </mat-select>
       <mat-error *ngIf="form.get('branchName')">Please choose a branch</mat-error>
     </mat-form-field>
-    <table>
-      <tr *ngFor="let user of users; let i = index">
+    <mat-form-field>
+      <mat-select placeholder="How many employees" formControlName="employeesNumber" [(value)]="selectedValue" required>
+        <mat-option>--</mat-option>
+        <mat-option *ngFor="let number of employees" [value]="number" (click)="employeesPerBranch(number)" >
+          {{number}}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="form.get('employeesNumber')">Please select a number</mat-error>
+    </mat-form-field>
+    <table *ngIf="totalEmployees.length > 0">
+      <tr *ngFor="let emp of totalEmployees; let i = index">
         <mat-form-field>
           <mat-select placeholder="Select an employee" [formControlName]="userName + i">
             <mat-option *ngFor="let user of users" [value]="user.firstName">
@@ -35,8 +44,6 @@
           </mat-select>
           <mat-error *ngIf="form.get(controlShift[y] + i + y).invalid">Required field</mat-error>
         </mat-form-field>
-
-
       </tr>
     </table>
     <button mat-raised-button color="accent" type="submit">Save rota</button>

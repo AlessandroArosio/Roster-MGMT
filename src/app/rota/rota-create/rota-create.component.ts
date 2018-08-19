@@ -28,6 +28,9 @@ export class RotaCreateComponent implements OnInit {
   userName = 'userName';
   monShift = 'monShift';
   controlShift = ['monShift', 'tueShift', 'wedShift', 'thuShift', 'friShift', 'satShift', 'sunShift'];
+  employees = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  totalEmployees = [];
+  selectedValue: number;
   form: FormGroup;
   private mode = 'create';
   private rotaId: string;
@@ -49,6 +52,7 @@ export class RotaCreateComponent implements OnInit {
   ngOnInit() {
     this.form = new FormGroup({
       'branchName': new FormControl(null, {validators: [Validators.required]}),
+      'employeesNumber': new FormControl(null, {validators: [Validators.required]})
     });
     this.isLoading = true;
     this.shiftsService.getShifts();
@@ -64,17 +68,6 @@ export class RotaCreateComponent implements OnInit {
       .getUserUpdateListener()
       .subscribe((users: User[]) => {
         this.users = users;
-        for (let i = 0; i < this.users.length; i++) {
-          const controlName = 'userName' + i;
-          this.form.addControl(controlName, new FormControl(null, Validators.required));
-          for (let y = 0; y < this.day; y++) {
-            const weekDays = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
-            const controlShift = weekDays[y] + 'Shift' + i + y;
-            this.form.addControl(controlShift, new FormControl(null, Validators.required));
-            // console.log('i = ' + i + ', y = ' + y);
-            // console.log(controlShift);
-          }
-        }
       });
     this.branchesSub = this.branchesService
       .getBranchUpdateListener()
@@ -132,6 +125,44 @@ export class RotaCreateComponent implements OnInit {
       console.log('Form is valid');
       console.log(this.form);
     }
+  }
 
+  employeesPerBranch(number: number) {
+    this.selectedValue = number;
+    this.totalEmployees = [];
+    console.log(this.users[1].firstName); // use the splice function to remove an user after being selected
+    if (this.selectedValue > number) {
+      this.form = new FormGroup({
+        'branchName': new FormControl(null, {validators: [Validators.required]}),
+        'employeesNumber': new FormControl(null, {validators: [Validators.required]})
+      });
+      this.form.controls['employeesNumber'].setValue(number);
+      for (let i = 0; i < this.selectedValue; i++) {
+        this.totalEmployees.push(i);
+        const controlName = 'userName' + i;
+        this.form.addControl(controlName, new FormControl(null, Validators.required));
+        for (let y = 0; y < this.day; y++) {
+          const weekDays = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
+          const controlShift = weekDays[y] + 'Shift' + i + y;
+          this.form.addControl(controlShift, new FormControl(null, Validators.required));
+        }
+      }
+    } else {
+      this.form = new FormGroup({
+        'branchName': new FormControl(null, {validators: [Validators.required]}),
+        'employeesNumber': new FormControl(null, {validators: [Validators.required]})
+      });
+      this.form.controls['employeesNumber'].setValue(number);
+      for (let i = 0; i < this.selectedValue; i++) {
+        this.totalEmployees.push(i);
+        const controlName = 'userName' + i;
+        this.form.addControl(controlName, new FormControl(null, Validators.required));
+        for (let y = 0; y < this.day; y++) {
+          const weekDays = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
+          const controlShift = weekDays[y] + 'Shift' + i + y;
+          this.form.addControl(controlShift, new FormControl(null, Validators.required));
+        }
+      }
+    }
   }
 }
