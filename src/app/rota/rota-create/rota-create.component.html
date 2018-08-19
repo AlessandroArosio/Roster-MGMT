@@ -5,6 +5,15 @@
 </div>
 <mat-card>
   <form [formGroup]="form" (submit)="onSaveRota()">
+    <mat-form-field>
+      <mat-select placeholder="No. of employees" formControlName="employeesNumber" [(value)]="selectedValue" required>
+        <mat-option>--</mat-option>
+        <mat-option *ngFor="let number of employees" [value]="number" (click)="employeesPerBranch(number)" >
+          {{number}}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="form.get('employeesNumber')">Please select a number</mat-error>
+    </mat-form-field>
     <mat-form-field >
       <mat-select placeholder="Select a branch" formControlName="branchName">
         <mat-option *ngFor="let branch of branches" [value]="branch" >
@@ -13,20 +22,11 @@
       </mat-select>
       <mat-error *ngIf="form.get('branchName')">Please choose a branch</mat-error>
     </mat-form-field>
-    <mat-form-field>
-      <mat-select placeholder="How many employees" formControlName="employeesNumber" [(value)]="selectedValue" required>
-        <mat-option>--</mat-option>
-        <mat-option *ngFor="let number of employees" [value]="number" (click)="employeesPerBranch(number)" >
-          {{number}}
-        </mat-option>
-      </mat-select>
-      <mat-error *ngIf="form.get('employeesNumber')">Please select a number</mat-error>
-    </mat-form-field>
     <table *ngIf="totalEmployees.length > 0">
       <tr *ngFor="let emp of totalEmployees; let i = index">
         <mat-form-field>
           <mat-select placeholder="Select an employee" [formControlName]="userName + i">
-            <mat-option *ngFor="let user of users" [value]="user.firstName">
+            <mat-option *ngFor="let user of users" [value]="user.id" (click)="checkDuplicateEmployees()">
               <td>
                 {{user.firstName + " " + user.lastName }}
               </td>
@@ -46,6 +46,7 @@
         </mat-form-field>
       </tr>
     </table>
-    <button mat-raised-button color="accent" type="submit">Save rota</button>
+    <button *ngIf="!duplicate && totalEmployees.length !== 0" mat-raised-button color="accent" type="submit">Save rota</button>
+    <p *ngIf="duplicate" id="duplicateError">Duplicate entry found.The employees must be unique</p>
   </form>
 </mat-card>

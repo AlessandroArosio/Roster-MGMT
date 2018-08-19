@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {RotaService} from '../rota.service';
 import {ActivatedRoute, ParamMap} from '@angular/router';
-import {FormControl, NgForm, Validators, ReactiveFormsModule, FormGroup} from '@angular/forms';
+import {FormControl, NgForm, Validators, ReactiveFormsModule, FormGroup, Form} from '@angular/forms';
 import {Shift} from '../../Shifts/shift.model';
 import {User} from '../../users/user.model';
 import {Branch} from '../../branches/branch.model';
@@ -31,6 +31,7 @@ export class RotaCreateComponent implements OnInit {
   employees = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   totalEmployees = [];
   selectedValue: number;
+  duplicate = false;
   form: FormGroup;
   private mode = 'create';
   private rotaId: string;
@@ -118,7 +119,6 @@ export class RotaCreateComponent implements OnInit {
   onSaveRota() {
     if (this.form.invalid) {
       console.log('Form is invalid');
-      console.log(this.form.value.shiftName);
       console.log(this.form);
       return;
     } else {
@@ -130,7 +130,6 @@ export class RotaCreateComponent implements OnInit {
   employeesPerBranch(number: number) {
     this.selectedValue = number;
     this.totalEmployees = [];
-    console.log(this.users[1].firstName); // use the splice function to remove an user after being selected
     if (this.selectedValue > number) {
       this.form = new FormGroup({
         'branchName': new FormControl(null, {validators: [Validators.required]}),
@@ -164,5 +163,22 @@ export class RotaCreateComponent implements OnInit {
         }
       }
     }
+  }
+
+  // Check if there are in userName (controlForm) any duplicates users.ID and prevent the submit
+  checkDuplicateEmployees() {
+    const userArray = [];
+    for (let i = 0; i < this.selectedValue; i++) {
+      userArray.push('userName' + i);
+    }
+    for (let i = 0; i < userArray.length; i++) {
+      for (let y = 0; y < userArray.length; y++) {
+        if (this.form.get(userArray[i]).value === this.form.get(userArray[y]).value && i !== y) {
+          this.duplicate = true;
+          return;
+        }
+      }
+    }
+    this.duplicate = false;
   }
 }

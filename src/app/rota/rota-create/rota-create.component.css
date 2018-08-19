@@ -7,3 +7,9 @@
   width: 300px;
   font-weight: bold;
 }
+
+#duplicateError {
+  font-weight: bold;
+  color: red;
+  font-size: large;
+}
