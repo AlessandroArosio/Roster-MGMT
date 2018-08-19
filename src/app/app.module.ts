@@ -6,10 +6,10 @@ import {ShiftCreateComponent} from './Shifts/shift-create/shift-create.component
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
   MatButtonModule,
-  MatCardModule,
+  MatCardModule, MatDatepickerModule,
   MatExpansionModule,
   MatInputModule,
-  MatMenuModule, MatProgressSpinnerModule, MatSelectModule,
+  MatMenuModule, MatNativeDateModule, MatProgressSpinnerModule, MatSelectModule,
   MatTableModule,
   MatToolbarModule
 } from '@angular/material';
@@ -51,6 +51,8 @@ import {RotaListComponent} from './rota/rota-list/rota-list.component';
     MatMenuModule,
     MatProgressSpinnerModule,
     MatSelectModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     ReactiveFormsModule,
     FormsModule,
     HttpClientModule

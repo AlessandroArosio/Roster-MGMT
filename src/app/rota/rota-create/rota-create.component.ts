@@ -32,6 +32,7 @@ export class RotaCreateComponent implements OnInit {
   totalEmployees = [];
   selectedValue: number;
   duplicate = false;
+  pickert;
   form: FormGroup;
   private mode = 'create';
   private rotaId: string;
@@ -53,7 +54,8 @@ export class RotaCreateComponent implements OnInit {
   ngOnInit() {
     this.form = new FormGroup({
       'branchName': new FormControl(null, {validators: [Validators.required]}),
-      'employeesNumber': new FormControl(null, {validators: [Validators.required]})
+      'employeesNumber': new FormControl(null, {validators: [Validators.required]}),
+      'datePicker' : new FormControl(null, {validators: [Validators.required]})
     });
     this.isLoading = true;
     this.shiftsService.getShifts();
@@ -116,14 +118,17 @@ export class RotaCreateComponent implements OnInit {
     });
   }
 
-  onSaveRota() {
-    if (this.form.invalid) {
+  onSaveRota(form: NgForm) {
+    if (form.invalid) {
       console.log('Form is invalid');
       console.log(this.form);
       return;
     } else {
       console.log('Form is valid');
       console.log(this.form);
+    }
+    if (this.mode === 'create') {
+      this.rotaService.addRota(form);
     }
   }
 
@@ -133,7 +138,8 @@ export class RotaCreateComponent implements OnInit {
     if (this.selectedValue > number) {
       this.form = new FormGroup({
         'branchName': new FormControl(null, {validators: [Validators.required]}),
-        'employeesNumber': new FormControl(null, {validators: [Validators.required]})
+        'employeesNumber': new FormControl(null, {validators: [Validators.required]}),
+        'datePicker' : new FormControl(null, {validators: [Validators.required]})
       });
       this.form.controls['employeesNumber'].setValue(number);
       for (let i = 0; i < this.selectedValue; i++) {
@@ -149,7 +155,8 @@ export class RotaCreateComponent implements OnInit {
     } else {
       this.form = new FormGroup({
         'branchName': new FormControl(null, {validators: [Validators.required]}),
-        'employeesNumber': new FormControl(null, {validators: [Validators.required]})
+        'employeesNumber': new FormControl(null, {validators: [Validators.required]}),
+        'datePicker' : new FormControl(null, {validators: [Validators.required]})
       });
       this.form.controls['employeesNumber'].setValue(number);
       for (let i = 0; i < this.selectedValue; i++) {

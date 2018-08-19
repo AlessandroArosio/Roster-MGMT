@@ -8,6 +8,7 @@ import {HttpClient} from '@angular/common/http';
 import {Subject, Subscription} from 'rxjs';
 import {UsersService} from '../users/users.service';
 import {BranchesService} from '../branches/branches.service';
+import {NgForm} from '@angular/forms';
 
 @Injectable({providedIn: 'root'})
 export class RotaService {
@@ -34,33 +35,20 @@ export class RotaService {
 
 
 
-  addRota(
-    branchName: string,
-    userFirstName: string,
-    userLastName: string,
-    shiftName: string,
-    monShift: string,
-    tueShift: string,
-    wedShift: string,
-    thuShift: string,
-    friShift: string,
-    satShift: string,
-    sunShift: string,
-    rotaStartDate: string,
-    rotaEndDate: string) {
+  addRota(form: NgForm) {
     const rota: Rota = {
       id: null,
-      branchName: branchName,
-      employeeName: userFirstName + ' ' + userLastName,
-      monShift: monShift,
-      tueShift: tueShift,
-      wedShift: wedShift,
-      thuShift: thuShift,
-      friShift: friShift,
-      satShift: satShift,
-      sunShift: sunShift,
-      rotaStartDate: rotaStartDate,
-      rotaEndDate: rotaEndDate
+      branchName: form.value.branchName,
+      employeeName: form.value.userFirstName + ' ' + form.value.userLastName,
+      monShift: form.value.monShift,
+      tueShift: form.value.tueShift,
+      wedShift: form.value.wedShift,
+      thuShift: form.value.thuShift,
+      friShift: form.value.friShift,
+      satShift: form.value.satShift,
+      sunShift: form.value.sunShift,
+      rotaStartDate: form.value.rotaStartDate,
+      rotaEndDate: form.value.rotaEndDate
     };
     this.http.post<any>('http://localhost:3000/api/rota', rota)
       .subscribe((responseData) => {
