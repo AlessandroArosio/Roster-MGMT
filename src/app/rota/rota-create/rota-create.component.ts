@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {RotaService} from '../rota.service';
 import {ActivatedRoute, ParamMap} from '@angular/router';
-import {FormControl, NgForm, Validators, ReactiveFormsModule, FormGroup, Form} from '@angular/forms';
+import {FormControl, NgForm, Validators, ReactiveFormsModule, FormGroup, Form, NgModel} from '@angular/forms';
 import {Shift} from '../../Shifts/shift.model';
 import {User} from '../../users/user.model';
 import {Branch} from '../../branches/branch.model';
@@ -87,14 +87,8 @@ export class RotaCreateComponent implements OnInit {
           this.rota = {
             id: rotaData._id,
             branchName: rotaData.branchName,
-            employeeName: rotaData.firstName + ' ' + rotaData.lastName,
-            monShift: rotaData.monShift,
-            tueShift: rotaData.tueShift,
-            wedShift: rotaData.wedShift,
-            thuShift: rotaData.thuShift,
-            friShift: rotaData.friShift,
-            satShift: rotaData.satShift,
-            sunShift: rotaData.sunShift,
+            employeeName: rotaData.employeeName,
+            shifts: rotaData.shifts,
             rotaStartDate: rotaData.rotaStartDate,
             rotaEndDate: rotaData.rotaEndDate
           };
@@ -102,13 +96,13 @@ export class RotaCreateComponent implements OnInit {
             {
               'branchName': this.rota.branchName,
               'employeeName': this.rota.employeeName,
-              'monShift': this.rota.monShift,
-              'tueShift': this.rota.tueShift,
-              'wedShift': this.rota.wedShift,
-              'thuShift': this.rota.thuShift,
-              'friShift': this.rota.friShift,
-              'satShift': this.rota.satShift,
-              'sunShift': this.rota.sunShift,
+              'monShift': this.rota.shifts[0],
+              'tueShift': this.rota.shifts[1],
+              'wedShift': this.rota.shifts[2],
+              'thuShift': this.rota.shifts[3],
+              'friShift': this.rota.shifts[4],
+              'satShift': this.rota.shifts[5],
+              'sunShift': this.rota.shifts[6],
             });
         });
       } else {
@@ -128,7 +122,53 @@ export class RotaCreateComponent implements OnInit {
       console.log(this.form);
     }
     if (this.mode === 'create') {
-      this.rotaService.addRota(form);
+
+      const date = new Date(form.value.datePicker);
+      const startRota = date.toDateString();
+
+      const date7 = new Date();
+      date7.setDate(date.getDate() + 6);
+      const endRota = date7.toDateString();
+
+      const masterArray = [];
+      let usersArray = [];
+      let shiftsArray = [];
+      let controllers = 0;
+
+      Object.keys(form.controls).forEach( key => {
+        if (key.includes('userName')) {
+            controllers++;
+          Object.values(form.value).forEach( res => {
+            masterArray.push(res);
+          });
+        }
+      });
+
+      masterArray.splice(0, 3);
+      for (let i = 0; i < controllers; i++) {
+        usersArray.push(masterArray[0]);
+        masterArray.splice(0, 1);
+        shiftsArray.push(
+          masterArray[0],
+          masterArray[1],
+          masterArray[2],
+          masterArray[3],
+          masterArray[4],
+          masterArray[5],
+          masterArray[6]
+          );
+        masterArray.splice(0, 7);
+      }
+
+      const rota = {
+        id: null,
+        branchName: form.value.branchName,
+        employeeArray: usersArray,
+        shifts: shiftsArray,
+        rotaStartDate: startRota,
+        rotaEndDate: endRota,
+      };
+      this.rotaService.addRota(rota);
     }
   }
 

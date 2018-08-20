@@ -35,28 +35,46 @@ export class RotaService {
 
 
 
-  addRota(form: NgForm) {
-    const rota: Rota = {
-      id: null,
-      branchName: form.value.branchName,
-      employeeName: form.value.userFirstName + ' ' + form.value.userLastName,
-      monShift: form.value.monShift,
-      tueShift: form.value.tueShift,
-      wedShift: form.value.wedShift,
-      thuShift: form.value.thuShift,
-      friShift: form.value.friShift,
-      satShift: form.value.satShift,
-      sunShift: form.value.sunShift,
-      rotaStartDate: form.value.rotaStartDate,
-      rotaEndDate: form.value.rotaEndDate
-    };
-    this.http.post<any>('http://localhost:3000/api/rota', rota)
+  addRota(rota) {
+    // const rota: Rota = {
+    //   id: null,
+    //   branchName: form.value.branchName,
+    //   employeeName: form.value.userName0,
+    //   monShift: form.value.monShift00,
+    //   tueShift: form.value.tueShift01,
+    //   wedShift: form.value.wedShift02,
+    //   thuShift: form.value.thuShift03,
+    //   friShift: form.value.friShift04,
+    //   satShift: form.value.satShift05,
+    //   sunShift: form.value.sunShift06,
+    //   rotaStartDate: form.value.rotaStartDate,
+    //   rotaEndDate: form.value.rotaEndDate
+    // };
+    this.http.post<any>('http://localhost:3000/api/rotas', rota)
       .subscribe((responseData) => {
         const id = responseData.rotaId;
         rota.id = id;
         this.rotas.push(rota);
         this.rotaUpdated.next([...this.rotas]);
       });
+  }
+
+  addRotaTest(rota: Rota) {
+    // const rota: Rota = {
+    //   id: null,
+    //   branchName: form.value.branchName,
+    //   employeeName: form.value.userName,
+    //   monShift: form.value.monShift00,
+    //   tueShift: form.value.tueShif01,
+    //   wedShift: form.value.wedShift,
+    //   thuShift: form.value.thuShift,
+    //   friShift: form.value.friShift,
+    //   satShift: form.value.satShift,
+    //   sunShift: form.value.sunShift,
+    //   rotaStartDate: form.value.rotaStartDate,
+    //   rotaEndDate: form.value.rotaEndDate
+    // };
+    console.log(rota);
   }
 
   getShiftUpdateListener() {

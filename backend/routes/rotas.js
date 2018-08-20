@@ -1,20 +1,21 @@
 const express = require('express');
 const Rota = require('../models/rota');
-const Shift = require('../models/shift');
 const router = express.Router();
 
-// this one receives a branch FROM Angular
+// this one receives a rota FROM Angular
 router.post('', (req, res, next) => {
+
   const rota = new Rota({
-    branchName: req.body.branchName,
-    userFirstName: req.body.userFirstName,
-    userLastName: req.body.userLastName,
-    shift: req.body.shift,
+    branchName: req.body.branchName.branchName,
+    employeeName: req.body.employeeArray,
+    shifts: req.body.shifts,
     rotaStartDate: req.body.rotaStartDate,
-    rotaEndDate: req.body.rotaEndDate
+    rotaEndDate: req.body.rotaEndDate,
   });
+
   rota.save().then(createdRota => {
     console.log(createdRota);
+    console.log("Rota has been stored in DB");
     res.status(201).json({
       message: "Rota added successfully",
       branchId: createdRota._id
