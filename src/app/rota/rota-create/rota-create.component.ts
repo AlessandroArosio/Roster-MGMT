@@ -170,6 +170,7 @@ export class RotaCreateComponent implements OnInit {
       };
       this.rotaService.addRota(rota);
     }
+    form.reset();
   }
 
   employeesPerBranch(number: number) {

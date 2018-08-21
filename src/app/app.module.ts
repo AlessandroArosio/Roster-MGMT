@@ -10,7 +10,7 @@ import {
   MatExpansionModule,
   MatInputModule,
   MatMenuModule, MatNativeDateModule, MatProgressSpinnerModule, MatSelectModule,
-  MatTableModule,
+  MatTableModule, MatTabsModule,
   MatToolbarModule
 } from '@angular/material';
 import {HeaderComponent} from './header/header.component';
@@ -53,6 +53,7 @@ import {RotaListComponent} from './rota/rota-list/rota-list.component';
     MatSelectModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatTabsModule,
     ReactiveFormsModule,
     FormsModule,
     HttpClientModule

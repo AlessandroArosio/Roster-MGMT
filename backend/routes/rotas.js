@@ -4,7 +4,6 @@ const router = express.Router();
 
 // this one receives a rota FROM Angular
 router.post('', (req, res, next) => {
-
   const rota = new Rota({
     branchName: req.body.branchName.branchName,
     employeeName: req.body.employeeArray,
@@ -12,7 +11,6 @@ router.post('', (req, res, next) => {
     rotaStartDate: req.body.rotaStartDate,
     rotaEndDate: req.body.rotaEndDate,
   });
-
   rota.save().then(createdRota => {
     console.log(createdRota);
     console.log("Rota has been stored in DB");
@@ -21,6 +19,17 @@ router.post('', (req, res, next) => {
       branchId: createdRota._id
     });
   });
+});
+
+// this one send the shifts TO Angular
+router.use('', (req, res, next) => {
+  Rota.find()
+    .then(documents => {
+      res.status(200).json({
+        message: "Rota fetch successfully",
+        rotas: documents
+      });
+    });
 });
 
 
