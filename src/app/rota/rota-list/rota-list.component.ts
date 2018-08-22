@@ -17,14 +17,9 @@ export class RotaListComponent implements OnInit, OnDestroy {
   headerArray = [];
   testArray = [];
   boh = [];
-  // boh: [{
-  //   branch: string,
-  //   weeklyRota: [{
-  //     startDate: string,
-  //     employeeName: string[],
-  //     shifts: string[]
-  //   }]
-  // }];
+  specialCounter = 0;
+  arrayOfShifts = [];
+  arrayOfUsers = [['mike', 'bob', 'ann'], ['john']];
   private rotasSub: Subscription;
   private usersSub: Subscription;
 
@@ -41,52 +36,39 @@ export class RotaListComponent implements OnInit, OnDestroy {
         this.rotas = rotas;
         let found = false;
         for (let i = 0; i < rotas.length; i++) {
-          for (let j = 0; j < this.testArray.length; j++) {
+          for (let j = 0; j < this.boh.length; j++) {
             if (rotas[i].branchName === rotas[j].branchName) {
-              this.testArray[j].manyRotasStart.push(rotas[i].rotaStartDate);
+              // generate an array of array containing 7 elements (shift) and store in line 46
               const obj = {
                 startDate: rotas[i].rotaStartDate + ' <---> ' + rotas[i].rotaEndDate,
-                employeeName: rotas[i].employeeName,
-                shifts: rotas[i].shifts
+                userRoster: [{
+                  employeeName: rotas[i].employeeName,
+                  shifts: [rotas[i].shifts]}],
               };
               this.boh[j].weeklyRota.push(obj);
 
-
-              this.testArray[j].manyRotasEnd.push(rotas[i].rotaEndDate);
-              rotas[i].employeeName.forEach((user) => {
-                this.testArray[j].employeeName.push(user);
-              });
-              rotas[i].shifts.forEach((shift) => {
-                this.testArray[j].shifts.push(shift);
-              });
               found = true;
             }
           }
           if (!found) {
+            // generate one array of array containing 7 elements (shift) each and store the variable in line 61
             this.headerArray.push(rotas[i].branchName);
             this.boh.push({
               branch: rotas[i].branchName,
               weeklyRota: [{
                 startDate: rotas[i].rotaStartDate + ' <---> ' + rotas[i].rotaEndDate,
-                employeeName: rotas[i].employeeName,
-                shifts: rotas[i].shifts
+                userRoster: [{
+                  employeeName: rotas[i].employeeName,
+                  shifts: [rotas[i].shifts]}]
               }]
-            });
-
-            this.testArray.push({
-              branch: rotas[i].branchName,
-              manyRotasStart: [rotas[i].rotaStartDate],
-              manyRotasEnd: [rotas[i].rotaEndDate],
-              shifts: rotas[i].shifts,
-              employeeName: rotas[i].employeeName
             });
             found = false;
           }
           found = false;
         }
-        console.log(this.testArray);
         console.log(rotas);
         console.log(this.boh);
+        console.log(this.boh[1].weeklyRota[0].userRoster[0].employeeName);
       });
     this.usersSub = this.usersService
       .getUserUpdateListener()
