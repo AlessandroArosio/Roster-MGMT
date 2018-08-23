@@ -15,11 +15,7 @@ export class RotaListComponent implements OnInit, OnDestroy {
   users: User[] = [];
   isLoading = false;
   headerArray = [];
-  testArray = [];
-  boh = [];
-  specialCounter = 0;
-  arrayOfShifts = [];
-  arrayOfUsers = [['mike', 'bob', 'ann'], ['john']];
+  rosters = [];
   private rotasSub: Subscription;
   private usersSub: Subscription;
 
@@ -36,39 +32,36 @@ export class RotaListComponent implements OnInit, OnDestroy {
         this.rotas = rotas;
         let found = false;
         for (let i = 0; i < rotas.length; i++) {
-          for (let j = 0; j < this.boh.length; j++) {
+          for (let j = 0; j < this.rosters.length; j++) {
             if (rotas[i].branchName === rotas[j].branchName) {
-              // generate an array of array containing 7 elements (shift) and store in line 46
+              const shifts = this.shiftsPerUser(rotas[i].shifts);
               const obj = {
                 startDate: rotas[i].rotaStartDate + ' <---> ' + rotas[i].rotaEndDate,
                 userRoster: [{
                   employeeName: rotas[i].employeeName,
-                  shifts: [rotas[i].shifts]}],
+                  shifts: [shifts]}],
               };
-              this.boh[j].weeklyRota.push(obj);
+              this.rosters[j].weeklyRota.push(obj);
 
               found = true;
             }
           }
           if (!found) {
-            // generate one array of array containing 7 elements (shift) each and store the variable in line 61
+            const shifts = this.shiftsPerUser(rotas[i].shifts);
             this.headerArray.push(rotas[i].branchName);
-            this.boh.push({
+            this.rosters.push({
               branch: rotas[i].branchName,
               weeklyRota: [{
                 startDate: rotas[i].rotaStartDate + ' <---> ' + rotas[i].rotaEndDate,
                 userRoster: [{
                   employeeName: rotas[i].employeeName,
-                  shifts: [rotas[i].shifts]}]
+                  shifts: [shifts]}]
               }]
             });
             found = false;
           }
           found = false;
         }
-        console.log(rotas);
-        console.log(this.boh);
-        console.log(this.boh[1].weeklyRota[0].userRoster[0].employeeName);
       });
     this.usersSub = this.usersService
       .getUserUpdateListener()
@@ -83,6 +76,15 @@ export class RotaListComponent implements OnInit, OnDestroy {
         return this.users[i].firstName + ' ' + this.users[i].lastName;
       }
     }
+  }
+
+  private shiftsPerUser(arr: string[]) {
+    const sevenShiftsPerUser = [];
+    for (let i = 0; i <= arr.length; i++) {
+      const tempArr = arr.splice(0, 7);
+      sevenShiftsPerUser.push(tempArr);
+    }
+    return sevenShiftsPerUser;
   }
 
 

@@ -2,7 +2,7 @@
 <mat-tab-group>
   <mat-tab *ngFor="let branchList of headerArray; let i = index" [label]="branchList">
     <mat-accordion multi="true">
-      <mat-expansion-panel *ngFor="let week of boh[i].weeklyRota; let j = index">
+      <mat-expansion-panel *ngFor="let week of rosters[i].weeklyRota; let j = index">
         <mat-expansion-panel-header>
           {{ week.startDate + ' <---> '}}
         </mat-expansion-panel-header>
@@ -17,9 +17,9 @@
             <th>Saturday</th>
             <th>Sunday</th>
           </tr>
-          <tr *ngFor="let user of boh[i].weeklyRota[j].userRoster[0].employeeName">
+          <tr *ngFor="let user of rosters[i].weeklyRota[j].userRoster[0].employeeName; let k = index">
             <td>{{ findUserName(user) }}</td>
-            <td *ngFor="let shift of week.shifts"> {{shift}}</td>
+            <td *ngFor="let shift of rosters[i].weeklyRota[j].userRoster[0].shifts[0][k]"> {{shift}}</td>
           </tr>
         </table>
         <button class="mat-button" color="primary" mat-button>EDIT</button>
