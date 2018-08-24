@@ -117,9 +117,6 @@ export class RotaCreateComponent implements OnInit {
       console.log('Form is invalid');
       console.log(this.form);
       return;
-    } else {
-      console.log('Form is valid');
-      console.log(this.form);
     }
     if (this.mode === 'create') {
 
@@ -143,7 +140,7 @@ export class RotaCreateComponent implements OnInit {
           });
         }
       });
-
+      // array containing form controller of each day
       masterArray.splice(0, 3);
       for (let i = 0; i < controllers; i++) {
         usersArray.push(masterArray[0]);

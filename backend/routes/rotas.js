@@ -16,9 +16,17 @@ router.post('', (req, res, next) => {
     console.log("Rota has been stored in DB");
     res.status(201).json({
       message: "Rota added successfully",
-      branchId: createdRota._id
+      rotaId: createdRota._id
     });
   });
+});
+
+// deleting a ROTA document from MongoDB
+router.delete('/:id', (req, res, next) => {
+  Rota.deleteOne({_id: req.params.id}).then(result => {
+    console.log(result);
+  });
+  res.status(200).json({message: "Rota deleted!"});
 });
 
 // this one send the shifts TO Angular

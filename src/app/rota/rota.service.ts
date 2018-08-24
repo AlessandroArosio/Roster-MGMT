@@ -1,36 +1,22 @@
-import {Injectable, OnInit} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Shift} from '../Shifts/shift.model';
-import {User} from '../users/user.model';
-import {Branch} from '../branches/branch.model';
 import {Rota} from './rota.model';
-import {ShiftsService} from '../Shifts/shifts.service';
 import {HttpClient} from '@angular/common/http';
-import {Subject, Subscription} from 'rxjs';
-import {UsersService} from '../users/users.service';
-import {BranchesService} from '../branches/branches.service';
+import {Subject} from 'rxjs';
 import {map} from 'rxjs/operators';
+import {RotaListComponent} from './rota-list/rota-list.component';
+
 
 @Injectable({providedIn: 'root'})
 export class RotaService {
 
   isLoading = false;
   private shifts: Shift[] = [];
-  private users: User[] = [];
-  private branches: Branch[] = [];
   private rotas: Rota[] = [];
-  private shiftsUpdated = new Subject<Shift[]>();
-  private usersUpdated = new Subject<User[]>();
-  private branchesUpdated = new Subject<Branch[]>();
   private rotasUpdated = new Subject<Rota[]>();
-  private shiftsSub: Subscription;
-  private usersSub: Subscription;
-  private branchesSub: Subscription;
 
   constructor(
     private http: HttpClient,
-    public shiftsService: ShiftsService,
-    public usersService: UsersService,
-    public branchesService: BranchesService
   ) {}
 
 
@@ -43,18 +29,6 @@ export class RotaService {
         this.rotas.push(rota);
         this.rotasUpdated.next([...this.rotas]);
       });
-  }
-
-  getShiftUpdateListener() {
-    return this.shiftsUpdated.asObservable();
-  }
-
-  getUserUpdateListener() {
-    return this.usersUpdated.asObservable();
-  }
-
-  getBranchUpdateListener() {
-    return this.branchesUpdated.asObservable();
   }
 
   getRotaUpdateListener() {
@@ -71,7 +45,8 @@ export class RotaService {
             employeeName: rotas.employeeName,
             shifts: rotas.shifts,
             rotaStartDate: rotas.rotaStartDate,
-            rotaEndDate: rotas.rotaEndDate
+            rotaEndDate: rotas.rotaEndDate,
+            id: rotas._id
           };
         });
       }))
@@ -84,4 +59,16 @@ export class RotaService {
   getRota(id: string) {
     return this.http.get<any>('http://localhost:3000/api/rotas/' + id);
   }
+
+  deleteRota(rotaId: string) {
+    this.http.delete('http://localhost:3000/api/rotas/' + rotaId)
+      .subscribe(() => {
+        const updatedRotas = this.rotas.filter(rota => rota.id !== rotaId);
+        this.rotas = updatedRotas;
+        console.log(updatedRotas);
+        this.rotasUpdated.next([...this.rotas]);
+      });
+  }
+
+  // create a method to normalise the array to be sent as observable (at line 67)
 }
