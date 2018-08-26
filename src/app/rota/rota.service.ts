@@ -4,7 +4,6 @@ import {Rota} from './rota.model';
 import {HttpClient} from '@angular/common/http';
 import {Subject} from 'rxjs';
 import {map} from 'rxjs/operators';
-import {RotaListComponent} from './rota-list/rota-list.component';
 
 
 @Injectable({providedIn: 'root'})
@@ -14,6 +13,7 @@ export class RotaService {
   private shifts: Shift[] = [];
   private rotas: Rota[] = [];
   private rotasUpdated = new Subject<Rota[]>();
+  private rosters = [];
 
   constructor(
     private http: HttpClient,
@@ -65,10 +65,52 @@ export class RotaService {
       .subscribe(() => {
         const updatedRotas = this.rotas.filter(rota => rota.id !== rotaId);
         this.rotas = updatedRotas;
-        console.log(updatedRotas);
         this.rotasUpdated.next([...this.rotas]);
       });
   }
 
   // create a method to normalise the array to be sent as observable (at line 67)
+  private normaliseArray(rotas) {
+    let found = false;
+    for (let i = 0; i < rotas.length; i++) {
+      for (let j = 0; j < this.rosters.length; j++) {
+        if (rotas[i].branchName === rotas[j].branchName) {
+          const shifts = this.shiftsPerUser(rotas[i].shifts);
+          const obj = {
+            startDate: rotas[i].rotaStartDate + ' <---> ' + rotas[i].rotaEndDate,
+            id: rotas[i].id,
+            userRoster: [{
+              employeeName: rotas[i].employeeName,
+              shifts: [shifts]}],
+          };
+          this.rosters[j].weeklyRota.push(obj);
+          found = true;
+        }
+      }
+      if (!found) {
+        const shifts = this.shiftsPerUser(rotas[i].shifts);
+        this.rosters.push({
+          branch: rotas[i].branchName,
+          id: rotas[i].id,
+          weeklyRota: [{
+            startDate: rotas[i].rotaStartDate + ' <---> ' + rotas[i].rotaEndDate,
+            userRoster: [{
+              employeeName: rotas[i].employeeName,
+              shifts: [shifts]}]
+          }]
+        });
+        found = false;
+      }
+      found = false;
+    }
+  }
+
+  private shiftsPerUser(arr: string[]) {
+    const sevenShiftsPerUser = [];
+    for (let i = 0; i <= arr.length; i++) {
+      const tempArr = arr.splice(0, 7);
+      sevenShiftsPerUser.push(tempArr);
+    }
+    return sevenShiftsPerUser;
+  }
 }

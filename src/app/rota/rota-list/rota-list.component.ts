@@ -18,6 +18,7 @@ export class RotaListComponent implements OnInit, OnDestroy {
   public rosters = [];
   private rotasSub: Subscription;
   private usersSub: Subscription;
+  private rotaDeleted = false;
 
   constructor(public rotaService: RotaService, public usersService: UsersService) {}
 
@@ -29,41 +30,11 @@ export class RotaListComponent implements OnInit, OnDestroy {
       .getRotaUpdateListener()
       .subscribe((rotas: Rota[]) => {
         this.isLoading = false;
+        // the below gets updated onDelete
         this.rotas = rotas;
-        let found = false;
-        for (let i = 0; i < rotas.length; i++) {
-          for (let j = 0; j < this.rosters.length; j++) {
-            if (rotas[i].branchName === rotas[j].branchName) {
-              const shifts = this.shiftsPerUser(rotas[i].shifts);
-              const obj = {
-                startDate: rotas[i].rotaStartDate + ' <---> ' + rotas[i].rotaEndDate,
-                id: rotas[i].id,
-                userRoster: [{
-                  employeeName: rotas[i].employeeName,
-                  shifts: [shifts]}],
-              };
-              this.rosters[j].weeklyRota.push(obj);
-              found = true;
-            }
-          }
-          if (!found) {
-            const shifts = this.shiftsPerUser(rotas[i].shifts);
-            this.headerArray.push(rotas[i].branchName);
-            this.rosters.push({
-              branch: rotas[i].branchName,
-              id: rotas[i].id,
-              weeklyRota: [{
-                startDate: rotas[i].rotaStartDate + ' <---> ' + rotas[i].rotaEndDate,
-                userRoster: [{
-                  employeeName: rotas[i].employeeName,
-                  shifts: [shifts]}]
-              }]
-            });
-            found = false;
-          }
-          found = false;
-        }
-          console.log(this.rosters);
+        this.normaliseArray(rotas);
+        console.log(this.rotas);
+        console.log(this.rosters);
       });
     this.usersSub = this.usersService
       .getUserUpdateListener()
@@ -82,8 +53,9 @@ export class RotaListComponent implements OnInit, OnDestroy {
 
   private shiftsPerUser(arr: string[]) {
     const sevenShiftsPerUser = [];
-    for (let i = 0; i <= arr.length; i++) {
-      const tempArr = arr.splice(0, 7);
+    const rotasCopy = arr.slice(0);
+    for (let i = 0; i <= rotasCopy.length; i++) {
+      const tempArr = rotasCopy.splice(0, 7);
       sevenShiftsPerUser.push(tempArr);
     }
     return sevenShiftsPerUser;
@@ -91,10 +63,50 @@ export class RotaListComponent implements OnInit, OnDestroy {
 
   onDelete(rotaId: string) {
     this.rotaService.deleteRota(rotaId);
+    this.rotaDeleted = true;
+  }
+
+  private normaliseArray(rotas) {
+    let found = false;
+    for (let i = 0; i < rotas.length; i++) {
+      for (let j = 0; j < this.rosters.length; j++) {
+        if (rotas[i].branchName === rotas[j].branchName) {
+          console.log(this.rotas.filter(rota => rota.id !== this.rotas[i].id));
+          // if (rotas[i].id !== this.rosters[i].weeklyRota[j].id) {console.log('equal'); }
+          const shifts = this.shiftsPerUser(rotas[i].shifts);
+          const obj = {
+            startDate: rotas[i].rotaStartDate + ' <---> ' + rotas[i].rotaEndDate,
+            id: rotas[i].id,
+            userRoster: [{
+              employeeName: rotas[i].employeeName,
+              shifts: [shifts]}],
+          };
+          this.rosters[j].weeklyRota.push(obj);
+          found = true;
+        }
+      }
+      if (!found) {
+        const shifts = this.shiftsPerUser(rotas[i].shifts);
+        this.headerArray.push(rotas[i].branchName);
+        this.rosters.push({
+          branch: rotas[i].branchName,
+          id: rotas[i].id,
+          weeklyRota: [{
+            startDate: rotas[i].rotaStartDate + ' <---> ' + rotas[i].rotaEndDate,
+            userRoster: [{
+              employeeName: rotas[i].employeeName,
+              shifts: [shifts]}]
+          }]
+        });
+        found = false;
+      }
+      found = false;
+    }
   }
 
   ngOnDestroy() {
     this.rotasSub.unsubscribe();
+    this.usersSub.unsubscribe();
   }
 
 }
