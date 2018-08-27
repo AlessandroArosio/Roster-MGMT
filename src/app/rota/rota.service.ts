@@ -83,13 +83,9 @@ export class RotaService {
 // create a method to normalise the array to be sent as observable (at line 67)
   private normaliseArray(rotas) {
     let found = false;
-    console.log(rotas);
     for (let i = 0; i < rotas.length; i++) {
-      console.log(this.rosters.length);
       for (let j = 0; j < this.rosters.length; j++) {
-        console.log('Checking rotas[' + (i - 1) + ']' + ' and rotas[' + j + ']');
-        if (rotas[i].branchName === rotas[j].branchName) {
-          console.log('Found duplicated branch name at rotas[' + i + ']' + ' and rotas[' + j + ']');
+        if (rotas[i].branchName === this.rosters[j].branch) {
           const shifts = this.shiftsPerUser(rotas[i].shifts);
           const obj = {
             startDate: rotas[i].rotaStartDate + ' <---> ' + rotas[i].rotaEndDate,
@@ -103,7 +99,6 @@ export class RotaService {
         }
       }
       if (!found) {
-        console.log('Activated at rotas[' + i + ']');
         const shifts = this.shiftsPerUser(rotas[i].shifts);
         this.rosters.push({
           branch: rotas[i].branchName,

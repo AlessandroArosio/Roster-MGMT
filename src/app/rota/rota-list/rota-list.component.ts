@@ -28,9 +28,7 @@ export class RotaListComponent implements OnInit, OnDestroy {
       .getRotaUpdateListener()
       .subscribe((rotas) => {
         this.isLoading = false;
-        console.log(rotas);
         this.rotas = this.rotaService.getRosters();
-        console.log(this.rotas);
       });
     this.usersSub = this.usersService
       .getUserUpdateListener()
