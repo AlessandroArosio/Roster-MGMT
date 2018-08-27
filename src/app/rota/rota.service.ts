@@ -15,9 +15,7 @@ export class RotaService {
   private rotasUpdated = new Subject<Rota[]>();
   private rosters = [];
 
-  constructor(
-    private http: HttpClient,
-  ) {}
+  constructor(private http: HttpClient) {}
 
 
 
@@ -52,7 +50,9 @@ export class RotaService {
       }))
       .subscribe((transformedRota) => {
         this.rotas = transformedRota;
-        this.rotasUpdated.next([...this.rotas]);
+        this.rosters = [];
+        this.normaliseArray(this.rotas);
+        this.rotasUpdated.next([...this.rosters]);
       });
   }
 
@@ -63,18 +63,33 @@ export class RotaService {
   deleteRota(rotaId: string) {
     this.http.delete('http://localhost:3000/api/rotas/' + rotaId)
       .subscribe(() => {
+          for (let i = 0; i < this.rosters.length; i++) {
+            for (let j = 0; j < this.rosters[i].weeklyRota.length; j++) {
+              if (this.rosters[i].weeklyRota[j].id === rotaId) {
+                this.rosters[i].weeklyRota.splice(j, 1);
+              }
+            }
+          }
         const updatedRotas = this.rotas.filter(rota => rota.id !== rotaId);
         this.rotas = updatedRotas;
         this.rotasUpdated.next([...this.rotas]);
       });
   }
 
-  // create a method to normalise the array to be sent as observable (at line 67)
+  getRosters() {
+    return this.rosters;
+  }
+
+// create a method to normalise the array to be sent as observable (at line 67)
   private normaliseArray(rotas) {
     let found = false;
+    console.log(rotas);
     for (let i = 0; i < rotas.length; i++) {
+      console.log(this.rosters.length);
       for (let j = 0; j < this.rosters.length; j++) {
+        console.log('Checking rotas[' + (i - 1) + ']' + ' and rotas[' + j + ']');
         if (rotas[i].branchName === rotas[j].branchName) {
+          console.log('Found duplicated branch name at rotas[' + i + ']' + ' and rotas[' + j + ']');
           const shifts = this.shiftsPerUser(rotas[i].shifts);
           const obj = {
             startDate: rotas[i].rotaStartDate + ' <---> ' + rotas[i].rotaEndDate,
@@ -88,11 +103,12 @@ export class RotaService {
         }
       }
       if (!found) {
+        console.log('Activated at rotas[' + i + ']');
         const shifts = this.shiftsPerUser(rotas[i].shifts);
         this.rosters.push({
           branch: rotas[i].branchName,
-          id: rotas[i].id,
           weeklyRota: [{
+            id: rotas[i].id,
             startDate: rotas[i].rotaStartDate + ' <---> ' + rotas[i].rotaEndDate,
             userRoster: [{
               employeeName: rotas[i].employeeName,

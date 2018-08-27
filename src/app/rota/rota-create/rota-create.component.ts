@@ -32,7 +32,6 @@ export class RotaCreateComponent implements OnInit {
   totalEmployees = [];
   selectedValue: number;
   duplicate = false;
-  pickert;
   form: FormGroup;
   private mode = 'create';
   private rotaId: string;
