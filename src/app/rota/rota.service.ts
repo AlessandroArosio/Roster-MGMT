@@ -76,6 +76,11 @@ export class RotaService {
       });
   }
 
+  updateRota() {
+    const rota = [];
+
+  }
+
   getRosters() {
     return this.rosters;
   }

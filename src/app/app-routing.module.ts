@@ -20,8 +20,9 @@ const routes: Routes = [
   { path: 'branch-list', component: BranchListComponent },
   { path: 'branch-create', component: BranchCreateComponent },
   { path: 'branch-edit/:branchId', component: BranchCreateComponent },
+  { path: 'rota-list', component: RotaListComponent },
   { path: 'rota-create', component: RotaCreateComponent },
-  { path: 'rota-list', component: RotaListComponent }
+  { path: 'rota-edit/:rotaId', component: RotaCreateComponent },
 ];
 
 @NgModule({

@@ -29,6 +29,35 @@ router.delete('/:id', (req, res, next) => {
   res.status(200).json({message: "Rota deleted!"});
 });
 
+// EDIT a rota
+router.put('/:id', (req, res, next) => {
+  const rota = new Rota({
+    _id: req.body.id,
+    branchName: req.body.branchName.branchName,
+    employeeName: req.body.employeeArray,
+    shifts: req.body.shifts,
+    rotaStartDate: req.body.rotaStartDate,
+    rotaEndDate: req.body.rotaEndDate,
+  });
+  Rota.updateOne({_id: req.params.id}, rota).then(result => {
+    console.log(result);
+    res.status(200).json({message: "Rota update successful"});
+  });
+});
+
+// GET one single shift from the DB
+router.get('/:id', (req, res, next) => {
+  Rota.findById(req.params.id).then(rota => {
+    if (rota) {
+      res.status(200).json(rota);
+      console.log(rota);
+    } else {
+      res.status(400).json({message: 'Rota not found'});
+      console.log('rota not found');
+    }
+  });
+});
+
 // this one send the shifts TO Angular
 router.use('', (req, res, next) => {
   Rota.find()

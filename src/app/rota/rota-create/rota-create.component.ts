@@ -1,12 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {RotaService} from '../rota.service';
 import {ActivatedRoute, ParamMap} from '@angular/router';
-import {FormControl, NgForm, Validators, ReactiveFormsModule, FormGroup, Form, NgModel} from '@angular/forms';
+import {FormControl, NgForm, Validators, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {Shift} from '../../Shifts/shift.model';
 import {User} from '../../users/user.model';
 import {Branch} from '../../branches/branch.model';
 import {Rota} from '../rota.model';
-import {Subject, Subscription} from 'rxjs';
+import {Subscription} from 'rxjs';
 import {ShiftsService} from '../../Shifts/shifts.service';
 import {UsersService} from '../../users/users.service';
 import {BranchesService} from '../../branches/branches.service';
@@ -33,12 +33,9 @@ export class RotaCreateComponent implements OnInit {
   selectedValue: number;
   duplicate = false;
   form: FormGroup;
+  disableSelect = false;
   private mode = 'create';
   private rotaId: string;
-  private shiftsUpdated = new Subject<Shift[]>();
-  private usersUpdated = new Subject<User[]>();
-  private branchesUpdated = new Subject<Branch[]>();
-  private rotaUpdated = new Subject<Rota[]>();
   private shiftsSub: Subscription;
   private usersSub: Subscription;
   private branchesSub: Subscription;
@@ -91,24 +88,36 @@ export class RotaCreateComponent implements OnInit {
             rotaStartDate: rotaData.rotaStartDate,
             rotaEndDate: rotaData.rotaEndDate
           };
-          this.form.setValue(
-            {
-              'branchName': this.rota.branchName,
-              'employeeName': this.rota.employeeName,
-              'monShift': this.rota.shifts[0],
-              'tueShift': this.rota.shifts[1],
-              'wedShift': this.rota.shifts[2],
-              'thuShift': this.rota.shifts[3],
-              'friShift': this.rota.shifts[4],
-              'satShift': this.rota.shifts[5],
-              'sunShift': this.rota.shifts[6],
-            });
+          console.log(this.rota);
+          const dateInMilliseconds = new Date(Date.parse(this.rota.rotaStartDate));
+          this.generateFormControls(this.rota.employeeName.length);
+          this.selectedValue = this.rota.employeeName.length;
+          this.disableSelect = true;
+          const indexOfBranch = this.findBranch(this.rota.branchName);
+          this.form.controls['branchName'].setValue(this.branches[indexOfBranch]);
+          this.form.controls['userName0'].setValue(this.rota.employeeName[0]);
+          this.form.controls['datePicker'].setValue(dateInMilliseconds.toISOString());
+          this.form.controls['monShift00'].setValue(this.rota.shifts[0]);
+          this.form.controls['tueShift01'].setValue(this.rota.shifts[1]);
+          this.form.controls['wedShift02'].setValue(this.rota.shifts[2]);
+          this.form.controls['thuShift03'].setValue(this.rota.shifts[3]);
+          this.form.controls['friShift04'].setValue(this.rota.shifts[4]);
+          this.form.controls['satShift05'].setValue(this.rota.shifts[5]);
+          this.form.controls['sunShift06'].setValue(this.rota.shifts[6]);
         });
       } else {
         this.mode = 'create';
         this.rotaId = null;
       }
     });
+  }
+
+  private findBranch(branch: string) {
+    for (let i = 0; i < this.branches.length; i++) {
+      if (this.branches[i].branchName === branch) {
+        return i;
+      }
+    }
   }
 
   onSaveRota(form: NgForm) {
@@ -118,14 +127,11 @@ export class RotaCreateComponent implements OnInit {
       return;
     }
     if (this.mode === 'create') {
-
       const date = new Date(form.value.datePicker);
       const startRota = date.toDateString();
-
       const date7 = new Date();
       date7.setDate(date.getDate() + 6);
       const endRota = date7.toDateString();
-
       const masterArray = [];
       let usersArray = [];
       let shiftsArray = [];
@@ -207,6 +213,26 @@ export class RotaCreateComponent implements OnInit {
         }
       }
     }
+  }
+
+  generateFormControls(number: number) {
+    // if (this.selectedValue > number) {
+      this.form = new FormGroup({
+        'branchName': new FormControl(null, {validators: [Validators.required]}),
+        'employeesNumber': new FormControl(null, {validators: [Validators.required]}),
+        'datePicker' : new FormControl(null, {validators: [Validators.required]}),
+      });
+      this.form.controls['employeesNumber'].setValue(number);
+      for (let i = 0; i < number; i++) {
+        this.totalEmployees.push(i);
+        const controlName = 'userName' + i;
+        this.form.addControl(controlName, new FormControl(null, Validators.required));
+        for (let y = 0; y < this.day; y++) {
+          const weekDays = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
+          const controlShift = weekDays[y] + 'Shift' + i + y;
+          this.form.addControl(controlShift, new FormControl(null, Validators.required));
+        }
+      }
   }
 
   // Check if there are in userName (controlForm) any duplicates users.ID and prevent the submit

@@ -6,9 +6,9 @@
 <mat-card>
   <form [formGroup]="form" (submit)="onSaveRota(form)">
     <mat-form-field>
-      <mat-select placeholder="No. of employees" formControlName="employeesNumber" [(value)]="selectedValue" required>
+      <mat-select placeholder="No. of employees" formControlName="employeesNumber" [(value)]="selectedValue" [disabled]="disableSelect" required>
         <mat-option>--</mat-option>
-        <mat-option *ngFor="let number of employees" [value]="number" (click)="employeesPerBranch(number)" >
+        <mat-option *ngFor="let number of employees" [value]="number" (click)="employeesPerBranch(number)">
           {{number}}
         </mat-option>
       </mat-select>
