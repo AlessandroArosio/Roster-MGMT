@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {RotaService} from '../rota.service';
 import {ActivatedRoute, ParamMap} from '@angular/router';
-import {FormControl, NgForm, Validators, FormGroup, ReactiveFormsModule} from '@angular/forms';
+import {FormControl, NgForm, Validators, FormGroup} from '@angular/forms';
 import {Shift} from '../../Shifts/shift.model';
 import {User} from '../../users/user.model';
 import {Branch} from '../../branches/branch.model';
@@ -34,6 +34,7 @@ export class RotaCreateComponent implements OnInit {
   duplicate = false;
   form: FormGroup;
   disableSelect = false;
+  message: string;
   private mode = 'create';
   private rotaId: string;
   private shiftsSub: Subscription;
@@ -134,7 +135,7 @@ export class RotaCreateComponent implements OnInit {
         rotaEndDate: endRota,
       };
       this.rotaService.addRota(rota);
-      // add a confirmation message
+      this.message = 'A new rota has been added';
     } else {
       date = new Date(form.value.datePicker);
       startRota = date.toDateString();
@@ -154,6 +155,7 @@ export class RotaCreateComponent implements OnInit {
         rotaEndDate: endRota,
       };
       this.rotaService.updateRota(rota);
+      this.message = 'The existing rota has been modified!';
     }
     form.reset();
   }
@@ -234,6 +236,12 @@ export class RotaCreateComponent implements OnInit {
       }
     }
     this.duplicate = false;
+  }
+
+  myFilter = (d: Date): boolean => {
+    const day = d.getDay();
+    // Allow only Mondays to be selected
+    return day === 1;
   }
 
   private populateRota(number: number) {

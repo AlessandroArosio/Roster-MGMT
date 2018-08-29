@@ -13,3 +13,9 @@
   color: red;
   font-size: large;
 }
+
+#confirmation {
+  text-align: center;
+  font-weight: bold;
+  color: darkgreen;
+}

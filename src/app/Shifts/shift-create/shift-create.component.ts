@@ -11,9 +11,6 @@ import {Shift} from '../shift.model';
   styleUrls: ['./shift-create.component.css']
 })
 export class ShiftCreateComponent implements OnInit {
-  enteredShift = '';
-  enteredStart = '';
-  enteredEnd = '';
   shift: Shift;
   isLoading = false;
   message: string;

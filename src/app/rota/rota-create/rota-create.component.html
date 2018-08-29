@@ -23,7 +23,7 @@
       <mat-error *ngIf="form.get('branchName')">Please choose a branch</mat-error>
     </mat-form-field>
     <mat-form-field>
-      <input matInput [matDatepicker]="picker" placeholder="Choose a date" formControlName="datePicker">
+      <input matInput [matDatepicker]="picker" [matDatepickerFilter]="myFilter" placeholder="Choose a date" formControlName="datePicker">
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
       <mat-error *ngIf="form.get('datePicker').invalid">Please select a date</mat-error>
@@ -57,3 +57,4 @@
     <p *ngIf="duplicate" id="duplicateError">Duplicate entry found.The employees must be unique</p>
   </form>
 </mat-card>
+<p id="confirmation">{{ message }}</p>
