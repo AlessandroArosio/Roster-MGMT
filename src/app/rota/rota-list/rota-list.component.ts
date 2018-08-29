@@ -29,7 +29,6 @@ export class RotaListComponent implements OnInit, OnDestroy {
       .subscribe((rotas) => {
         this.isLoading = false;
         this.rotas = this.rotaService.getRosters();
-        this.calculateDays();
       });
     this.usersSub = this.usersService
       .getUserUpdateListener()
@@ -44,10 +43,6 @@ export class RotaListComponent implements OnInit, OnDestroy {
         return this.users[i].firstName + ' ' + this.users[i].lastName;
       }
     }
-  }
-
-  calculateDays() {
-    console.log(this.rotas);
   }
 
   onDelete(rotaId: string) {
