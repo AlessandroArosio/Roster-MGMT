@@ -76,9 +76,16 @@ export class RotaService {
       });
   }
 
-  updateRota() {
-    const rota = [];
-
+  updateRota(arr) {
+    const rota = arr;
+    this.http.put('http://localhost:3000/api/rotas/' + arr.id, rota)
+      .subscribe(response => {
+        const updatedRotas = [...this.rotas];
+        const oldRotaIndex = updatedRotas.findIndex(p => p.id === rota.id);
+        updatedRotas[oldRotaIndex] = rota;
+        this.rotas = updatedRotas;
+        this.rotasUpdated.next([...this.rotas]);
+      });
   }
 
   getRosters() {
