@@ -251,7 +251,7 @@ export class RotaCreateComponent implements OnInit {
       this.form.controls[userName].setValue(this.rota.employeeName[i]);
       for (let j = 0; j < this.day; j++) {
         const weekDays = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
-        const controlShift = weekDays[j] + 'Shift' + i + j;;
+        const controlShift = weekDays[j] + 'Shift' + i + j;
         this.form.controls[controlShift].setValue(copyShifts[j]);
       }
       copyShifts.splice(0, 7);
