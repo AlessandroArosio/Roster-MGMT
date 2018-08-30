@@ -3,6 +3,7 @@ import {RotaService} from '../rota.service';
 import {Subscription} from 'rxjs';
 import {User} from '../../users/user.model';
 import {UsersService} from '../../users/users.service';
+import {FormControl} from '@angular/forms';
 
 @Component({
   selector: 'app-rota-list',
@@ -13,7 +14,8 @@ export class RotaListComponent implements OnInit, OnDestroy {
   rotas = [];
   users: User[] = [];
   isLoading = false;
-  daysOfWeek = [];
+  date = new FormControl();
+  endDate = new FormControl();
   private rotasSub: Subscription;
   private usersSub: Subscription;
   private rotaDeleted = false;
@@ -43,6 +45,17 @@ export class RotaListComponent implements OnInit, OnDestroy {
         return this.users[i].firstName + ' ' + this.users[i].lastName;
       }
     }
+  }
+
+  mondayFilter = (d: Date): boolean => {
+    const day = d.getDay();
+    // Prevent all days but Mondays from being selected.
+    return day === 1;
+  }
+
+  dateRange(start: string, end: string) {
+    console.log(start);
+    console.log(end);
   }
 
   onDelete(rotaId: string) {

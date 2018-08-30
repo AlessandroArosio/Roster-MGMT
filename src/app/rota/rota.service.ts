@@ -56,6 +56,30 @@ export class RotaService {
       });
   }
 
+  getFilteredRotas(startDate: string, endDate: string) {
+    const queryParams = `?start=${startDate}&end=${endDate}`;
+    this.http
+      .get<{message: string, rotas: any}>('http://localhost:3000/api/rotas' + queryParams)
+      .pipe(map((rotaData) => {
+        return rotaData.rotas.map(rotas => {
+          return {
+            branchName: rotas.branchName,
+            employeeName: rotas.employeeName,
+            shifts: rotas.shifts,
+            rotaStartDate: rotas.rotaStartDate,
+            rotaEndDate: rotas.rotaEndDate,
+            id: rotas._id
+          };
+        });
+      }))
+      .subscribe((transformedRota) => {
+        this.rotas = transformedRota;
+        this.rosters = [];
+        this.normaliseArray(this.rotas);
+        this.rotasUpdated.next([...this.rosters]);
+      });
+  }
+
   getRota(id: string) {
     return this.http.get<any>('http://localhost:3000/api/rotas/' + id);
   }
@@ -75,6 +99,8 @@ export class RotaService {
         this.rotasUpdated.next([...this.rotas]);
       });
   }
+
+
 
   updateRota(arr) {
     const rota = arr;

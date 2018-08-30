@@ -1,4 +1,30 @@
 <h1>Rotas view page</h1>
+<p>View rotas from: <span>
+<mat-form-field class="example-full-width" color="accent">
+  <input
+    matInput
+    [matDatepickerFilter]="mondayFilter"
+    [matDatepicker]="picker"
+    placeholder="Choose a date"
+    [formControl]="date">
+  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+  <mat-datepicker #picker></mat-datepicker>
+</mat-form-field>
+   To:
+<mat-form-field class="example-full-width" color="accent">
+  <input
+    matInput
+    [matDatepickerFilter]="mondayFilter"
+    [matDatepicker]="picker2"
+    placeholder="Choose a date"
+    [formControl]="endDate"
+    [min]="date.value">
+  <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+  <mat-datepicker #picker2></mat-datepicker>
+</mat-form-field>
+</span>
+<button id="filter" color="primary" mat-button (click)="dateRange(date.value, endDate.value)">Apply filter</button>
+</p>
 <mat-tab-group>
   <mat-tab *ngFor="let branchList of rotas; let i = index" [label]="branchList.branch">
     <mat-accordion multi="true">
