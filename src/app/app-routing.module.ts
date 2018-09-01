@@ -8,6 +8,7 @@ import {BranchListComponent} from './branches/branches-list/branch-list.componen
 import {BranchCreateComponent} from './branches/branches-create/branch-create.component';
 import {RotaCreateComponent} from './rota/rota-create/rota-create.component';
 import {RotaListComponent} from './rota/rota-list/rota-list.component';
+import {LoginComponent} from './auth/login/login.component';
 
 const routes: Routes = [
   { path: '', component: ShiftListComponent },   // to be changed to shift-list and replace '' for login screen
@@ -23,6 +24,7 @@ const routes: Routes = [
   { path: 'rota-list', component: RotaListComponent },
   { path: 'rota-create', component: RotaCreateComponent },
   { path: 'rota-edit/:rotaId', component: RotaCreateComponent },
+  { path: 'login', component: LoginComponent }
 ];
 
 @NgModule({

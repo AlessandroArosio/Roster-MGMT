@@ -3,6 +3,9 @@
   <span class="spacer"></span>
   <ul>
     <li>
+      <a mat-button routerLink="/login" routerLinkActive="mat-accent">Login</a>
+    </li>
+    <li>
       <button mat-button [matMenuTriggerFor]="rota">Rota</button>
       <mat-menu #rota="matMenu">
         <button mat-menu-item routerLink="rota-create">Create rosters</button>
