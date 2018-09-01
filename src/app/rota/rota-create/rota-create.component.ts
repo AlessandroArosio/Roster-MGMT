@@ -108,8 +108,6 @@ export class RotaCreateComponent implements OnInit {
 
   onSaveRota(form: NgForm) {
     if (form.invalid) {
-      console.log('Form is invalid');
-      console.log(this.form);
       return;
     }
     let rota;

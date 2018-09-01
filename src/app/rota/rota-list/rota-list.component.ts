@@ -53,9 +53,22 @@ export class RotaListComponent implements OnInit, OnDestroy {
     return day === 1;
   }
 
-  dateRange(start: string, end: string) {
-    console.log(start);
-    console.log(end);
+  sundayFilter = (d: Date): boolean => {
+    const day = d.getDay();
+    // Prevent all days but Mondays from being selected.
+    return day === 0;
+  }
+
+  dateRange(start: Date, end: Date) {
+    if (start > end) {
+      console.log('start date is greater than end date');
+      return;
+    }
+    if (start === null || end === null) {
+      location.reload();
+      return;
+    }
+    this.rotaService.getFilteredRotas(start.getTime(), end.getTime());
   }
 
   onDelete(rotaId: string) {

@@ -60,8 +60,18 @@ router.get('/:id', (req, res, next) => {
 
 // this one send the shifts TO Angular
 router.use('', (req, res, next) => {
-  Rota.find()
-    .then(documents => {
+  const startdate = +req.query.start;
+  const enddate = +req.query.end;
+  const dateStart = new Date(startdate).toDateString();
+  const dateEnd = new Date(enddate).toDateString();
+  // console.log(dateEnd);
+  // console.log(new Date(enddate - 86400000).toDateString());
+  const rotaQuery = Rota.find();
+  if (startdate && enddate) {
+    rotaQuery.where({rotaStartDate: dateStart} || {rotaEndDate: dateEnd})
+  }
+  rotaQuery.then(documents => {
+    console.log(documents);
       res.status(200).json({
         message: "Rota fetch successfully",
         rotas: documents

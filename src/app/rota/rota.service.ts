@@ -56,7 +56,7 @@ export class RotaService {
       });
   }
 
-  getFilteredRotas(startDate: string, endDate: string) {
+  getFilteredRotas(startDate: number, endDate: number) {
     const queryParams = `?start=${startDate}&end=${endDate}`;
     this.http
       .get<{message: string, rotas: any}>('http://localhost:3000/api/rotas' + queryParams)
