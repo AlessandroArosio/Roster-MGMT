@@ -62,24 +62,35 @@ router.get('/:id', (req, res, next) => {
 router.use('', (req, res, next) => {
   const startdate = +req.query.start;
   const enddate = +req.query.end;
-  const dateStart = new Date(startdate).toDateString();
-  const dateEnd = new Date(enddate).toDateString();
-  // console.log(dateEnd);
-  // console.log(new Date(enddate - 86400000).toDateString());
   const rotaQuery = Rota.find();
-  if (startdate && enddate) {
-    rotaQuery.where({rotaStartDate: dateStart} || {rotaEndDate: dateEnd})
-  }
   rotaQuery.then(documents => {
-    console.log(documents);
+    let filteredRota = {};
+    if (startdate && enddate) {
+      filteredRota = applyFilter(documents, startdate, enddate);
+      res.status(200).json({
+        message: "Rota fetch successfully",
+        rotas: filteredRota
+      });
+    } else {
       res.status(200).json({
         message: "Rota fetch successfully",
         rotas: documents
       });
-    });
+    }
+  });
 });
 
-
+function applyFilter(array, start, end) {
+  let skimmedArray = [];
+  for (let i = 0; i < array.length; i++) {
+    const startDateInMs = new Date(array[i].rotaStartDate).getTime();
+    const endDateInMs = new Date(array[i].rotaEndDate).getTime();
+    if (startDateInMs >= start && endDateInMs <= end) {
+      skimmedArray.push(array[i]);
+    }
+  }
+  return skimmedArray;
+}
 
 
 module.exports = router;

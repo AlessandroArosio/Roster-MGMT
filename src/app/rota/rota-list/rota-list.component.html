@@ -23,7 +23,8 @@
   <mat-datepicker #picker2></mat-datepicker>
 </mat-form-field>
 </span>
-<button id="filter" color="primary" mat-button (click)="dateRange(date.value, endDate.value)">Apply filter</button>
+  <button id="filter" color="primary" mat-button (click)="dateRange(date.value, endDate.value)">Apply filter</button>
+  <span id="errorMessage">{{ message }}</span>
 </p>
 <mat-tab-group>
   <mat-tab *ngFor="let branchList of rotas; let i = index" [label]="branchList.branch">

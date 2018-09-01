@@ -14,6 +14,7 @@ export class RotaListComponent implements OnInit, OnDestroy {
   rotas = [];
   users: User[] = [];
   isLoading = false;
+  message = '';
   date = new FormControl();
   endDate = new FormControl();
   private rotasSub: Subscription;
@@ -61,13 +62,14 @@ export class RotaListComponent implements OnInit, OnDestroy {
 
   dateRange(start: Date, end: Date) {
     if (start > end) {
-      console.log('start date is greater than end date');
+      this.message = 'Start date cannot be greater than end date!';
       return;
     }
     if (start === null || end === null) {
-      location.reload();
+      this.rotaService.getRotas();
       return;
     }
+    this.message = '';
     this.rotaService.getFilteredRotas(start.getTime(), end.getTime());
   }
 
