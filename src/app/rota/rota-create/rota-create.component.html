@@ -3,7 +3,8 @@
 <div *ngFor="let shift of shifts">
   <p><strong>{{ shift.name }}</strong>: From {{ shift.start }} to {{ shift.end }}</p>
 </div>
-<mat-card>
+<mat-spinner *ngIf="isLoading"></mat-spinner>
+<mat-card *ngIf="!isLoading">
   <form [formGroup]="form" (submit)="onSaveRota(form)">
     <mat-form-field>
       <mat-select placeholder="No. of employees" formControlName="employeesNumber" [(value)]="selectedValue" [disabled]="disableSelect" required>

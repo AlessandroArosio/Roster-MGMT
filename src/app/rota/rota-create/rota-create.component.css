@@ -19,3 +19,7 @@
   font-weight: bold;
   color: darkgreen;
 }
+
+mat-spinner {
+  margin: auto;
+}
