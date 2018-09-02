@@ -22,7 +22,8 @@ export class UsersService {
             lastName: users.lastName,
             email: users.email,
             telephone: users.telephone,
-            id: users._id
+            id: users._id,
+            password: users.password
           };
         });
       }))
@@ -38,7 +39,8 @@ export class UsersService {
       firstName: string,
       lastName: string,
       email: string,
-      telephone: number}>
+      telephone: number,
+      password: string}>
     (
       'http://localhost:3000/api/users/' + id);
   }
@@ -47,13 +49,14 @@ export class UsersService {
     return this.usersUpdated.asObservable();
   }
 
-  addUser(firstName: string, lastName: string, email: string, telephone: number) {
+  addUser(firstName: string, lastName: string, email: string, telephone: number, password: string) {
     const user: User = {
       id: null,
       firstName: firstName,
       lastName: lastName,
       email: email,
-      telephone: telephone
+      telephone: telephone,
+      password: password
     };
     this.http.post<{message: string, userId: string}>('http://localhost:3000/api/users', user)
       .subscribe((responseData) => {
@@ -64,8 +67,8 @@ export class UsersService {
       });
   }
 
-  updateUser(id: string, firstName: string, lastName: string, email: string, telephone: number) {
-    const user: User = { id: id, firstName: firstName, lastName: lastName, email: email, telephone: telephone };
+  updateUser(id: string, firstName: string, lastName: string, email: string, telephone: number, password: string) {
+    const user: User = { id: id, firstName: firstName, lastName: lastName, email: email, telephone: telephone, password: password };
     this.http.put('http://localhost:3000/api/users/' + id, user)
       .subscribe(response => {
 

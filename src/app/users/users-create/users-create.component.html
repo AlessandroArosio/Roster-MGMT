@@ -47,6 +47,18 @@
         placeholder="Telephone number">
       <mat-error *ngIf="telephone.invalid">Please enter a valid telephone number</mat-error>
     </mat-form-field>
+    <mat-form-field>
+      <input
+        matInput
+        [ngModel]="user?.password"
+        name="password"
+        type="text"
+        required
+        minlength="2"
+        #password="ngModel"
+        placeholder="Password">
+      <mat-error *ngIf="password.invalid">Please enter a valid password</mat-error>
+    </mat-form-field>
     <button
       mat-raised-button
       color="accent"

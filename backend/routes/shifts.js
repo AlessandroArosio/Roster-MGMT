@@ -1,10 +1,11 @@
 const express = require('express');
 const Shift = require('../models/shift');
+const checkAuth = require('../middleware/check-auth');
 
 const router = express.Router();
 
 // this one receives a shift FROM Angular
-router.post('', (req, res, next) => {
+router.post('', checkAuth, (req, res, next) => {
   const shift = new Shift({
     name: req.body.name,
     start: req.body.start,
@@ -19,7 +20,7 @@ router.post('', (req, res, next) => {
 });
 
 // deleting a SHIFT document from MongoDB
-router.delete('/:id', (req, res, next) => {
+router.delete('/:id', checkAuth, (req, res, next) => {
   Shift.deleteOne({_id: req.params.id}).then(result => {
     console.log(result);
   });
@@ -27,7 +28,7 @@ router.delete('/:id', (req, res, next) => {
 });
 
 // EDIT a shift
-router.put('/:id', (req, res, next) => {
+router.put('/:id', checkAuth, (req, res, next) => {
   const shift = new Shift({
     _id: req.body.id,
     name: req.body.name
@@ -39,7 +40,7 @@ router.put('/:id', (req, res, next) => {
 });
 
 // GET one single shift from the DB
-router.get('/:id', (req, res, next) => {
+router.get('/:id', checkAuth, (req, res, next) => {
   Shift.findById(req.params.id).then(shift => {
     if (shift) {
       res.status(200).json(shift);
@@ -50,7 +51,7 @@ router.get('/:id', (req, res, next) => {
 });
 
 // this one send the shifts TO Angular
-router.use('', (req, res, next) => {
+router.get('', checkAuth,(req, res, next) => {
   Shift.find()
     .then(documents => {
       res.status(200).json({

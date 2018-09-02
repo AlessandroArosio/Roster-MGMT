@@ -6,6 +6,7 @@ const shiftsRoutes = require('./routes/shifts');
 const usersRoutes = require('./routes/users');
 const branchesRoutes = require('./routes/branches');
 const rotasRoutes = require('./routes/rotas');
+const loginRoutes = require('./routes/login');
 
 const app = express();
 
@@ -24,7 +25,7 @@ app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader(
     "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
+    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
   );
   res.setHeader(
     "Access-Control-Allow-Methods",
@@ -36,5 +37,6 @@ app.use('/api/shifts', shiftsRoutes);
 app.use('/api/users', usersRoutes);
 app.use('/api/branches', branchesRoutes);
 app.use('/api/rotas', rotasRoutes);
+app.use('/api/login', loginRoutes);
 
 module.exports = app;

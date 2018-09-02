@@ -1,9 +1,10 @@
 const express = require('express');
 const Rota = require('../models/rota');
 const router = express.Router();
+const checkAuth = require('../middleware/check-auth');
 
 // this one receives a rota FROM Angular
-router.post('', (req, res, next) => {
+router.post('', checkAuth, (req, res, next) => {
   const rota = new Rota({
     branchName: req.body.branchName.branchName,
     employeeName: req.body.employeeArray,
@@ -22,7 +23,7 @@ router.post('', (req, res, next) => {
 });
 
 // deleting a ROTA document from MongoDB
-router.delete('/:id', (req, res, next) => {
+router.delete('/:id', checkAuth, (req, res, next) => {
   Rota.deleteOne({_id: req.params.id}).then(result => {
     console.log(result);
   });
@@ -30,7 +31,7 @@ router.delete('/:id', (req, res, next) => {
 });
 
 // EDIT a rota
-router.put('/:id', (req, res, next) => {
+router.put('/:id', checkAuth, (req, res, next) => {
   const rota = new Rota({
     _id: req.body.id,
     branchName: req.body.branchName.branchName,
@@ -46,7 +47,7 @@ router.put('/:id', (req, res, next) => {
 });
 
 // GET one single shift from the DB
-router.get('/:id', (req, res, next) => {
+router.get('/:id', checkAuth, (req, res, next) => {
   Rota.findById(req.params.id).then(rota => {
     if (rota) {
       res.status(200).json(rota);
@@ -59,7 +60,7 @@ router.get('/:id', (req, res, next) => {
 });
 
 // this one send the shifts TO Angular
-router.use('', (req, res, next) => {
+router.use('', checkAuth, (req, res, next) => {
   const startdate = +req.query.start;
   const enddate = +req.query.end;
   const rotaQuery = Rota.find();

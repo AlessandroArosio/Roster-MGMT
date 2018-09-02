@@ -31,7 +31,8 @@ export class UsersCreateComponent implements OnInit {
             firstName: userData.firstName,
             lastName: userData.lastName,
             email: userData.email,
-            telephone: userData.telephone
+            telephone: userData.telephone,
+            password: userData.password
           };
         });
       } else {
@@ -50,7 +51,8 @@ export class UsersCreateComponent implements OnInit {
         form.value.firstName,
         form.value.lastName,
         form.value.email,
-        form.value.telephone
+        form.value.telephone,
+        form.value.password
       );
       this.message = 'User "' + form.value.firstName + ' ' + form.value.lastName + '" has been added';
     } else {
@@ -59,7 +61,8 @@ export class UsersCreateComponent implements OnInit {
         form.value.firstName,
         form.value.lastName,
         form.value.email,
-        form.value.telephone
+        form.value.telephone,
+        form.value.password
       );
       this.message = 'User "' + form.value.firstName + ' ' + form.value.lastName + '" has been updated';
     }

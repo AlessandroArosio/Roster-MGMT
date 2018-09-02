@@ -1,25 +1,36 @@
 const express = require('express');
 const User = require('../models/user');
+const bcrypt = require('bcrypt');
+const checkAuth = require('../middleware/check-auth');
 const router = express.Router();
 
 // this one receives a user FROM Angular
-router.post('', (req, res, next) => {
-  const user = new User({
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
-    email: req.body.email,
-    telephone: req.body.telephone
-  });
-  user.save().then(createdUser => {
-    res.status(201).json({
-      message: "User added successfully",
-      userId: createdUser._id
+router.post('', checkAuth, (req, res, next) => {
+  bcrypt.hash(req.body.password, 10)
+    .then(hash => {
+      const user = new User({
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        email: req.body.email,
+        telephone: req.body.telephone,
+        password: hash
+      });
+      user.save().then(createdUser => {
+        res.status(201).json({
+          message: "User added successfully",
+          userId: createdUser._id
+        });
+      })
+      .catch(err => {
+        res.status(500).json({
+          error: err
+        });
+      });
     });
-  });
 });
 
 // deleting a USER document from MongoDB
-router.delete('/:id', (req, res, next) => {
+router.delete('/:id', checkAuth, (req, res, next) => {
   User.deleteOne({_id: req.params.id}).then(result => {
     console.log(result);
   });
@@ -27,7 +38,7 @@ router.delete('/:id', (req, res, next) => {
 });
 
 // EDIT an user
-router.put('/:id', (req, res, next) => {
+router.put('/:id', checkAuth, (req, res, next) => {
   const user = new User({
     _id: req.body.id,
     firstName: req.body.firstName,
@@ -41,7 +52,7 @@ router.put('/:id', (req, res, next) => {
 });
 
 // GET one single user from the DB
-router.get('/:id', (req, res, next) => {
+router.get('/:id', checkAuth, (req, res, next) => {
   User.findById(req.params.id).then(user => {
     if (user) {
       res.status(200).json(user);
@@ -52,7 +63,7 @@ router.get('/:id', (req, res, next) => {
 });
 
 // this one send the users TO Angular
-router.use('', (req, res, next) => {
+router.use('', checkAuth, (req, res, next) => {
   User.find()
     .then(documents => {
       res.status(200).json({

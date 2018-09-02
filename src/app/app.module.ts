@@ -20,11 +20,12 @@ import {UsersCreateComponent} from './users/users-create/users-create.component'
 import {UsersListComponent} from './users/users-list/users-list.component';
 import {BranchCreateComponent} from './branches/branches-create/branch-create.component';
 import {BranchListComponent} from './branches/branches-list/branch-list.component';
-import {HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {AppRoutingModule} from './app-routing.module';
 import {RotaCreateComponent} from './rota/rota-create/rota-create.component';
 import {RotaListComponent} from './rota/rota-list/rota-list.component';
 import {LoginComponent} from './auth/login/login.component';
+import {AuthInterceptor} from './auth/auth-interceptor';
 
 @NgModule({
   declarations: [
@@ -60,7 +61,9 @@ import {LoginComponent} from './auth/login/login.component';
     FormsModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [
+      {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}
+    ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
