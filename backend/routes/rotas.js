@@ -59,8 +59,8 @@ router.get('/:id', checkAuth, (req, res, next) => {
   });
 });
 
-// this one send the shifts TO Angular
-router.use('', checkAuth, (req, res, next) => {
+// this one send the rotas TO Angular
+router.get('', checkAuth, (req, res, next) => {
   const startdate = +req.query.start;
   const enddate = +req.query.end;
   const rotaQuery = Rota.find();

@@ -9,26 +9,28 @@ import {BranchCreateComponent} from './branches/branches-create/branch-create.co
 import {RotaCreateComponent} from './rota/rota-create/rota-create.component';
 import {RotaListComponent} from './rota/rota-list/rota-list.component';
 import {LoginComponent} from './auth/login/login.component';
+import {AuthGuard} from './auth/auth.guard';
 
 const routes: Routes = [
-  { path: '', component: LoginComponent },   // to be changed to shift-list and replace '' for login screen
-  { path: 'shift-list', component: ShiftListComponent },
-  { path: 'shift-create', component: ShiftCreateComponent },
-  { path: 'shift-edit/:shiftId', component: ShiftCreateComponent },
-  { path: 'user-list', component: UsersListComponent },
-  { path: 'user-create', component: UsersCreateComponent },
-  { path: 'user-edit/:userId', component: UsersCreateComponent },
-  { path: 'branch-list', component: BranchListComponent },
-  { path: 'branch-create', component: BranchCreateComponent },
-  { path: 'branch-edit/:branchId', component: BranchCreateComponent },
-  { path: 'rota-list', component: RotaListComponent },
-  { path: 'rota-create', component: RotaCreateComponent },
-  { path: 'rota-edit/:rotaId', component: RotaCreateComponent },
+  { path: '', component: LoginComponent },
+  { path: 'shift-list', component: ShiftListComponent, canActivate: [AuthGuard] },
+  { path: 'shift-create', component: ShiftCreateComponent, canActivate: [AuthGuard] },
+  { path: 'shift-edit/:shiftId', component: ShiftCreateComponent, canActivate: [AuthGuard] },
+  { path: 'user-list', component: UsersListComponent, canActivate: [AuthGuard] },
+  { path: 'user-create', component: UsersCreateComponent, canActivate: [AuthGuard] },
+  { path: 'user-edit/:userId', component: UsersCreateComponent, canActivate: [AuthGuard] },
+  { path: 'branch-list', component: BranchListComponent, canActivate: [AuthGuard] },
+  { path: 'branch-create', component: BranchCreateComponent, canActivate: [AuthGuard] },
+  { path: 'branch-edit/:branchId', component: BranchCreateComponent, canActivate: [AuthGuard] },
+  { path: 'rota-list', component: RotaListComponent, canActivate: [AuthGuard] },
+  { path: 'rota-create', component: RotaCreateComponent, canActivate: [AuthGuard] },
+  { path: 'rota-edit/:rotaId', component: RotaCreateComponent, canActivate: [AuthGuard] },
   { path: 'login', component: LoginComponent }
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
+  providers: [AuthGuard]
 })
 export class AppRoutingModule {}

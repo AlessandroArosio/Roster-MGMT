@@ -49,7 +49,7 @@ router.get('/:id', checkAuth, (req, res, next) => {
 });
 
 // this one send the branches TO Angular
-router.use('', checkAuth, (req, res, next) => {
+router.get('', checkAuth, (req, res, next) => {
   Branch.find()
     .then(documents => {
       res.status(200).json({

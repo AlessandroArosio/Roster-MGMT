@@ -63,7 +63,7 @@ router.get('/:id', checkAuth, (req, res, next) => {
 });
 
 // this one send the users TO Angular
-router.use('', checkAuth, (req, res, next) => {
+router.get('', checkAuth, (req, res, next) => {
   User.find()
     .then(documents => {
       res.status(200).json({
