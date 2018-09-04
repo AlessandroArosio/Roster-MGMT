@@ -2,10 +2,11 @@ const express = require('express');
 const Branch = require('../models/branch');
 const router = express.Router();
 const checkAuth = require('../middleware/check-auth');
+const checkUser = require('../middleware/check-user');
 
 
 // this one receives a branch FROM Angular
-router.post('', checkAuth, (req, res, next) => {
+router.post('', checkAuth, checkUser, (req, res, next) => {
   const branch = new Branch({
     branchName: req.body.branchName,
   });
@@ -18,7 +19,7 @@ router.post('', checkAuth, (req, res, next) => {
 });
 
 // deleting a BRANCH document from MongoDB
-router.delete('/:id', checkAuth, (req, res, next) => {
+router.delete('/:id', checkAuth, checkUser, (req, res, next) => {
   Branch.deleteOne({_id: req.params.id}).then(result => {
     console.log(result);
   });
@@ -26,7 +27,7 @@ router.delete('/:id', checkAuth, (req, res, next) => {
 });
 
 // EDIT a branch
-router.put('/:id', checkAuth, (req, res, next) => {
+router.put('/:id', checkAuth, checkUser, (req, res, next) => {
   const branch = new Branch({
     _id: req.body.id,
     branchName: req.body.branchName

@@ -2,9 +2,10 @@ const express = require('express');
 const Rota = require('../models/rota');
 const router = express.Router();
 const checkAuth = require('../middleware/check-auth');
+const checkUser = require('../middleware/check-user');
 
 // this one receives a rota FROM Angular
-router.post('', checkAuth, (req, res, next) => {
+router.post('', checkAuth, checkUser, (req, res, next) => {
   const rota = new Rota({
     branchName: req.body.branchName.branchName,
     employeeName: req.body.employeeArray,
@@ -23,7 +24,7 @@ router.post('', checkAuth, (req, res, next) => {
 });
 
 // deleting a ROTA document from MongoDB
-router.delete('/:id', checkAuth, (req, res, next) => {
+router.delete('/:id', checkAuth, checkUser, (req, res, next) => {
   Rota.deleteOne({_id: req.params.id}).then(result => {
     console.log(result);
   });
@@ -31,7 +32,7 @@ router.delete('/:id', checkAuth, (req, res, next) => {
 });
 
 // EDIT a rota
-router.put('/:id', checkAuth, (req, res, next) => {
+router.put('/:id', checkAuth, checkUser, (req, res, next) => {
   const rota = new Rota({
     _id: req.body.id,
     branchName: req.body.branchName.branchName,
@@ -51,7 +52,6 @@ router.get('/:id', checkAuth, (req, res, next) => {
   Rota.findById(req.params.id).then(rota => {
     if (rota) {
       res.status(200).json(rota);
-      console.log(rota);
     } else {
       res.status(400).json({message: 'Rota not found'});
       console.log('rota not found');

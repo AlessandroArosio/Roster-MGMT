@@ -7,6 +7,7 @@ import {Subject} from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
+  emailAuthenticated: string;
   private token: string;
   private tokenTimer: any;
   private isAuthenticated = false;
@@ -22,6 +23,10 @@ export class AuthService {
     return this.isAuthenticated;
   }
 
+  isAdminLogged() {
+    return this.emailAuthenticated === 'admin@local.com';
+  }
+
   getAuthStatusListener() {
     return this.authStatusListener.asObservable();
   }
@@ -31,6 +36,7 @@ export class AuthService {
     this.http.post<{token: string, expiresIn: number}>('http://localhost:3000/api/login', authData)
       .subscribe(response => {
         const token = response.token;
+        this.emailAuthenticated = this.parseJwt(token).email;
         this.token = token;
         if (token) {
           const expiresInDuration = response.expiresIn;
@@ -40,7 +46,11 @@ export class AuthService {
           const now = new Date();
           const expirationDate = new Date(now.getTime() + expiresInDuration * 1000);
           this.saveAuthData(token, expirationDate);
-          this.router.navigate(['/rota-create']);
+          if (this.emailAuthenticated === 'admin@local.com') {
+            this.router.navigate(['/rota-create']);
+          } else {
+            this.router.navigate(['employee']);
+          }
         }
       });
   }
@@ -63,6 +73,7 @@ export class AuthService {
   logout() {
     this.token = null;
     this.isAuthenticated = false;
+    this.emailAuthenticated = null;
     this.authStatusListener.next(false);
     clearTimeout(this.tokenTimer);
     this.clearAuthData();
@@ -95,5 +106,11 @@ export class AuthService {
       token: token,
       expirationDate: new Date(expirationDate)
     };
+  }
+
+  private parseJwt (token) {
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace('-', '+').replace('_', '/');
+    return JSON.parse(window.atob(base64));
   }
 }

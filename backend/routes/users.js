@@ -2,6 +2,7 @@ const express = require('express');
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
 const checkAuth = require('../middleware/check-auth');
+const checkUser = require('../middleware/check-user');
 const router = express.Router();
 
 // this one receives a user FROM Angular

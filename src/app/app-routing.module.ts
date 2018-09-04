@@ -25,7 +25,7 @@ const routes: Routes = [
   { path: 'rota-list', component: RotaListComponent, canActivate: [AuthGuard] },
   { path: 'rota-create', component: RotaCreateComponent, canActivate: [AuthGuard] },
   { path: 'rota-edit/:rotaId', component: RotaCreateComponent, canActivate: [AuthGuard] },
-  { path: 'login', component: LoginComponent }
+  { path: 'employee', component: BranchListComponent, canActivate: [AuthGuard] }
 ];
 
 @NgModule({

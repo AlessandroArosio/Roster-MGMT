@@ -5,28 +5,28 @@
     <li *ngIf="!userIsAuthenticated">
       <a mat-button routerLink="/login" routerLinkActive="mat-accent">Login</a>
     </li>
-    <li *ngIf="userIsAuthenticated">
+    <li *ngIf="userIsAuthenticated && adminLogged">
       <button mat-button [matMenuTriggerFor]="rota">Rota</button>
       <mat-menu #rota="matMenu">
         <button mat-menu-item routerLink="rota-create">Create rosters</button>
         <button mat-menu-item routerLink="rota-list">View rosters</button>
       </mat-menu>
     </li>
-    <li *ngIf="userIsAuthenticated">
+    <li *ngIf="userIsAuthenticated && adminLogged">
       <button mat-button [matMenuTriggerFor]="shifts">Shifts</button>
       <mat-menu #shifts="matMenu">
         <button mat-menu-item routerLink="shift-create">Create shift</button>
         <button mat-menu-item routerLink="shift-list">List shifts</button>
       </mat-menu>
     </li>
-    <li *ngIf="userIsAuthenticated">
+    <li *ngIf="userIsAuthenticated && adminLogged">
       <button mat-button [matMenuTriggerFor]="users">Users</button>
       <mat-menu #users="matMenu">
         <button mat-menu-item routerLink="user-create">Create user</button>
         <button mat-menu-item routerLink="user-list">Users list</button>
       </mat-menu>
     </li>
-    <li *ngIf="userIsAuthenticated">
+    <li *ngIf="userIsAuthenticated && adminLogged">
       <button mat-button [matMenuTriggerFor]="branch">Branch</button>
       <mat-menu #branch="matMenu">
         <button mat-menu-item routerLink="branch-create">Add a branch</button>
