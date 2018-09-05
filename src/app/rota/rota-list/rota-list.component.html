@@ -50,8 +50,9 @@
             <td *ngFor="let shift of rotas[i].weeklyRota[j].userRoster[0].shifts[0][k]"> {{shift}}</td>
           </tr>
         </table>
-        <button class="mat-button" color="primary" mat-button [routerLink]="['/rota-edit', week.id]">EDIT</button>
-        <button class="mat-button" mat-button color="warn" (click)="onDelete(week.id)">DELETE</button>
+        <button *ngIf="adminLogged" class="mat-button" color="primary" mat-button [routerLink]="['/rota-edit', week.id]">EDIT</button>
+        <button *ngIf="adminLogged" class="mat-button" mat-button color="warn" (click)="onDelete(week.id)">DELETE</button>
+        <button *ngIf="!adminLogged" class="mat-button" color="primary" mat-button [routerLink]="['/swap', week.id]">Swap shift</button>
       </mat-expansion-panel>
     </mat-accordion>
   </mat-tab>

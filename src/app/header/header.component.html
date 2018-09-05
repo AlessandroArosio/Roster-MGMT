@@ -5,6 +5,9 @@
     <li *ngIf="!userIsAuthenticated">
       <a mat-button routerLink="/login" routerLinkActive="mat-accent">Login</a>
     </li>
+    <li *ngIf="userIsAuthenticated && !adminLogged">
+      <a mat-button routerLink="rotas-view" routerLinkActive="mat-accent">View rosters</a>
+    </li>
     <li *ngIf="userIsAuthenticated && adminLogged">
       <button mat-button [matMenuTriggerFor]="rota">Rota</button>
       <mat-menu #rota="matMenu">

@@ -26,6 +26,7 @@ import {RotaCreateComponent} from './rota/rota-create/rota-create.component';
 import {RotaListComponent} from './rota/rota-list/rota-list.component';
 import {LoginComponent} from './auth/login/login.component';
 import {AuthInterceptor} from './auth/auth-interceptor';
+import {RotaSwapComponent} from './rota/rota-swap/rota-swap.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import {AuthInterceptor} from './auth/auth-interceptor';
     BranchListComponent,
     RotaCreateComponent,
     RotaListComponent,
+    RotaSwapComponent,
     LoginComponent
   ],
   imports: [

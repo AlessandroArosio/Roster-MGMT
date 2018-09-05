@@ -4,6 +4,7 @@ import {Subscription} from 'rxjs';
 import {User} from '../../users/user.model';
 import {UsersService} from '../../users/users.service';
 import {FormControl} from '@angular/forms';
+import {AuthService} from '../../auth/auth.service';
 
 @Component({
   selector: 'app-rota-list',
@@ -17,11 +18,16 @@ export class RotaListComponent implements OnInit, OnDestroy {
   message = '';
   date = new FormControl();
   endDate = new FormControl();
+  adminLogged = false;
   private rotasSub: Subscription;
   private usersSub: Subscription;
   private rotaDeleted = false;
 
-  constructor(public rotaService: RotaService, public usersService: UsersService) {}
+  constructor(
+    public rotaService: RotaService,
+    public usersService: UsersService,
+    public authService: AuthService
+  ) {}
 
   ngOnInit() {
     this.isLoading = true;
@@ -32,6 +38,7 @@ export class RotaListComponent implements OnInit, OnDestroy {
       .subscribe((rotas) => {
         this.isLoading = false;
         this.rotas = this.rotaService.getRosters();
+        this.adminLogged = this.authService.isAdminLogged();
       });
     this.usersSub = this.usersService
       .getUserUpdateListener()

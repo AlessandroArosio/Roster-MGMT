@@ -10,6 +10,7 @@ import {RotaCreateComponent} from './rota/rota-create/rota-create.component';
 import {RotaListComponent} from './rota/rota-list/rota-list.component';
 import {LoginComponent} from './auth/login/login.component';
 import {AuthGuard} from './auth/auth.guard';
+import {RotaSwapComponent} from './rota/rota-swap/rota-swap.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -25,7 +26,9 @@ const routes: Routes = [
   { path: 'rota-list', component: RotaListComponent, canActivate: [AuthGuard] },
   { path: 'rota-create', component: RotaCreateComponent, canActivate: [AuthGuard] },
   { path: 'rota-edit/:rotaId', component: RotaCreateComponent, canActivate: [AuthGuard] },
-  { path: 'employee', component: BranchListComponent, canActivate: [AuthGuard] }
+  { path: 'employee', component: BranchListComponent, canActivate: [AuthGuard] },
+  { path: 'rotas-view', component: RotaListComponent, canActivate: [AuthGuard] },
+  { path: 'swap/:rotaId', component: RotaSwapComponent, canActivate: [AuthGuard] }
 ];
 
 @NgModule({
