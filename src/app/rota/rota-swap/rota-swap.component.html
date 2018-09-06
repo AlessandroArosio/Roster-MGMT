@@ -1,1 +1,40 @@
-<h1>hello!</h1>
+<h1>hello, I'm working hard on this :)</h1>
+<mat-accordion>
+  <div>
+    <p>Rota
+      from <strong>{{ rota.rotaStartDate }}</strong>
+      to <strong>{{ rota.rotaEndDate }}</strong>,
+      in branch: <strong>{{ rota.branchName }}</strong></p>
+    <table class="mat-elevation-z8">
+      <tr>
+        <th>Employee name</th>
+        <th>Monday</th>
+        <th>Tuesday</th>
+        <th>Wednesday</th>
+        <th>Thursday</th>
+        <th>Friday</th>
+        <th>Saturday</th>
+        <th>Sunday</th>
+      </tr>
+      <tr *ngFor="let user of rota.employeeName; let i = index">
+        <td>{{ findUserName(user) }}</td>
+        <td *ngFor="let shift of shifts[i]">{{ shift }}</td>
+      </tr>
+    </table>
+    <form (submit)="requestSwap(swapForm)" #swapForm="ngForm" [formGroup]="form">
+      <mat-form-field>
+        <mat-select placeholder="Select a colleague" formControlName="userName">
+          <mat-option *ngFor="let user of availableUsers" [value]="user.id">
+            <td id="user">
+              {{user.firstName + " " + user.lastName }}
+            </td>
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div>
+        <button mat-raised-button color="accent" type="submit">Request swap</button>
+      </div>
+    </form>
+  </div>
+
+</mat-accordion>
