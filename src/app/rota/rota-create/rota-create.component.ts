@@ -117,7 +117,7 @@ export class RotaCreateComponent implements OnInit {
     if (this.mode === 'create') {
       date = new Date(form.value.datePicker);
       startRota = date.toDateString();
-      const date7 = new Date();
+      const date7 = new Date(date);
       date7.setDate(date.getDate() + 6);
       endRota = date7.toDateString();
       const shiftsAndUsersObj = this.storeUserAndShifts(form);

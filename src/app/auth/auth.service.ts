@@ -27,6 +27,10 @@ export class AuthService {
     return this.emailAuthenticated === 'admin@local.com';
   }
 
+  userLoggedIn() {
+    return this.emailAuthenticated;
+  }
+
   getAuthStatusListener() {
     return this.authStatusListener.asObservable();
   }

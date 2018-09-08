@@ -15,3 +15,8 @@ tr:nth-child(even) {
 form {
   margin-top: 2rem;
 }
+
+
+.calendar {
+  padding: 1rem;
+}

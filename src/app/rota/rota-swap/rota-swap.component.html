@@ -31,6 +31,28 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
+      <mat-form-field class="calendar">
+        <input
+          matInput
+          [matDatepicker]="picker1"
+          placeholder="From date"
+          formControlName="datePicker"
+          [min]="minDate"
+          [max]="maxDate">
+        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+        <mat-datepicker #picker1></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field class="calendar">
+        <input
+          matInput
+          [matDatepicker]="picker2"
+          placeholder="To date"
+          formControlName="datePicker2"
+          [min]="minDate"
+          [max]="maxDate">
+        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+        <mat-datepicker #picker2></mat-datepicker>
+      </mat-form-field>
       <div>
         <button mat-raised-button color="accent" type="submit">Request swap</button>
       </div>
