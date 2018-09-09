@@ -11,9 +11,10 @@ export class MessageService {
 
   constructor (private http: HttpClient) {}
 
-  getMessages() {
+  getMessages(id: string) {
+    const test = 'test';
     this.http
-      .get<{message: string, messages: any}>('http://localhost:3000/api/messages')
+      .get<{message: string, messages: any}>('http://localhost:3000/api/messages/' + id)
       .pipe(map((messageData) => {
         return messageData.messages.map(messages => {
           return {
@@ -23,7 +24,11 @@ export class MessageService {
             id: messages._id
           };
         });
-      }));
+      }))
+      .subscribe((transformedMessage) => {
+        this.messages = transformedMessage;
+        this.messagesUpdated.next([...this.messages]);
+      });
   }
 
   getMessage(id: string) {
@@ -48,5 +53,9 @@ export class MessageService {
         this.messages = updatedMessage;
         this.messagesUpdated.next([...this.messages]);
       });
+  }
+
+  getMessageUpdateListener() {
+    return this.messagesUpdated.asObservable();
   }
 }

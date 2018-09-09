@@ -1,0 +1,9 @@
+<h1>This will be the homepage</h1>
+<h2>Messages listed below</h2>
+<mat-spinner *ngIf="isLoading"></mat-spinner>
+<mat-accordion>
+  <div *ngFor="let message of messages">
+    <p>Message from: {{ message.sender }}</p>
+    <p>Body of the message: {{ message.message }}</p>
+  </div>
+</mat-accordion>

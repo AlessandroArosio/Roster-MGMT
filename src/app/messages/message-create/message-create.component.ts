@@ -21,10 +21,6 @@ export class MessageCreateComponent {
       return;
     }
     console.log(form);
-    this.messageService.addMessage(
-      form.value.sender,
-      form.value.receiver,
-      form.value.message
-    );
+    this.messageService.addMessage(this.message);
   }
 }

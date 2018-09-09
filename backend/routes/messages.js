@@ -30,22 +30,25 @@ router.delete('/:id', checkAuth, (req, res, next) => {
 
 // GET one single message from the DB -- probably I won't need this route
 router.get('/:id', checkAuth, (req, res, next) => {
-  Shift.findById(req.params.id).then(shift => {
-    if (shift) {
-      res.status(200).json(shift);
-    } else {
-      res.status(400).json({message: 'Shift not found'});
-    }
+  Message
+    .find()
+    .where({ receiver: req.params.id })
+    .then(documents => {
+    console.log(documents);
+    res.status(200).json({
+      message: 'Messages fetched for the current user',
+      messages: documents});
   });
 });
 
 // this one send the messages TO Angular -- this should send only the messages for the person logged in
 router.get('', checkAuth,(req, res, next) => {
+  console.log();
   Message.find()
     .then(documents => {
       res.status(200).json({
         message: "Message fetch successfully",
-        shifts: documents
+        messages: documents
       });
     });
 });

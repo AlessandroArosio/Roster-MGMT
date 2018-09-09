@@ -39,7 +39,7 @@ export class ShiftsService {
 
   getShiftUpdateListener() {
     return this.shiftsUpdated.asObservable();
-  }
+}
 
   addShift(name: string, start: string, end: string) {
     const shift: Shift = {

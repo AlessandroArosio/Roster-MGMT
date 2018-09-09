@@ -53,7 +53,7 @@ export class AuthService {
           if (this.emailAuthenticated === 'admin@local.com') {
             this.router.navigate(['/rota-create']);
           } else {
-            this.router.navigate(['employee']);
+            this.router.navigate(['homepage']);
           }
         }
       });
