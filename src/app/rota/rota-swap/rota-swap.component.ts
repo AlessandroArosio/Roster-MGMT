@@ -7,6 +7,8 @@ import {ActivatedRoute, ParamMap} from '@angular/router';
 import {User} from '../../users/user.model';
 import {Subscription} from 'rxjs';
 import {FormControl, FormGroup, NgForm, Validators} from '@angular/forms';
+import {MessageService} from '../../messages/message.service';
+import {Message} from '../../messages/message.model';
 
 @Component({
   selector: 'app-rota-swap',
@@ -23,7 +25,7 @@ export class RotaSwapComponent implements OnInit, OnDestroy {
   loggedUser: string;
   minDate: any;
   maxDate: any;
-  date = new FormControl(new Date());
+  location: string;
   form: FormGroup;
   private rotaId: string;
   private rotasSub: Subscription;
@@ -33,7 +35,8 @@ export class RotaSwapComponent implements OnInit, OnDestroy {
     public rotaService: RotaService,
     public usersService: UsersService,
     public authService: AuthService,
-    public route: ActivatedRoute
+    public route: ActivatedRoute,
+    public messageService: MessageService
   ) {
   }
 
@@ -62,6 +65,7 @@ export class RotaSwapComponent implements OnInit, OnDestroy {
           this.rota = rotaData;
           this.minDate = new Date(rotaData.rotaStartDate);
           this.maxDate = new Date(rotaData.rotaEndDate);
+          this.location = rotaData.branchName;
           console.log(rotaData);
           this.showSelectedRota(this.rota);
           this.loggedUser = this.authService.userLoggedIn();
@@ -113,8 +117,21 @@ export class RotaSwapComponent implements OnInit, OnDestroy {
       console.log('The form is invalid');
       console.log(form);
     } else {
-      console.log('The form is VALID');
-      console.log(form);
+      const textToSend =
+        'Shift swap request' + this.normaliseDates(form.value.datePicker, form.value.datePicker2);
+      const message: Message = {
+        id: null,
+        sender: this.loggedUser,            // this is the user's EMAIL!!!!!
+        receiver: form.value.userName,      // this is the user's ID!!!
+        message: textToSend
+      };
+      this.messageService.addMessage(message);
     }
+  }
+
+  private normaliseDates(start: Date, end: Date) {
+    const startDate = start.toDateString();
+    const endDate = end.toDateString();
+    return ' from ' + startDate + ', to ' + endDate + ' in the branch ' + this.location;
   }
 }

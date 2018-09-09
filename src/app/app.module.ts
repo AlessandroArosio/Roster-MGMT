@@ -27,6 +27,8 @@ import {RotaListComponent} from './rota/rota-list/rota-list.component';
 import {LoginComponent} from './auth/login/login.component';
 import {AuthInterceptor} from './auth/auth-interceptor';
 import {RotaSwapComponent} from './rota/rota-swap/rota-swap.component';
+import {MessageCreateComponent} from './messages/message-create/message-create.component';
+import {MessageListComponent} from './messages/message-list/message-list.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +43,9 @@ import {RotaSwapComponent} from './rota/rota-swap/rota-swap.component';
     RotaCreateComponent,
     RotaListComponent,
     RotaSwapComponent,
-    LoginComponent
+    LoginComponent,
+    MessageCreateComponent,
+    MessageListComponent
   ],
   imports: [
     BrowserModule,

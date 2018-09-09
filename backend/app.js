@@ -7,6 +7,7 @@ const usersRoutes = require('./routes/users');
 const branchesRoutes = require('./routes/branches');
 const rotasRoutes = require('./routes/rotas');
 const loginRoutes = require('./routes/login');
+const messageRoutes = require('./routes/messages');
 
 const app = express();
 
@@ -38,5 +39,6 @@ app.use('/api/users', usersRoutes);
 app.use('/api/branches', branchesRoutes);
 app.use('/api/rotas', rotasRoutes);
 app.use('/api/login', loginRoutes);
+app.use('/api/messages', messageRoutes);
 
 module.exports = app;

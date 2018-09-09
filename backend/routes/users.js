@@ -6,7 +6,7 @@ const checkUser = require('../middleware/check-user');
 const router = express.Router();
 
 // this one receives a user FROM Angular
-router.post('', checkAuth, (req, res, next) => {
+router.post('', checkAuth, checkUser, (req, res, next) => {
   bcrypt.hash(req.body.password, 10)
     .then(hash => {
       const user = new User({
@@ -31,7 +31,7 @@ router.post('', checkAuth, (req, res, next) => {
 });
 
 // deleting a USER document from MongoDB
-router.delete('/:id', checkAuth, (req, res, next) => {
+router.delete('/:id', checkAuth, checkUser, (req, res, next) => {
   User.deleteOne({_id: req.params.id}).then(result => {
     console.log(result);
   });
@@ -39,7 +39,7 @@ router.delete('/:id', checkAuth, (req, res, next) => {
 });
 
 // EDIT an user
-router.put('/:id', checkAuth, (req, res, next) => {
+router.put('/:id', checkAuth, checkUser, (req, res, next) => {
   const user = new User({
     _id: req.body.id,
     firstName: req.body.firstName,
