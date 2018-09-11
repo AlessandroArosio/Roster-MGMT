@@ -27,6 +27,7 @@ export class RotaSwapComponent implements OnInit, OnDestroy {
   maxDate: any;
   location: string;
   form: FormGroup;
+  message: string;
   private rotaId: string;
   private rotasSub: Subscription;
   private usersSub: Subscription;
@@ -66,7 +67,6 @@ export class RotaSwapComponent implements OnInit, OnDestroy {
           this.minDate = new Date(rotaData.rotaStartDate);
           this.maxDate = new Date(rotaData.rotaEndDate);
           this.location = rotaData.branchName;
-          console.log(rotaData);
           this.showSelectedRota(this.rota);
           this.loggedUser = this.authService.userLoggedIn();
         });
@@ -126,6 +126,7 @@ export class RotaSwapComponent implements OnInit, OnDestroy {
         message: textToSend
       };
       this.messageService.addMessage(message);
+      this.message = 'Your request has been sent';
     }
   }
 

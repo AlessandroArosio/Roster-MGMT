@@ -20,3 +20,8 @@ form {
 .calendar {
   padding: 1rem;
 }
+
+.confirmation {
+  color: darkgreen;
+  font-weight: bold;
+}

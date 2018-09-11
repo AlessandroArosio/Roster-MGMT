@@ -9,7 +9,7 @@ import {
   MatCardModule, MatDatepickerModule,
   MatExpansionModule,
   MatInputModule,
-  MatMenuModule, MatNativeDateModule, MatProgressSpinnerModule, MatSelectModule,
+  MatMenuModule, MatNativeDateModule, MatProgressSpinnerModule, MatSelectModule, MatSnackBarModule,
   MatTableModule, MatTabsModule,
   MatToolbarModule
 } from '@angular/material';
@@ -63,6 +63,7 @@ import {MessageListComponent} from './messages/message-list/message-list.compone
     MatDatepickerModule,
     MatNativeDateModule,
     MatTabsModule,
+    MatSnackBarModule,
     ReactiveFormsModule,
     FormsModule,
     HttpClientModule

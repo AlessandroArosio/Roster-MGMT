@@ -5,6 +5,8 @@ import {MessageService} from '../message.service';
 import {UsersService} from '../../users/users.service';
 import {User} from '../../users/user.model';
 import {AuthService} from '../../auth/auth.service';
+import {HttpClient} from '@angular/common/http';
+import {MatSnackBar} from '@angular/material';
 
 @Component({
   selector: 'app-message-list',
@@ -15,14 +17,19 @@ export class MessageListComponent implements OnInit, OnDestroy {
   messages: Message[] = [];
   users: User[] = [];
   isLoading = false;
+  isSwap = false;
+  isAdmin = false;
   loggedUserId: string;
   private messagesSub: Subscription;
   private usersSub: Subscription;
 
-  constructor (
+  constructor(
     public messagesService: MessageService,
     public userService: UsersService,
-    public authService: AuthService) {}
+    public authService: AuthService,
+    public http: HttpClient,
+    public snackBar: MatSnackBar) {
+  }
 
   ngOnInit() {
     this.isLoading = true;
@@ -31,9 +38,8 @@ export class MessageListComponent implements OnInit, OnDestroy {
       .getUserUpdateListener()
       .subscribe((users: User[]) => {
         this.users = users;
-        console.log(this.users);
         this.loggedUserId = this.getUserId();
-        console.log(this.loggedUserId);
+        this.isAdmin = this.authService.isAdminLogged();
         this.messagesService.getMessages(this.loggedUserId);
       });
     this.messagesSub = this.messagesService
@@ -41,9 +47,8 @@ export class MessageListComponent implements OnInit, OnDestroy {
       .subscribe((messages: Message[]) => {
         this.isLoading = false;
         this.messages = messages;
-        console.log(messages);
+        this.addSwapBoolean(messages);
       });
-    console.log(this.messages);
   }
 
   onDelete(messageId: string) {
@@ -52,13 +57,56 @@ export class MessageListComponent implements OnInit, OnDestroy {
 
   private getUserId() {
     const userEmail = this.authService.userLoggedIn();
-    console.log(userEmail);
     for (let i = 0; i < this.users.length; i++) {
       if (this.users[i].email === userEmail) {
         return this.users[i].id;
       }
     }
     return null;
+  }
+
+  private getAdminId() {
+    for (let i = 0; i < this.users.length; i++) {
+      if (this.users[i].email === 'admin@local.com') {
+        return this.users[i].id;
+      }
+      return null;
+    }
+  }
+
+  private addSwapBoolean(arr) {
+    for (let i = 0; i < arr.length; i++) {
+      if (arr[i].message.includes('swap')) {
+        arr[i].isSwap = true;
+      }
+    }
+  }
+
+  acceptSwap(message: Message) {
+    let receiverEmail;
+    for (let i = 0; i < this.users.length; i++) {
+      if (this.users[i].id === this.loggedUserId) {
+        receiverEmail = this.users[i].email;
+      }
+    }
+    const newMessage = {
+      id: null,
+      sender: this.authService.emailAuthenticated,
+      receiver: this.getAdminId(),
+      message: receiverEmail + ' has accepted the following:\n' +
+        message.message + ', from ' + message.sender
+    };
+    this.http.post<{message: string, messageId: string}>('http://localhost:3000/api/messages', newMessage)
+      .subscribe();
+    this.onDelete(message.id);
+    this.openSnackBar('Request accepted. A message has been sent to the admin');
+
+  }
+
+  private openSnackBar(message: string) {
+    this.snackBar.open(message, null, {
+      duration: 3000,
+    });
   }
 
   ngOnDestroy() {

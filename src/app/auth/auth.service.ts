@@ -50,11 +50,7 @@ export class AuthService {
           const now = new Date();
           const expirationDate = new Date(now.getTime() + expiresInDuration * 1000);
           this.saveAuthData(token, expirationDate);
-          if (this.emailAuthenticated === 'admin@local.com') {
-            this.router.navigate(['/rota-create']);
-          } else {
-            this.router.navigate(['homepage']);
-          }
+          this.router.navigate(['homepage']);
         }
       });
   }
