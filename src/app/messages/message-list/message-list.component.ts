@@ -99,14 +99,8 @@ export class MessageListComponent implements OnInit, OnDestroy {
     this.http.post<{message: string, messageId: string}>('http://localhost:3000/api/messages', newMessage)
       .subscribe();
     this.onDelete(message.id);
-    this.openSnackBar('Request accepted. A message has been sent to the admin');
+    this.messagesService.openSnackBar('Request accepted. A message has been sent to the admin');
 
-  }
-
-  private openSnackBar(message: string) {
-    this.snackBar.open(message, null, {
-      duration: 3000,
-    });
   }
 
   ngOnDestroy() {

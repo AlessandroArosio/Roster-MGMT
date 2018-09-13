@@ -1,0 +1,17 @@
+<h1>Send a message to the personnel</h1>
+<form (submit)="onSendMessage(messageForm)" #messageForm="ngForm" *ngIf="!isLoading">
+  <mat-form-field>
+    <textarea
+      rows="5"
+      matInput
+      ngModel
+      name="formMessage"
+      type="text"
+      required
+      #formMessage="ngModel"
+      placeholder="Message">
+    </textarea>
+    <mat-error *ngIf="formMessage.invalid">Please enter a valid message</mat-error>
+  </mat-form-field>
+  <button mat-button type="submit" color="primary">Send</button>
+</form>

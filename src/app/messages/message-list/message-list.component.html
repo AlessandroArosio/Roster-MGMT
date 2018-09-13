@@ -1,11 +1,16 @@
 <h1>Homepage - Notification centre</h1>
+<button
+  mat-button
+  class="sendMsg"
+  *ngIf="isAdmin"
+  routerLink="send-message">Send a message</button>
 <div *ngIf="messages.length > 0">
   <h2>Messages listed below</h2>
   <mat-spinner *ngIf="isLoading"></mat-spinner>
   <mat-accordion>
     <mat-card *ngFor="let message of messages">
-      <p>Sender: <strong>{{ message.sender }}</strong></p>
-      <p>Message: <strong>{{ message.message }}</strong></p>
+      <p><strong>Sender:</strong> {{ message.sender }}</p>
+      <p><strong>Message:</strong> {{ message.message }}</p>
       <div>
         <button
           class="buttons"

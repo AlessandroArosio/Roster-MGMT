@@ -1,1 +1,8 @@
+.sendMsg {
+  float: right;
+  background-color: lightgray;
+}
 
+mat-card {
+  margin-top: 0.2rem;
+}

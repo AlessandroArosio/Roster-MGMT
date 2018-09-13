@@ -3,13 +3,14 @@ import {Message} from './message.model';
 import {Subject} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {map} from 'rxjs/operators';
+import {MatSnackBar} from '@angular/material';
 
 @Injectable({providedIn: 'root'})
 export class MessageService {
   private messages: Message[] = [];
   private messagesUpdated = new Subject<Message[]>();
 
-  constructor (private http: HttpClient) {}
+  constructor (private http: HttpClient, public snackBar: MatSnackBar) {}
 
   getMessages(id: string) {
     const test = 'test';
@@ -57,5 +58,11 @@ export class MessageService {
 
   getMessageUpdateListener() {
     return this.messagesUpdated.asObservable();
+  }
+
+  openSnackBar(message: string) {
+    this.snackBar.open(message, null, {
+      duration: 3000,
+    });
   }
 }
