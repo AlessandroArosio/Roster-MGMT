@@ -25,3 +25,9 @@ form {
   color: darkgreen;
   font-weight: bold;
 }
+
+.errorMsg {
+  padding: 1.5rem;
+  font-weight: bold;
+  color: red;
+}

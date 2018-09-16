@@ -28,6 +28,7 @@ export class RotaSwapComponent implements OnInit, OnDestroy {
   location: string;
   form: FormGroup;
   message: string;
+  errorMessage: string;
   private rotaId: string;
   private rotasSub: Subscription;
   private usersSub: Subscription;
@@ -47,8 +48,6 @@ export class RotaSwapComponent implements OnInit, OnDestroy {
     this.usersService.getUsers();
     this.form = new FormGroup({
       'userName': new FormControl(null, {validators: [Validators.required]}),
-
-      // normalise these dates!
       'datePicker': new FormControl(null, {validators: [Validators.required]}),
       'datePicker2': new FormControl(null, {validators: [Validators.required]})
     });
@@ -113,9 +112,12 @@ export class RotaSwapComponent implements OnInit, OnDestroy {
   }
 
   requestSwap(form: NgForm) {
+    if (form.value.datePicker > form.value.datePicker2) {
+      this.errorMessage = 'Starting date cannot be greater than ending date';
+      return;
+    }
     if (form.invalid) {
-      console.log('The form is invalid');
-      console.log(form);
+      return;
     } else {
       const textToSend =
         'Shift swap request' + this.normaliseDates(form.value.datePicker, form.value.datePicker2);
@@ -125,6 +127,7 @@ export class RotaSwapComponent implements OnInit, OnDestroy {
         receiver: form.value.userName,      // this is the user's ID!!!
         message: textToSend
       };
+      this.errorMessage = '';
       this.messageService.addMessage(message);
       this.message = 'Your request has been sent';
     }

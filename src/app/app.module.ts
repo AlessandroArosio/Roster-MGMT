@@ -6,7 +6,7 @@ import {ShiftCreateComponent} from './Shifts/shift-create/shift-create.component
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
   MatButtonModule,
-  MatCardModule, MatDatepickerModule,
+  MatCardModule, MatCheckboxModule, MatDatepickerModule,
   MatExpansionModule,
   MatInputModule,
   MatMenuModule, MatNativeDateModule, MatProgressSpinnerModule, MatSelectModule, MatSnackBarModule,
@@ -29,6 +29,7 @@ import {AuthInterceptor} from './auth/auth-interceptor';
 import {RotaSwapComponent} from './rota/rota-swap/rota-swap.component';
 import {MessageCreateComponent} from './messages/message-create/message-create.component';
 import {MessageListComponent} from './messages/message-list/message-list.component';
+import {RequestsComponent} from './requests/requests.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import {MessageListComponent} from './messages/message-list/message-list.compone
     RotaSwapComponent,
     LoginComponent,
     MessageCreateComponent,
-    MessageListComponent
+    MessageListComponent,
+    RequestsComponent
   ],
   imports: [
     BrowserModule,
@@ -64,6 +66,7 @@ import {MessageListComponent} from './messages/message-list/message-list.compone
     MatNativeDateModule,
     MatTabsModule,
     MatSnackBarModule,
+    MatCheckboxModule,
     ReactiveFormsModule,
     FormsModule,
     HttpClientModule

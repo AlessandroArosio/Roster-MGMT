@@ -1,0 +1,29 @@
+<h1>Requests page</h1>
+<form (submit)="submitRequest(requestForm)" #requestForm="ngForm" [formGroup]="form">
+  <mat-checkbox formControlName="unpaid">Unpaid holidays</mat-checkbox>
+  <mat-form-field class="calendar">
+    <input
+      matInput
+      [matDatepicker]="picker1"
+      [min]="minDate"
+      placeholder="From date"
+      formControlName="datePicker">
+    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+    <mat-datepicker #picker1></mat-datepicker>
+  </mat-form-field>
+  <mat-form-field class="calendar">
+    <input
+      matInput
+      [matDatepicker]="picker2"
+      [min]="minDate"
+      placeholder="To date"
+      formControlName="datePicker2">
+    <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+    <mat-datepicker #picker2></mat-datepicker>
+  </mat-form-field>
+  <div>
+    <button mat-raised-button color="accent" type="submit">Submit request</button>
+    <span class="errorMsg">{{ errorMessage }}</span>
+  </div>
+  <p class="confirmation">{{ message }}</p>
+</form>
