@@ -1,6 +1,7 @@
 <h1>Requests page</h1>
+<h2>Holiday request</h2>
 <form (submit)="submitRequest(requestForm)" #requestForm="ngForm" [formGroup]="form">
-  <mat-checkbox formControlName="unpaid">Unpaid holidays</mat-checkbox>
+  <mat-checkbox formControlName="unpaid">Unpaid leave</mat-checkbox>
   <mat-form-field class="calendar">
     <input
       matInput

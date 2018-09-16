@@ -30,15 +30,28 @@ router.delete('/:id', checkAuth, (req, res, next) => {
 
 // GET one single message from the DB -- probably I won't need this route
 router.get('/:id', checkAuth, (req, res, next) => {
-  Message
-    .find()
-    .where({ receiver: req.params.id })
+  const pageSize = +req.query.pagesize;
+  const currentPage = +req.query.page;
+  let fetchedMessages;
+  const messageQuery = Message.find().where({ receiver: req.params.id});
+  if (pageSize && currentPage) {
+    messageQuery
+      .skip(pageSize * (currentPage - 1))
+      .limit(pageSize);
+  }
+  messageQuery
     .then(documents => {
-    console.log(documents);
-    res.status(200).json({
-      message: 'Messages fetched for the current user',
-      messages: documents});
-  });
+      fetchedMessages = documents;
+      console.log(Message.where({ receiver: req.params.id}).count());
+      return Message.where({ receiver: req.params.id}).count();
+    })
+    .then(count => {
+      res.status(200).json({
+        message: 'Messages for the selected user fetched successfully',
+        messages: fetchedMessages,
+        maxMessages: count
+      });
+    });
 });
 
 // this one send the messages TO Angular -- this should send only the messages for the person logged in

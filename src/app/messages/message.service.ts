@@ -8,27 +8,32 @@ import {MatSnackBar} from '@angular/material';
 @Injectable({providedIn: 'root'})
 export class MessageService {
   private messages: Message[] = [];
-  private messagesUpdated = new Subject<Message[]>();
+  private messagesUpdated = new Subject<{messages: Message[], messagesCount: number}>();
 
   constructor (private http: HttpClient, public snackBar: MatSnackBar) {}
 
-  getMessages(id: string) {
-    const test = 'test';
+  getMessages(id: string, messagesPerPage: number, currentPage: number) {
+    const queryParams = `?pagesize=${messagesPerPage}&page=${currentPage}`;
     this.http
-      .get<{message: string, messages: any}>('http://localhost:3000/api/messages/' + id)
+      .get<{message: string, messages: any, maxMessages: number}>('http://localhost:3000/api/messages/' + id + queryParams)
       .pipe(map((messageData) => {
-        return messageData.messages.map(messages => {
-          return {
-            sender: messages.sender,
-            receiver: messages.receiver,
-            message: messages.message,
-            id: messages._id
-          };
-        });
+        return  {messages: messageData.messages.map(messages => {
+            return {
+              sender: messages.sender,
+              receiver: messages.receiver,
+              message: messages.message,
+              id: messages._id
+            };
+          }),
+          maxMessages: messageData.maxMessages
+        };
       }))
-      .subscribe((transformedMessage) => {
-        this.messages = transformedMessage;
-        this.messagesUpdated.next([...this.messages]);
+      .subscribe((transformedMessageData) => {
+        this.messages = transformedMessageData.messages;
+        this.messagesUpdated.next({
+          messages: [...this.messages],
+          messagesCount: transformedMessageData.maxMessages
+        });
       });
   }
 
@@ -39,21 +44,11 @@ export class MessageService {
 
   addMessage(message: Message) {
     this.http.post<{message: string, messageId: string}>('http://localhost:3000/api/messages', message)
-      .subscribe((responseData) => {
-        const id = responseData.messageId;
-        message.id = id;
-        this.messages.push(message);
-        this.messagesUpdated.next([...this.messages]);
-      });
+      .subscribe();
   }
 
   deleteMessage(messageId: string) {
-    this.http.delete('http://localhost:3000/api/messages/' + messageId)
-      .subscribe(() => {
-        const updatedMessage = this.messages.filter(message => message.id !== messageId);
-        this.messages = updatedMessage;
-        this.messagesUpdated.next([...this.messages]);
-      });
+    return this.http.delete('http://localhost:3000/api/messages/' + messageId);
   }
 
   getMessageUpdateListener() {

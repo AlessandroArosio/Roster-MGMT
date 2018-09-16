@@ -9,7 +9,7 @@ import {
   MatCardModule, MatCheckboxModule, MatDatepickerModule,
   MatExpansionModule,
   MatInputModule,
-  MatMenuModule, MatNativeDateModule, MatProgressSpinnerModule, MatSelectModule, MatSnackBarModule,
+  MatMenuModule, MatNativeDateModule, MatPaginatorModule, MatProgressSpinnerModule, MatSelectModule, MatSnackBarModule,
   MatTableModule, MatTabsModule,
   MatToolbarModule
 } from '@angular/material';
@@ -67,6 +67,7 @@ import {RequestsComponent} from './requests/requests.component';
     MatTabsModule,
     MatSnackBarModule,
     MatCheckboxModule,
+    MatPaginatorModule,
     ReactiveFormsModule,
     FormsModule,
     HttpClientModule

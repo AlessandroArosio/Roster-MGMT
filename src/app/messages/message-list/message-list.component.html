@@ -7,6 +7,11 @@
 <div *ngIf="messages.length > 0">
   <h2>Messages listed below</h2>
   <mat-spinner *ngIf="isLoading"></mat-spinner>
+  <mat-paginator
+    [length]="totalMessages"
+    [pageSize]="messagesPerPage"
+    [pageSizeOptions]="pageSizeOptions"
+    (page)="onChangedPage($event)"></mat-paginator>
   <mat-accordion>
     <mat-card *ngFor="let message of messages">
       <p><strong>Sender:</strong> {{ message.sender }}</p>

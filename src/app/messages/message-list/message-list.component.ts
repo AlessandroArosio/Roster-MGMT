@@ -6,7 +6,7 @@ import {UsersService} from '../../users/users.service';
 import {User} from '../../users/user.model';
 import {AuthService} from '../../auth/auth.service';
 import {HttpClient} from '@angular/common/http';
-import {MatSnackBar} from '@angular/material';
+import {MatSnackBar, PageEvent} from '@angular/material';
 
 @Component({
   selector: 'app-message-list',
@@ -20,6 +20,10 @@ export class MessageListComponent implements OnInit, OnDestroy {
   isSwap = false;
   isAdmin = false;
   loggedUserId: string;
+  totalMessages = 0;
+  messagesPerPage = 2;
+  currentPage = 1;
+  pageSizeOptions = [1, 2, 5, 10, 25];
   private messagesSub: Subscription;
   private usersSub: Subscription;
 
@@ -40,19 +44,23 @@ export class MessageListComponent implements OnInit, OnDestroy {
         this.users = users;
         this.loggedUserId = this.getUserId();
         this.isAdmin = this.authService.isAdminLogged();
-        this.messagesService.getMessages(this.loggedUserId);
+        this.messagesService.getMessages(this.loggedUserId, this.messagesPerPage, this.currentPage);
       });
     this.messagesSub = this.messagesService
       .getMessageUpdateListener()
-      .subscribe((messages: Message[]) => {
+      .subscribe((messagesData: {messages: Message[], messagesCount: number}) => {
         this.isLoading = false;
-        this.messages = messages;
-        this.addSwapBoolean(messages);
+        this.messages = messagesData.messages;
+        this.totalMessages = messagesData.messagesCount;
+        this.addSwapBoolean(messagesData.messages);
       });
   }
 
   onDelete(messageId: string) {
-    this.messagesService.deleteMessage(messageId);
+    this.isLoading = true;
+    this.messagesService.deleteMessage(messageId).subscribe(() => {
+      this.messagesService.getMessages(this.loggedUserId, this.messagesPerPage, this.currentPage);
+    });
   }
 
   private getUserId() {
@@ -80,6 +88,13 @@ export class MessageListComponent implements OnInit, OnDestroy {
         arr[i].isSwap = true;
       }
     }
+  }
+
+  onChangedPage(pageData: PageEvent) {
+    this.isLoading = true;
+    this.currentPage = pageData.pageIndex + 1;
+    this.messagesPerPage = pageData.pageSize;
+    this.messagesService.getMessages(this.loggedUserId, this.messagesPerPage, this.currentPage);
   }
 
   acceptSwap(message: Message) {
