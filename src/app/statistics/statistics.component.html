@@ -4,8 +4,8 @@
     <th></th>
     <th *ngFor="let shift of shifts">{{ shift.name }}</th>
   </tr>
-  <tr *ngFor="let user of users">
-    <td>{{ user.firstName }}</td>
-    <td>Text</td>
+  <tr *ngFor="let user of statsPerUser">
+    <td>{{ findUserName(user.name) }}</td>
+    <td *ngFor="let total of user.totalShifts">{{ total }}</td>
   </tr>
 </table>

@@ -17,6 +17,13 @@ export class StatisticsComponent implements OnInit, OnDestroy {
   shifts: Shift[] = [];
   rotas: Rota[] = [];
   statsHolder = [];
+  statsPerUser: [{
+    name: string,
+    totalShifts: number[]
+  }] = [{
+    name: '',
+    totalShifts: []
+  }];
   isLoading = false;
   private usersSub: Subscription;
   private shiftsSub: Subscription;
@@ -45,6 +52,7 @@ export class StatisticsComponent implements OnInit, OnDestroy {
         this.rotas = this.rotaService.getRosters();
         this.modifyRotasArray(this.rotas);
         console.log(this.statsHolder);
+        this.calculateNumberOfShifts();
       });
     this.usersSub = this.usersService
       .getUserUpdateListener()
@@ -58,7 +66,7 @@ export class StatisticsComponent implements OnInit, OnDestroy {
     for (let i = 0; i < arr.length; i++) {
       for (let j = 0; j < arr[i].weeklyRota.length; j++) {
         for (let k = 0; k < arr[i].weeklyRota[j].userRoster[0].employeeName.length; k++) {
-          let userStats: {
+          const userStats: {
             empName: string,
             empShifts: string[]
           } = {
@@ -84,7 +92,35 @@ export class StatisticsComponent implements OnInit, OnDestroy {
   }
 
   calculateNumberOfShifts() {
+    this.statsHolder.forEach(el => el.empShifts.sort());
+    this.shifts.sort();
+    let emp = null;
+    let tallyUp = [];
+    for (let i = 0; i < this.statsHolder.length; i++) {
+      emp = this.statsHolder[i].empName;
+      let counter = 0;
+      for (let j = 0; j < this.shifts.length; j++) {
+        for (let k = 0; k < this.statsHolder[i].empShifts.length; k++) {
+          if (this.shifts[j].name === this.statsHolder[i].empShifts[k]) {
+            counter++;
+          }
+        }
+        tallyUp.push(counter);
+        counter = 0;
+      }
+      this.statsPerUser.push({name: emp, totalShifts: tallyUp});
+      tallyUp = [];
+    }
+    this.statsPerUser.splice(0, 1);
+    console.log(this.statsPerUser);
+  }
 
+  findUserName(id: string) {
+    for (let i = 0; i < this.users.length; i++) {
+      if (id === this.users[i].id) {
+        return this.users[i].firstName + ' ' + this.users[i].lastName;
+      }
+    }
   }
 
   ngOnDestroy() {
