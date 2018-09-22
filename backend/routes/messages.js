@@ -11,7 +11,6 @@ router.post('', checkAuth, (req, res, next) => {
     receiver: req.body.receiver,
     message: req.body.message
   });
-  console.log(message);
   message.save().then(createMessage => {
     res.status(201).json({
       message: 'Message stored successfully',
@@ -23,7 +22,6 @@ router.post('', checkAuth, (req, res, next) => {
 // deleting a MESSAGE document from MongoDB
 router.delete('/:id', checkAuth, (req, res, next) => {
   Message.deleteOne({_id: req.params.id}).then(result => {
-    console.log(result);
   });
   res.status(200).json({message: "Message deleted!"});
 });
@@ -42,7 +40,6 @@ router.get('/:id', checkAuth, (req, res, next) => {
   messageQuery
     .then(documents => {
       fetchedMessages = documents;
-      console.log(Message.where({ receiver: req.params.id}).count());
       return Message.where({ receiver: req.params.id}).count();
     })
     .then(count => {
@@ -56,7 +53,6 @@ router.get('/:id', checkAuth, (req, res, next) => {
 
 // this one send the messages TO Angular -- this should send only the messages for the person logged in
 router.get('', checkAuth,(req, res, next) => {
-  console.log();
   Message.find()
     .then(documents => {
       res.status(200).json({

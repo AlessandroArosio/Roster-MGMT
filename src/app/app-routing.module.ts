@@ -14,6 +14,7 @@ import {RotaSwapComponent} from './rota/rota-swap/rota-swap.component';
 import {MessageListComponent} from './messages/message-list/message-list.component';
 import {MessageCreateComponent} from './messages/message-create/message-create.component';
 import {RequestsComponent} from './requests/requests.component';
+import {StatisticsComponent} from './statistics/statistics.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -34,7 +35,8 @@ const routes: Routes = [
   { path: 'swap/:rotaId', component: RotaSwapComponent, canActivate: [AuthGuard] },
   { path: 'homepage', component: MessageListComponent, canActivate: [AuthGuard] },
   { path: 'homepage/send-message', component: MessageCreateComponent, canActivate: [AuthGuard] },
-  { path: 'requests', component: RequestsComponent, canActivate: [AuthGuard] }
+  { path: 'requests', component: RequestsComponent, canActivate: [AuthGuard] },
+  { path: 'stats', component: StatisticsComponent, canActivate: [AuthGuard] }
 ];
 
 @NgModule({

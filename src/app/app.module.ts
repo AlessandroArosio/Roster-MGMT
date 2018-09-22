@@ -30,6 +30,7 @@ import {RotaSwapComponent} from './rota/rota-swap/rota-swap.component';
 import {MessageCreateComponent} from './messages/message-create/message-create.component';
 import {MessageListComponent} from './messages/message-list/message-list.component';
 import {RequestsComponent} from './requests/requests.component';
+import {StatisticsComponent} from './statistics/statistics.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import {RequestsComponent} from './requests/requests.component';
     LoginComponent,
     MessageCreateComponent,
     MessageListComponent,
-    RequestsComponent
+    RequestsComponent,
+    StatisticsComponent
   ],
   imports: [
     BrowserModule,

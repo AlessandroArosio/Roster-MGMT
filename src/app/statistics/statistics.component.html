@@ -1,0 +1,11 @@
+<h1>Statistics about rosters</h1>
+<table class="mat-elevation-z8">
+  <tr>
+    <th></th>
+    <th *ngFor="let shift of shifts">{{ shift.name }}</th>
+  </tr>
+  <tr *ngFor="let user of users">
+    <td>{{ user.firstName }}</td>
+    <td>Text</td>
+  </tr>
+</table>
