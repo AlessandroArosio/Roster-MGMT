@@ -11,12 +11,11 @@ export class RotaService {
 
   isLoading = false;
   private shifts: Shift[] = [];
-  private rotas: Rota[] = [];
-  private rotasUpdated = new Subject<Rota[]>();
-  private rosters = [];
+  rotas: Rota[] = [];
+  rotasUpdated = new Subject<Rota[]>();
+  rosters = [];
 
   constructor(private http: HttpClient) {}
-
 
 
   addRota(rota) {

@@ -5,7 +5,10 @@ import {Rota} from '../rota/rota.model';
 import {UsersService} from '../users/users.service';
 import {ShiftsService} from '../Shifts/shifts.service';
 import {RotaService} from '../rota/rota.service';
-import {Subscription} from 'rxjs';
+import {Subject, Subscription} from 'rxjs';
+import {FormControl} from '@angular/forms';
+import {map} from 'rxjs/operators';
+import {HttpClient} from '@angular/common/http';
 
 @Component({
   selector: 'app-stats',
@@ -16,6 +19,7 @@ export class StatisticsComponent implements OnInit, OnDestroy {
   users: User[] = [];
   shifts: Shift[] = [];
   rotas: Rota[] = [];
+  rosters = [];
   statsHolder = [];
   statsPerUser: [{
     name: string,
@@ -25,14 +29,20 @@ export class StatisticsComponent implements OnInit, OnDestroy {
     totalShifts: []
   }];
   isLoading = false;
+  message = '';
+  statsUpdated = new Subject<any>();
+  date = new FormControl();
+  endDate = new FormControl();
   private usersSub: Subscription;
   private shiftsSub: Subscription;
   private rotasSub: Subscription;
+  private statsSub: Subscription;
 
   constructor (
     public usersService: UsersService,
     public shiftsService: ShiftsService,
-    public rotaService: RotaService) {}
+    public rotaService: RotaService,
+    public http: HttpClient) {}
 
   ngOnInit() {
     this.isLoading = true;
@@ -92,6 +102,9 @@ export class StatisticsComponent implements OnInit, OnDestroy {
   }
 
   calculateNumberOfShifts() {
+    if (this.statsHolder[0].name === '') {
+      this.statsHolder.splice(0, 1);
+    }
     this.statsHolder.forEach(el => el.empShifts.sort());
     this.shifts.sort();
     let emp = null;
@@ -112,7 +125,6 @@ export class StatisticsComponent implements OnInit, OnDestroy {
       tallyUp = [];
     }
     this.statsPerUser.splice(0, 1);
-    console.log(this.statsPerUser);
   }
 
   findUserName(id: string) {
@@ -122,6 +134,116 @@ export class StatisticsComponent implements OnInit, OnDestroy {
       }
     }
   }
+
+  mondayFilter = (d: Date): boolean => {
+    const day = d.getDay();
+    // Prevent all days but Mondays from being selected.
+    return day === 1;
+  }
+
+  sundayFilter = (d: Date): boolean => {
+    const day = d.getDay();
+    // Prevent all days but Mondays from being selected.
+    return day === 0;
+  }
+
+  dateRange(start: Date, end: Date) {
+    if (start > end) {
+      this.message = 'Start date cannot be greater than end date!';
+      return;
+    }
+    if (start === null || end === null) {
+      this.rotaService.getRotas();
+      return;
+    }
+    this.message = '';
+    this.getFilteredRotas(start.getTime(), end.getTime());
+  }
+
+  private getFilteredRotas(startDate: number, endDate: number) {
+    let filteredRotas;
+    const queryParams = `?start=${startDate}&end=${endDate}`;
+    this.http
+      .get<{message: string, rotas: any}>('http://localhost:3000/api/rotas' + queryParams)
+      .pipe(map((rotaData) => {
+        return rotaData.rotas.map(rotas => {
+          filteredRotas = rotas;
+          return {
+            branchName: rotas.branchName,
+            employeeName: rotas.employeeName,
+            shifts: rotas.shifts,
+            rotaStartDate: rotas.rotaStartDate,
+            rotaEndDate: rotas.rotaEndDate,
+            id: rotas._id
+          };
+        });
+      }))
+      .subscribe(
+        (transformedRota) => {
+          this.statsHolder = [{
+            name: '',
+            totalShifts: []
+          }];
+          this.statsPerUser = [{
+            name: '',
+            totalShifts: []
+          }];
+          this.normaliseArray(transformedRota);
+          this.modifyRotasArray(this.rosters);
+          this.calculateNumberOfShifts();
+          this.statsUpdated.next([...this.statsPerUser]);
+        }
+      );
+  }
+
+  getStatsUpdateListener() {
+    return this.statsUpdated.asObservable();
+  }
+
+  private normaliseArray(rotas) {
+    let found = false;
+    for (let i = 0; i < rotas.length; i++) {
+      for (let j = 0; j < this.rosters.length; j++) {
+        if (rotas[i].branchName === this.rosters[j].branch) {
+          const shifts = this.shiftsPerUser(rotas[i].shifts);
+          const obj = {
+            startDate: rotas[i].rotaStartDate + ' <---> ' + rotas[i].rotaEndDate,
+            id: rotas[i].id,
+            userRoster: [{
+              employeeName: rotas[i].employeeName,
+              shifts: [shifts]}],
+          };
+          this.rosters[j].weeklyRota.push(obj);
+          found = true;
+        }
+      }
+      if (!found) {
+        const shifts = this.shiftsPerUser(rotas[i].shifts);
+        this.rosters.push({
+          branch: rotas[i].branchName,
+          weeklyRota: [{
+            id: rotas[i].id,
+            startDate: rotas[i].rotaStartDate + ' <---> ' + rotas[i].rotaEndDate,
+            userRoster: [{
+              employeeName: rotas[i].employeeName,
+              shifts: [shifts]}]
+          }]
+        });
+        found = false;
+      }
+      found = false;
+    }
+  }
+
+  private shiftsPerUser(arr: string[]) {
+    const sevenShiftsPerUser = [];
+    for (let i = 0; i <= arr.length; i++) {
+      const tempArr = arr.splice(0, 7);
+      sevenShiftsPerUser.push(tempArr);
+    }
+    return sevenShiftsPerUser;
+  }
+
 
   ngOnDestroy() {
     this.rotasSub.unsubscribe();

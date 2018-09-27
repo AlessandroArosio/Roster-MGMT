@@ -1,4 +1,5 @@
 <h1>Statistics about rosters</h1>
+<mat-spinner *ngIf="isLoading"></mat-spinner>
 <table class="mat-elevation-z8">
   <tr>
     <th></th>
@@ -9,3 +10,30 @@
     <td *ngFor="let total of user.totalShifts">{{ total }}</td>
   </tr>
 </table>
+<p>View rotas from: <span>
+<mat-form-field class="example-full-width" color="accent">
+  <input
+    matInput
+    [matDatepickerFilter]="mondayFilter"
+    [matDatepicker]="picker"
+    placeholder="Choose a date"
+    [formControl]="date">
+  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+  <mat-datepicker #picker></mat-datepicker>
+</mat-form-field>
+   To:
+<mat-form-field class="example-full-width" color="accent">
+  <input
+    matInput
+    [matDatepickerFilter]="sundayFilter"
+    [matDatepicker]="picker2"
+    placeholder="Choose a date"
+    [formControl]="endDate"
+    [min]="date.value">
+  <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+  <mat-datepicker #picker2></mat-datepicker>
+</mat-form-field>
+</span>
+  <button id="filter" color="primary" mat-button (click)="dateRange(date.value, endDate.value)">Apply filter</button>
+  <span id="errorMessage">{{ message }}</span>
+</p>
