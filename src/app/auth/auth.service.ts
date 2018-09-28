@@ -5,6 +5,9 @@ import { Router } from '@angular/router';
 import {AuthData} from './auth-data.model';
 import {Subject} from 'rxjs';
 import {MatSnackBar} from '@angular/material';
+import {environment} from '../../environments/environment';
+
+const BACKEND_URL = environment.apiUrl + '/login';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -38,7 +41,7 @@ export class AuthService {
 
   login(email: string, password: string) {
     const authData: AuthData = {email: email, password: password};
-    this.http.post<{token: string, expiresIn: number}>('http://localhost:3000/api/login', authData)
+    this.http.post<{token: string, expiresIn: number}>(BACKEND_URL, authData)
       .subscribe(response => {
         const token = response.token;
         this.emailAuthenticated = this.parseJwt(token).email;

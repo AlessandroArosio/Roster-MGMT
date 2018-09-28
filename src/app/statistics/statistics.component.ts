@@ -9,6 +9,9 @@ import {Subject, Subscription} from 'rxjs';
 import {FormControl} from '@angular/forms';
 import {map} from 'rxjs/operators';
 import {HttpClient} from '@angular/common/http';
+import {environment} from '../../environments/environment';
+
+const BACKEND_URL = environment.apiUrl + '/rotas';
 
 @Component({
   selector: 'app-stats',
@@ -175,7 +178,7 @@ export class StatisticsComponent implements OnInit, OnDestroy {
     let filteredRotas;
     const queryParams = `?start=${startDate}&end=${endDate}`;
     this.http
-      .get<{message: string, rotas: any}>('http://localhost:3000/api/rotas' + queryParams)
+      .get<{message: string, rotas: any}>(BACKEND_URL + queryParams)
       .pipe(map((rotaData) => {
         return rotaData.rotas.map(rotas => {
           filteredRotas = rotas;

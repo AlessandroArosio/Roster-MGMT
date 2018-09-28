@@ -4,6 +4,9 @@ import {Subject} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {map} from 'rxjs/operators';
 import {MatSnackBar} from '@angular/material';
+import {environment} from '../../environments/environment';
+
+const BACKEND_URL = environment.apiUrl + '/messages/';
 
 @Injectable({providedIn: 'root'})
 export class MessageService {
@@ -15,7 +18,7 @@ export class MessageService {
   getMessages(id: string, messagesPerPage: number, currentPage: number) {
     const queryParams = `?pagesize=${messagesPerPage}&page=${currentPage}`;
     this.http
-      .get<{message: string, messages: any, maxMessages: number}>('http://localhost:3000/api/messages/' + id + queryParams)
+      .get<{message: string, messages: any, maxMessages: number}>(BACKEND_URL + id + queryParams)
       .pipe(map((messageData) => {
         return  {messages: messageData.messages.map(messages => {
             return {
@@ -39,16 +42,16 @@ export class MessageService {
 
   getMessage(id: string) {
     return this.http.get<{_id: string, sender: string, receiver: string, message: string}>(
-      'http://localhost:3000/api/messages/' + id);
+      BACKEND_URL + id);
   }
 
   addMessage(message: Message) {
-    this.http.post<{message: string, messageId: string}>('http://localhost:3000/api/messages', message)
+    this.http.post<{message: string, messageId: string}>(BACKEND_URL, message)
       .subscribe();
   }
 
   deleteMessage(messageId: string) {
-    return this.http.delete('http://localhost:3000/api/messages/' + messageId);
+    return this.http.delete(BACKEND_URL + messageId);
   }
 
   getMessageUpdateListener() {

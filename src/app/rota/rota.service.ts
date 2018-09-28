@@ -4,7 +4,9 @@ import {Rota} from './rota.model';
 import {HttpClient} from '@angular/common/http';
 import {Subject} from 'rxjs';
 import {map} from 'rxjs/operators';
+import {environment} from '../../environments/environment';
 
+const BACKEND_URL = environment.apiUrl + '/rotas';
 
 @Injectable({providedIn: 'root'})
 export class RotaService {
@@ -19,7 +21,7 @@ export class RotaService {
 
 
   addRota(rota) {
-    this.http.post<any>('http://localhost:3000/api/rotas', rota)
+    this.http.post<any>(BACKEND_URL, rota)
       .subscribe((responseData) => {
         const id = responseData.rotaId;
         rota.id = id;
@@ -34,7 +36,7 @@ export class RotaService {
 
   getRotas() {
     this.http
-      .get<{message: string, rotas: any}>('http://localhost:3000/api/rotas')
+      .get<{message: string, rotas: any}>(BACKEND_URL)
       .pipe(map((rotaData) => {
         return rotaData.rotas.map(rotas => {
           return {
@@ -58,7 +60,7 @@ export class RotaService {
   getFilteredRotas(startDate: number, endDate: number) {
     const queryParams = `?start=${startDate}&end=${endDate}`;
     this.http
-      .get<{message: string, rotas: any}>('http://localhost:3000/api/rotas' + queryParams)
+      .get<{message: string, rotas: any}>(BACKEND_URL + queryParams)
       .pipe(map((rotaData) => {
         return rotaData.rotas.map(rotas => {
           return {
@@ -80,11 +82,11 @@ export class RotaService {
   }
 
   getRota(id: string) {
-    return this.http.get<any>('http://localhost:3000/api/rotas/' + id);
+    return this.http.get<any>(BACKEND_URL + '/' + id);
   }
 
   deleteRota(rotaId: string) {
-    this.http.delete('http://localhost:3000/api/rotas/' + rotaId)
+    this.http.delete(BACKEND_URL + '/' + rotaId)
       .subscribe(() => {
           for (let i = 0; i < this.rosters.length; i++) {
             for (let j = 0; j < this.rosters[i].weeklyRota.length; j++) {
@@ -103,7 +105,7 @@ export class RotaService {
 
   updateRota(arr) {
     const rota = arr;
-    this.http.put('http://localhost:3000/api/rotas/' + arr.id, rota)
+    this.http.put(BACKEND_URL + '/' + arr.id, rota)
       .subscribe(response => {
         const updatedRotas = [...this.rotas];
         const oldRotaIndex = updatedRotas.findIndex(p => p.id === rota.id);

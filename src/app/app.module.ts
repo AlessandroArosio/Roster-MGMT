@@ -4,15 +4,7 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import {ShiftCreateComponent} from './Shifts/shift-create/shift-create.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {
-  MatButtonModule,
-  MatCardModule, MatCheckboxModule, MatDatepickerModule, MatDialogModule,
-  MatExpansionModule,
-  MatInputModule,
-  MatMenuModule, MatNativeDateModule, MatPaginatorModule, MatProgressSpinnerModule, MatSelectModule, MatSnackBarModule,
-  MatTableModule, MatTabsModule,
-  MatToolbarModule
-} from '@angular/material';
+
 import {HeaderComponent} from './header/header.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {ShiftListComponent} from './Shifts/shift-list/shift-list.component';
@@ -33,6 +25,7 @@ import {RequestsComponent} from './requests/requests.component';
 import {StatisticsComponent} from './statistics/statistics.component';
 import {ErrorInterceptor} from './error-interceptor';
 import {ErrorComponent} from './error/error.component';
+import {AngularMaterialModule} from './angular-material.module';
 
 @NgModule({
   declarations: [
@@ -58,25 +51,10 @@ import {ErrorComponent} from './error/error.component';
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    MatInputModule,
-    MatCardModule,
-    MatButtonModule,
-    MatToolbarModule,
-    MatExpansionModule,
-    MatTableModule,
-    MatMenuModule,
-    MatProgressSpinnerModule,
-    MatSelectModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-    MatTabsModule,
-    MatSnackBarModule,
-    MatCheckboxModule,
-    MatPaginatorModule,
-    MatDialogModule,
     ReactiveFormsModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    AngularMaterialModule
   ],
   providers: [
       {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},

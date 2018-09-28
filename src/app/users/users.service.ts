@@ -5,6 +5,9 @@ import {HttpClient} from '@angular/common/http';
 import {Shift} from '../Shifts/shift.model';
 import {last, map} from 'rxjs/operators';
 import {MatSnackBar} from '@angular/material';
+import {environment} from '../../environments/environment';
+
+const BACKEND_URL = environment.apiUrl + '/users';
 
 @Injectable({providedIn: 'root'})
 export class UsersService {
@@ -16,7 +19,7 @@ export class UsersService {
 
   getUsers() {
     this.http
-      .get<{message: string, users: any}>('http://localhost:3000/api/users')
+      .get<{message: string, users: any}>(BACKEND_URL)
       .pipe(map((usersData) => {
         return usersData.users.map(users => {
           return {
@@ -35,10 +38,6 @@ export class UsersService {
       });
   }
 
-  getErrorMessage() {
-    return this.addUserError;
-  }
-
   getUser(id: string) {
     return this.http.get<{
       _id: string,
@@ -48,7 +47,7 @@ export class UsersService {
       telephone: number,
       password: string}>
     (
-      'http://localhost:3000/api/users/' + id);
+      BACKEND_URL + '/' + id);
   }
 
   getUserUpdateListener() {
@@ -64,7 +63,7 @@ export class UsersService {
       telephone: telephone,
       password: password
     };
-    return this.http.post<{message: string, userId: string}>('http://localhost:3000/api/users', user)
+    return this.http.post<{message: string, userId: string}>(BACKEND_URL, user)
       .subscribe((responseData) => {
           const id = responseData.userId;
           user.id = id;
@@ -83,7 +82,7 @@ export class UsersService {
 
   updateUser(id: string, firstName: string, lastName: string, email: string, telephone: number, password: string) {
     const user: User = { id: id, firstName: firstName, lastName: lastName, email: email, telephone: telephone, password: password };
-    this.http.put('http://localhost:3000/api/users/' + id, user)
+    this.http.put(BACKEND_URL + '/' + id, user)
       .subscribe(response => {
 
         const updatedUsers = [...this.users];
@@ -95,7 +94,7 @@ export class UsersService {
   }
 
   deleteUser(userId: string) {
-    this.http.delete('http://localhost:3000/api/users/' + userId)
+    this.http.delete(BACKEND_URL + '/' + userId)
       .subscribe(() => {
         const updatedUser = this.users.filter(user => user.id !== userId);
         this.users = updatedUser;

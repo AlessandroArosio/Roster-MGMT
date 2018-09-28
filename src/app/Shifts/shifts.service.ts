@@ -3,7 +3,9 @@ import {Injectable} from '@angular/core';
 import { Subject } from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {map} from 'rxjs/operators';
+import {environment} from '../../environments/environment';
 
+const BACKEND_URL = environment.apiUrl + '/shifts';
 
 @Injectable({providedIn: 'root'})
 export class ShiftsService {
@@ -15,7 +17,7 @@ export class ShiftsService {
 
   getShifts() {
     this.http
-      .get<{message: string, shifts: any}>('http://localhost:3000/api/shifts')
+      .get<{message: string, shifts: any}>(BACKEND_URL)
       .pipe(map((shiftData) => {
         return shiftData.shifts.map(shifts => {
           return {
@@ -34,7 +36,7 @@ export class ShiftsService {
 
   getShift(id: string) {
     return this.http.get<{_id: string, name: string, start: string, end: string}>(
-      'http://localhost:3000/api/shifts/' + id);
+      BACKEND_URL + '/' + id);
   }
 
   getShiftUpdateListener() {
@@ -48,7 +50,7 @@ export class ShiftsService {
       start: start,
       end: end
     };
-    this.http.post<{message: string, shiftId: string}>('http://localhost:3000/api/shifts', shift)
+    this.http.post<{message: string, shiftId: string}>(BACKEND_URL, shift)
       .subscribe((responseData) => {
         const id = responseData.shiftId;
         shift.id = id;
@@ -59,7 +61,7 @@ export class ShiftsService {
 
   updateShift(id: string, name: string, start: string, end: string) {
     const shift: Shift = { id: id, name: name, start: start, end: end };
-    this.http.put('http://localhost:3000/api/shifts/' + id, shift)
+    this.http.put(BACKEND_URL + '/' + id, shift)
       .subscribe(response => {
         const updatedShifts = [...this.shifts];
         const oldShiftIndex = updatedShifts.findIndex(p => p.id === shift.id);
@@ -70,7 +72,7 @@ export class ShiftsService {
   }
 
   deleteShift(shiftId: string) {
-    this.http.delete('http://localhost:3000/api/shifts/' + shiftId)
+    this.http.delete(BACKEND_URL + '/' + shiftId)
       .subscribe(() => {
         const updatedShift = this.shifts.filter(shift => shift.id !== shiftId);
         this.shifts = updatedShift;

@@ -3,9 +3,9 @@ import {Subject} from 'rxjs';
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {map} from 'rxjs/operators';
-import {hostReportError} from 'rxjs/internal-compatibility';
-import {Shift} from '../Shifts/shift.model';
+import {environment} from '../../environments/environment';
 
+const BACKEND_URL = environment.apiUrl + '/branches';
 
 @Injectable({providedIn: 'root'})
 export class BranchesService {
@@ -16,7 +16,7 @@ export class BranchesService {
 
   getBranches() {
     this.http
-      .get<{message: string, branches: any}>('http://localhost:3000/api/branches')
+      .get<{message: string, branches: any}>(BACKEND_URL)
       .pipe(map((branchData) => {
         return branchData.branches.map(branches => {
           return {
@@ -33,7 +33,7 @@ export class BranchesService {
 
   getBranch(id: string) {
     return this.http.get<{ _id: string, branchName: string }>(
-      'http://localhost:3000/api/branches/' + id);
+      BACKEND_URL + '/' + id);
   }
 
   getBranchUpdateListener() {
@@ -44,7 +44,7 @@ export class BranchesService {
     const branch: Branch = {
       id: null,
       branchName: name};
-    this.http.post<{message: string, branchId: string}>('http://localhost:3000/api/branches', branch)
+    this.http.post<{message: string, branchId: string}>(BACKEND_URL, branch)
       .subscribe((responseData) => {
         const id = responseData.branchId;
         branch.id = id;
@@ -55,7 +55,7 @@ export class BranchesService {
 
   updateBranch(id: string, name: string) {
     const branch: Branch = { id: id, branchName: name };
-    this.http.put('http://localhost:3000/api/branches/' + id, branch)
+    this.http.put(BACKEND_URL + '/' + id, branch)
       .subscribe(response => {
         const updatedBranch = [...this.branches];
         const oldShiftIndex = updatedBranch.findIndex(p => p.id === branch.id);
@@ -66,7 +66,7 @@ export class BranchesService {
   }
 
   deleteBranch(branchId: string) {
-    this.http.delete('http://localhost:3000/api/branches/' + branchId)
+    this.http.delete(BACKEND_URL + '/' + branchId)
       .subscribe(() => {
         const updatedBranch = this.branches.filter(branch => branch.id !== branchId);
         this.branches = updatedBranch;
