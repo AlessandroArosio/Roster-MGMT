@@ -168,10 +168,10 @@ export class StatisticsComponent implements OnInit, OnDestroy {
       return;
     }
     this.message = '';
-    this.getFilteredRotas(start.getTime(), end.getTime());
+    this.applyFilters(start.getTime(), end.getTime());
   }
 
-  private getFilteredRotas(startDate: number, endDate: number) {
+  private applyFilters(startDate: number, endDate: number) {
     let filteredRotas;
     const queryParams = `?start=${startDate}&end=${endDate}`;
     this.http
@@ -199,7 +199,7 @@ export class StatisticsComponent implements OnInit, OnDestroy {
             name: '',
             totalShifts: []
           }];
-          this.normaliseArray(transformedRota);
+          this.normalise(transformedRota);
           this.modifyRotasArray(this.rosters);
           this.calculateNumberOfShifts();
           this.statsUpdated.next([...this.statsPerUser]);
@@ -207,7 +207,7 @@ export class StatisticsComponent implements OnInit, OnDestroy {
       );
   }
 
-  private normaliseArray(rotas) {
+  private normalise(rotas) {
     let found = false;
     for (let i = 0; i < rotas.length; i++) {
       for (let j = 0; j < this.rosters.length; j++) {
