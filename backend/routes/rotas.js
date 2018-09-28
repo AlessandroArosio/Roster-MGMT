@@ -20,7 +20,12 @@ router.post('', checkAuth, checkUser, (req, res, next) => {
       message: "Rota added successfully",
       rotaId: createdRota._id
     });
-  });
+  })
+    .catch(error => {
+      res.status(500).json({
+        message: 'Create rota failed. Error occurred'
+      });
+    });
 });
 
 // deleting a ROTA document from MongoDB
@@ -44,7 +49,12 @@ router.put('/:id', checkAuth, checkUser, (req, res, next) => {
   Rota.updateOne({_id: req.params.id}, rota).then(result => {
     console.log(result);
     res.status(200).json({message: "Rota update successful"});
-  });
+  })
+    .catch(error => {
+      res.status(500).json({
+        message: 'Couldn\'t update rota. Error occurred'
+      });
+    });
 });
 
 // GET one single shift from the DB
@@ -56,7 +66,12 @@ router.get('/:id', checkAuth, (req, res, next) => {
       res.status(400).json({message: 'Rota not found'});
       console.log('rota not found');
     }
-  });
+  })
+    .catch(error => {
+      res.status(500).json({
+        message: 'Fetching rota failed. Error occurred'
+      });
+    });
 });
 
 // this one send the rotas TO Angular
@@ -78,7 +93,12 @@ router.get('', checkAuth, (req, res, next) => {
         rotas: documents
       });
     }
-  });
+  })
+    .catch(error => {
+      res.status(500).json({
+        message: 'Fetching rotas failed. Error occurred'
+      });
+    });
 });
 
 function applyFilter(array, start, end) {

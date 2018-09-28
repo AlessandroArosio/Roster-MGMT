@@ -19,7 +19,7 @@ router.post('', (req, res, next) => {
     .then(result => {
       if (!result) {
         return res.status(401).json({
-          message: "Auth failed 2 - wrong credentials"
+          message: "Invalid authentication credentials!"
         });
       }
       const token = jwt.sign(

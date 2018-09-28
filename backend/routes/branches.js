@@ -15,7 +15,12 @@ router.post('', checkAuth, checkUser, (req, res, next) => {
       message: "Branch added successfully",
       branchId: createdBranch._id
     });
-  });
+  })
+    .catch(error => {
+      res.status(500).json({
+        message: 'Create branch failed. Error occurred'
+      });
+    });
 });
 
 // deleting a BRANCH document from MongoDB
@@ -35,7 +40,12 @@ router.put('/:id', checkAuth, checkUser, (req, res, next) => {
   Branch.updateOne({_id: req.params.id}, branch).then(result => {
     console.log(result);
     res.status(200).json({message: "Branch update successful"});
-  });
+  })
+    .catch(error => {
+      res.status(500).json({
+        message: 'Couldn\'t update branch. Error occurred'
+      });
+    });
 });
 
 // GET one single branch from the DB
@@ -46,7 +56,12 @@ router.get('/:id', checkAuth, (req, res, next) => {
     } else {
       res.status(400).json({message: 'Branch not found'});
     }
-  });
+  })
+    .catch(error => {
+      res.status(500).json({
+        message: 'Fetching branch failed. Error occurred'
+      });
+    });
 });
 
 // this one send the branches TO Angular
@@ -57,7 +72,12 @@ router.get('', checkAuth, (req, res, next) => {
         message: "Branch fetch successfully",
         branches: documents
       });
+    })
+    .catch(error => {
+    res.status(500).json({
+      message: 'Fetching branches failed. Error occurred'
     });
+  });
 });
 
 module.exports = router;

@@ -24,7 +24,7 @@ router.post('', checkAuth, checkUser, (req, res, next) => {
       })
       .catch(err => {
         res.status(500).json({
-          error: err
+          message: 'Email address already present in database'
         });
       });
     });
@@ -49,7 +49,12 @@ router.put('/:id', checkAuth, checkUser, (req, res, next) => {
   });
   User.updateOne({_id: req.params.id}, user).then(result => {
     res.status(200).json({message: "User update successful"});
-  });
+  })
+    .catch(error => {
+      res.status(500).json({
+        message: 'Couldn\'t update user. Error occurred'
+      });
+    });
 });
 
 // GET one single user from the DB
@@ -60,7 +65,12 @@ router.get('/:id', checkAuth, (req, res, next) => {
     } else {
       res.status(400).json({message: 'User not found'});
     }
-  });
+  })
+    .catch(error => {
+      res.status(500).json({
+        message: 'Fetching user failed. Error occurred'
+      });
+    });;
 });
 
 // this one send the users TO Angular
@@ -70,6 +80,11 @@ router.get('', checkAuth, (req, res, next) => {
       res.status(200).json({
         message: "User fetch successfully",
         users: documents
+      });
+    })
+    .catch(error => {
+      res.status(500).json({
+        message: 'Fetching users failed. Error occurred'
       });
     });
 });

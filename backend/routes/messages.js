@@ -16,7 +16,12 @@ router.post('', checkAuth, (req, res, next) => {
       message: 'Message stored successfully',
       messageId: createMessage._id
     });
-  });
+  })
+    .catch(error => {
+      res.status(500).json({
+        message: 'Create message failed. Error occurred'
+      });
+    });
 });
 
 // deleting a MESSAGE document from MongoDB
@@ -48,6 +53,11 @@ router.get('/:id', checkAuth, (req, res, next) => {
         messages: fetchedMessages,
         maxMessages: count
       });
+    })
+    .catch(error => {
+      res.status(500).json({
+        message: 'Fetching message failed. Error occurred'
+      });
     });
 });
 
@@ -58,6 +68,11 @@ router.get('', checkAuth,(req, res, next) => {
       res.status(200).json({
         message: "Message fetch successfully",
         messages: documents
+      });
+    })
+    .catch(error => {
+      res.status(500).json({
+        message: 'Fetching messages failed. Error occurred'
       });
     });
 });

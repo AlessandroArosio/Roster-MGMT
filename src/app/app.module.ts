@@ -6,7 +6,7 @@ import {ShiftCreateComponent} from './Shifts/shift-create/shift-create.component
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
   MatButtonModule,
-  MatCardModule, MatCheckboxModule, MatDatepickerModule,
+  MatCardModule, MatCheckboxModule, MatDatepickerModule, MatDialogModule,
   MatExpansionModule,
   MatInputModule,
   MatMenuModule, MatNativeDateModule, MatPaginatorModule, MatProgressSpinnerModule, MatSelectModule, MatSnackBarModule,
@@ -31,6 +31,8 @@ import {MessageCreateComponent} from './messages/message-create/message-create.c
 import {MessageListComponent} from './messages/message-list/message-list.component';
 import {RequestsComponent} from './requests/requests.component';
 import {StatisticsComponent} from './statistics/statistics.component';
+import {ErrorInterceptor} from './error-interceptor';
+import {ErrorComponent} from './error/error.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +51,8 @@ import {StatisticsComponent} from './statistics/statistics.component';
     MessageCreateComponent,
     MessageListComponent,
     RequestsComponent,
-    StatisticsComponent
+    StatisticsComponent,
+    ErrorComponent
   ],
   imports: [
     BrowserModule,
@@ -70,13 +73,16 @@ import {StatisticsComponent} from './statistics/statistics.component';
     MatSnackBarModule,
     MatCheckboxModule,
     MatPaginatorModule,
+    MatDialogModule,
     ReactiveFormsModule,
     FormsModule,
     HttpClientModule
   ],
   providers: [
-      {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}
+      {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
+      {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true}
     ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [ErrorComponent]
 })
 export class AppModule { }

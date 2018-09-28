@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 
 import {AuthData} from './auth-data.model';
 import {Subject} from 'rxjs';
+import {MatSnackBar} from '@angular/material';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -13,7 +14,7 @@ export class AuthService {
   private isAuthenticated = false;
   private authStatusListener = new Subject<boolean>();
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router, private snackBar: MatSnackBar) {}
 
   getToken() {
     return this.token;
@@ -52,6 +53,11 @@ export class AuthService {
           this.saveAuthData(token, expirationDate);
           this.router.navigate(['homepage']);
         }
+      }, error => {
+        this.authStatusListener.next(false);
+        this.snackBar.open('ERROR: Invalid credentials.', null, {
+          duration: 5000,
+        });
       });
   }
 

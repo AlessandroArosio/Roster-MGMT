@@ -17,7 +17,12 @@ router.post('', checkAuth, checkUser, (req, res, next) => {
       message: "Shift added successfully",
       shiftId: createdShift._id
     });
-  });
+  })
+    .catch(error => {
+      res.status(500).json({
+        message: 'Create shift failed. Error occurred'
+      });
+    });
 });
 
 // deleting a SHIFT document from MongoDB
@@ -37,7 +42,12 @@ router.put('/:id', checkAuth, checkUser,(req, res, next) => {
   Shift.updateOne({_id: req.params.id}, shift).then(result => {
     console.log(result);
     res.status(200).json({message: "Shift update successful"});
-  });
+  })
+    .catch(error => {
+      res.status(500).json({
+        message: 'Couldn\'t update shift. Error occurred'
+      });
+    });
 });
 
 // GET one single shift from the DB
@@ -48,7 +58,12 @@ router.get('/:id', checkAuth, (req, res, next) => {
     } else {
       res.status(400).json({message: 'Shift not found'});
     }
-  });
+  })
+    .catch(error => {
+      res.status(500).json({
+        message: 'Fetching shift failed. Error occurred'
+      });
+    });
 });
 
 // this one send the shifts TO Angular
@@ -58,6 +73,11 @@ router.get('', checkAuth,(req, res, next) => {
       res.status(200).json({
         message: "Shift fetch successfully",
         shifts: documents
+      });
+    })
+    .catch(error => {
+      res.status(500).json({
+        message: 'Fetching shifts failed. Error occurred'
       });
     });
 });
