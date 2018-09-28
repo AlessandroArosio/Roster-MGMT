@@ -146,12 +146,25 @@ export class StatisticsComponent implements OnInit, OnDestroy {
   }
 
   dateRange(start: Date, end: Date) {
+    this.message = '';
     if (start > end) {
       this.message = 'Start date cannot be greater than end date!';
       return;
     }
     if (start === null || end === null) {
+      this.statsHolder = [{
+        name: '',
+        totalShifts: []
+      }];
+      this.statsPerUser = [{
+        name: '',
+        totalShifts: []
+      }];
+      this.rotas = null;
+      this.rosters = null;
       this.rotaService.getRotas();
+      this.modifyRotasArray(this.rotas);
+      this.calculateNumberOfShifts();
       return;
     }
     this.message = '';

@@ -7,3 +7,10 @@ td, th {
 tr:nth-child(even) {
   background-color: #dddddd;
 }
+
+#errorMessage {
+  color: red;
+  font-weight: bold;
+  font-size: larger;
+  margin-left: 2rem;
+}
