@@ -11,7 +11,7 @@ const messageRoutes = require('./routes/messages');
 
 const app = express();
 
-mongoose.connect("mongodb+srv://alessandro:z6GjeGj4O2f2FRs7@cluster0-yr8nv.mongodb.net/roster-mgmt")
+mongoose.connect("mongodb+srv://alessandro:" + process.env.MONGO_ATLAS_PW + "@cluster0-yr8nv.mongodb.net/roster-mgmt")
   .then(() => {
     console.log("Connected to database!");
   })

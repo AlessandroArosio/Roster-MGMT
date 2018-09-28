@@ -1,0 +1,6 @@
+{
+  "env": {
+    "MONGO_ATLAS_PW": "z6GjeGj4O2f2FRs7",
+    "JWT_KEY": "secret_word_for_jsonwebtoken_roster-mgmt"
+  }
+}

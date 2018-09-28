@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 module.exports = (req, res, next) => {
   try {
     const token = req.headers.authorization.split(' ')[1];
-    const tokenVerify = jwt.verify(token, 'secret_word_for_jsonwebtoken_roster-mgmt');
+    const tokenVerify = jwt.verify(token, process.env.JWT_KEY);
     if(tokenVerify.email === 'admin@local.com') {
       next();
     } else {
