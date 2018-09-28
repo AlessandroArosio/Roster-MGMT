@@ -4,13 +4,15 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Shift} from '../Shifts/shift.model';
 import {last, map} from 'rxjs/operators';
+import {MatSnackBar} from '@angular/material';
 
 @Injectable({providedIn: 'root'})
 export class UsersService {
   private users: User[] = [];
+  private addUserError: string;
   private usersUpdated = new Subject<User[]>();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, public snackBar: MatSnackBar) {}
 
   getUsers() {
     this.http
@@ -31,6 +33,10 @@ export class UsersService {
         this.users = transformedUser;
         this.usersUpdated.next([...this.users]);
       });
+  }
+
+  getErrorMessage() {
+    return this.addUserError;
   }
 
   getUser(id: string) {
@@ -58,13 +64,21 @@ export class UsersService {
       telephone: telephone,
       password: password
     };
-    this.http.post<{message: string, userId: string}>('http://localhost:3000/api/users', user)
+    return this.http.post<{message: string, userId: string}>('http://localhost:3000/api/users', user)
       .subscribe((responseData) => {
-        const id = responseData.userId;
-        user.id = id;
-        this.users.push(user);
-        this.usersUpdated.next([...this.users]);
-      });
+          const id = responseData.userId;
+          user.id = id;
+          this.users.push(user);
+          this.usersUpdated.next([...this.users]);
+        this.snackBar.open('User successfully created', null, {
+          duration: 5000,
+        });
+        }, error => {
+        this.snackBar.open('ERROR: Email already in database', null, {
+          duration: 5000,
+        });
+        }
+      );
   }
 
   updateUser(id: string, firstName: string, lastName: string, email: string, telephone: number, password: string) {

@@ -54,7 +54,6 @@ export class UsersCreateComponent implements OnInit {
         form.value.telephone,
         form.value.password
       );
-      this.message = 'User "' + form.value.firstName + ' ' + form.value.lastName + '" has been added';
     } else {
       this.usersService.updateUser(
         this.userId,
