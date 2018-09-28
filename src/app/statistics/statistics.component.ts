@@ -36,7 +36,6 @@ export class StatisticsComponent implements OnInit, OnDestroy {
   private usersSub: Subscription;
   private shiftsSub: Subscription;
   private rotasSub: Subscription;
-  private statsSub: Subscription;
 
   constructor (
     public usersService: UsersService,
@@ -61,7 +60,6 @@ export class StatisticsComponent implements OnInit, OnDestroy {
         this.isLoading = false;
         this.rotas = this.rotaService.getRosters();
         this.modifyRotasArray(this.rotas);
-        console.log(this.statsHolder);
         this.calculateNumberOfShifts();
       });
     this.usersSub = this.usersService
@@ -194,10 +192,6 @@ export class StatisticsComponent implements OnInit, OnDestroy {
           this.statsUpdated.next([...this.statsPerUser]);
         }
       );
-  }
-
-  getStatsUpdateListener() {
-    return this.statsUpdated.asObservable();
   }
 
   private normaliseArray(rotas) {
